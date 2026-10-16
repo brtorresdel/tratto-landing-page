@@ -66,6 +66,8 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     expect(screen.getByText(/contrato_prestacao_v3_final/i)).toBeInTheDocument();
     expect(screen.getByText(/tirar multa por atraso/i)).toBeInTheDocument();
     expect(screen.getByText(/vencimentos_2024\.xlsx/i)).toBeInTheDocument();
+    expect(screen.getByText(/Alpha Logística/i)).toBeInTheDocument();
+    expect(screen.getByText(/Prisma Consultoria/i)).toBeInTheDocument();
     expect(screen.getByText(/notificacao_rescisao_atrasada\.pdf/i)).toBeInTheDocument();
 
     // 4 na lateral direita
@@ -78,6 +80,6 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     const firstCard = screen.getByText(/contrato_prestacao_v3_final/i).closest("div[class*='hover:border']");
     expect(firstCard).not.toBeNull();
     expect(firstCard).toHaveClass("hover:border-[var(--accent-primary)]");
-    expect(firstCard).toHaveClass("hover:shadow-[0_16px_32px_var(--accent-surface)]");
+    expect(firstCard).toHaveClass("hover:shadow-[0_20px_40px_var(--accent-surface)]");
   });
 });
