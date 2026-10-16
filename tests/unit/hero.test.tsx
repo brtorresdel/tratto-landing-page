@@ -13,14 +13,16 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     expect(screen.getByRole("link", { name: /entrar na lista/i })).toBeInTheDocument();
   });
 
-  it("CA2: Hero deve renderizar headline do problema, subtítulo e botão de chamada para lista de espera", () => {
+  it("CA2: Hero deve renderizar headline do problema e o bloco 'Aqui nasce a' com a logo oficial", () => {
     render(<Hero />);
     expect(
-      screen.getByRole("heading", { level: 1, name: /Seus contratos deveriam levar menos de 2 minutos para gerar/i })
+      screen.getByRole("heading", {
+        level: 1,
+        name: /Seus contratos deveriam levar menos de 2 minutos para chegar aos seus clientes/i,
+      })
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("link", { name: /entrar na lista de espera/i })
-    ).toBeInTheDocument();
+    expect(screen.getByText(/Aqui nasce a/i)).toBeInTheDocument();
+    expect(screen.getByAltText("Tratto")).toBeInTheDocument();
   });
 
   it("CA3: LiveDocumentCard deve iniciar em Coworking com marcadores esperados", () => {
