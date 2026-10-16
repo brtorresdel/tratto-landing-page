@@ -15,7 +15,7 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 - Configuração das variáveis semânticas CSS do *Sage Paper* no `globals.css` (canvas `#EBF2ED`, nanquim `#0E1210`, floresta `#24523B`, bordas `#D2E0D6`) e fontes `Geist`, `Geist Mono` (`tabular-nums`) e `Newsreader`.
 - Componente de Navbar com o logotipo oficial `tratto` ([`public/logo.svg`](../public/logo.svg)) e link/botão para a lista de espera.
 - Hero Section em Split Layout (Decisão 1 do documento de curadoria):
-  - Coluna esquerda: Badge de pré-lançamento (*"Pré-lançamento · Lista de Espera Aberta"*), headline com destaque editorial em `Newsreader`, subtítulo e atalho rápido de inscrição.
+  - Coluna esquerda: Headline com destaque editorial em `Newsreader`, subtítulo e botão direto de chamada para a lista de espera.
   - Coluna direita: Card interativo da "Minuta Viva", simulando um contrato real com marcadores `{{ }}` e pílulas no topo para alternar entre os 5 segmentos iniciais (*Coworking, Advocacia, Academias, Escolas, Contabilidade*).
 - Dicionário tipado de dados para os 5 segmentos iniciais na Minuta Viva.
 
@@ -35,7 +35,7 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 ## Critérios de Aceitação
 
 - **CA1.** A Navbar deve renderizar o logotipo do Tratto com link para a home e o botão de ação para a lista de espera.
-- **CA2.** A Hero Section deve renderizar o título principal, o badge de pré-lançamento e o formulário simplificado de chamada.
+- **CA2.** A Hero Section deve renderizar o título principal, o subtítulo e o botão de chamada direta para a lista de espera.
 - **CA3.** Por padrão, o segmento inicial selecionado na Minuta Viva deve ser "Coworking", exibindo a variável `{{cliente_nome}}` como "Estúdio Nexo Arquitetura Ltda" e o valor `R$ 2.450,00 / mês`.
 - **CA4.** Ao selecionar o segmento "Advocacia", a Minuta Viva deve atualizar para exibir o cliente e objeto de advocacia (ex: honorários / partido mensal).
 - **CA5.** Ao selecionar "Academias", "Escolas" ou "Contabilidade", os textos e variáveis da Minuta Viva devem refletir os respectivos segmentos de acordo com o dicionário tipado.
