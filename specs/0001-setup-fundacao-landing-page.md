@@ -41,7 +41,7 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 - **CA3.** Por padrão, o segmento inicial selecionado na Minuta Viva deve ser "Coworking", exibindo a variável `{{cliente_nome}}` como "Estúdio Nexo Arquitetura Ltda" e o valor `R$ 2.450,00 / mês`.
 - **CA4.** Ao selecionar o segmento "Advocacia", a Minuta Viva deve atualizar para exibir o cliente e objeto de advocacia (ex: honorários / partido mensal).
 - **CA5.** Ao selecionar "Academias", "Escolas" ou "Contabilidade", os textos e variáveis da Minuta Viva devem refletir os respectivos segmentos de acordo com o dicionário tipado.
-- **CA6.** A Hero Section deve renderizar ao redor do manifesto central os cartões ilustrativos de papéis/contratos desorganizados (`<HeroChaosPapers />`), exibindo visualmente dores reais (versão DOCX confusa, post-it de reajuste esquecido, planilha com contratos vencidos e minuta aguardando assinatura) com craft editorial e rotação orgânica.
+- **CA6.** A Hero Section deve renderizar ao redor do manifesto central 8 cartões ilustrativos de papéis/contratos desorganizados (4 na lateral esquerda e 4 na direita, posicionados abaixo do header com sobreposições intencionais), exibindo visualmente dores reais do cotidiano (versões DOCX desencontradas, post-its de reajuste e autorizações, planilhas defasadas, minutas sem assinatura, falhas em e-mails e pastas físicas perdidas). Ao passar o mouse (hover), os cartões se desentortam e assumem borda e sombra suaves com as variáveis do tema ativo (`var(--accent-primary)` e `var(--accent-surface)`).
 
 ## Casos de Erro e Limites
 

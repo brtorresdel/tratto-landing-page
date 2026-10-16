@@ -60,11 +60,24 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     expect(screen.getAllByText("R$ 4.800,00 / mês")).toHaveLength(2);
   });
 
-  it("CA6: Hero deve renderizar os papéis/contratos desorganizados ao redor do manifesto", () => {
+  it("CA6: Hero deve renderizar 8 papéis/contratos desorganizados com hover reativo ao tema", () => {
     render(<Hero />);
+    // 4 na lateral esquerda
     expect(screen.getByText(/contrato_prestacao_v3_final/i)).toBeInTheDocument();
-    expect(screen.getByText(/reajuste pelo ipca venceu/i)).toBeInTheDocument();
+    expect(screen.getByText(/tirar multa por atraso/i)).toBeInTheDocument();
     expect(screen.getByText(/vencimentos_2024\.xlsx/i)).toBeInTheDocument();
+    expect(screen.getByText(/notificacao_rescisao_atrasada\.pdf/i)).toBeInTheDocument();
+
+    // 4 na lateral direita
+    expect(screen.getByText(/reajuste pelo ipca venceu/i)).toBeInTheDocument();
     expect(screen.getByText(/termo_adesao_pendente\.pdf/i)).toBeInTheDocument();
+    expect(screen.getByText(/esqueci de anexar o arquivo \.docx/i)).toBeInTheDocument();
+    expect(screen.getByText(/pasta_suspensa_arquivo_2023\.scan/i)).toBeInTheDocument();
+
+    // Verifica que o primeiro cartão possui as classes de borda e sombra no tema para hover
+    const firstCard = screen.getByText(/contrato_prestacao_v3_final/i).closest("div[class*='hover:border']");
+    expect(firstCard).not.toBeNull();
+    expect(firstCard).toHaveClass("hover:border-[var(--accent-primary)]");
+    expect(firstCard).toHaveClass("hover:shadow-[0_16px_32px_var(--accent-surface)]");
   });
 });
