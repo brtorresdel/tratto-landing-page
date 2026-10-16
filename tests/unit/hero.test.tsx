@@ -59,4 +59,12 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     expect(screen.getAllByText(/Vanguarda Participações e Empreendimentos S.A./i)).toHaveLength(2);
     expect(screen.getAllByText("R$ 4.800,00 / mês")).toHaveLength(2);
   });
+
+  it("CA6: Hero deve renderizar os papéis/contratos desorganizados ao redor do manifesto", () => {
+    render(<Hero />);
+    expect(screen.getByText(/contrato_prestacao_v3_final/i)).toBeInTheDocument();
+    expect(screen.getByText(/reajuste pelo ipca venceu/i)).toBeInTheDocument();
+    expect(screen.getByText(/vencimentos_2024\.xlsx/i)).toBeInTheDocument();
+    expect(screen.getByText(/termo_adesao_pendente\.pdf/i)).toBeInTheDocument();
+  });
 });

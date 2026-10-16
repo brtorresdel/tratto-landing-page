@@ -41,6 +41,7 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 - **CA3.** Por padrão, o segmento inicial selecionado na Minuta Viva deve ser "Coworking", exibindo a variável `{{cliente_nome}}` como "Estúdio Nexo Arquitetura Ltda" e o valor `R$ 2.450,00 / mês`.
 - **CA4.** Ao selecionar o segmento "Advocacia", a Minuta Viva deve atualizar para exibir o cliente e objeto de advocacia (ex: honorários / partido mensal).
 - **CA5.** Ao selecionar "Academias", "Escolas" ou "Contabilidade", os textos e variáveis da Minuta Viva devem refletir os respectivos segmentos de acordo com o dicionário tipado.
+- **CA6.** A Hero Section deve renderizar ao redor do manifesto central os cartões ilustrativos de papéis/contratos desorganizados (`<HeroChaosPapers />`), exibindo visualmente dores reais (versão DOCX confusa, post-it de reajuste esquecido, planilha com contratos vencidos e minuta aguardando assinatura) com craft editorial e rotação orgânica.
 
 ## Casos de Erro e Limites
 
@@ -63,6 +64,7 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 - `src/app/page.tsx`: Composição da Home (Navbar + Hero).
 - `src/components/navbar.tsx`: Cabeçalho institucional.
 - `src/components/tratto-wordmark.tsx`: Logotipo oficial com SVG inline e ponto de selo dinâmico com o tema.
+- `src/components/hero-chaos-papers.tsx`: Cartões ilustrativos de papéis/contratos desorganizados flutuando com craft editorial.
 - `src/components/hero.tsx`: Seção Hero em layout manifesto centrado.
 - `src/components/live-document-card.tsx`: Componente interativo da Minuta Viva.
 - `src/lib/segments.ts`: Dicionário tipado dos segmentos com textos, variáveis e cláusulas de exemplo.

@@ -2,11 +2,15 @@
 
 import React from "react";
 import { TrattoWordmark } from "./tratto-wordmark";
+import { HeroChaosPapers } from "./hero-chaos-papers";
 
 export function Hero() {
   return (
     <section className="relative overflow-hidden pt-32 pb-20 sm:pt-44 sm:pb-32">
-      <div className="mx-auto max-w-4xl px-4 text-center sm:px-8">
+      {/* Artefatos Visuais de Contratos e Papéis Desorganizados */}
+      <HeroChaosPapers />
+
+      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-8">
         {/* Frase Inicial / Problema em 3 linhas estruturadas */}
         <h2 className="mx-auto max-w-3xl tracking-tight lg:leading-snug">
           <span className="block text-lg font-medium text-[var(--text-main)] sm:text-2xl lg:text-[28px]">
