@@ -34,7 +34,7 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 ## Critérios de Aceitação
 
 - **CA1.** A Navbar deve renderizar o ícone oficial do Tratto com link para a home e o botão de ação para a lista de espera.
-- **CA2.** A Hero Section deve renderizar a frase do problema com peso editorial secundário e a assinatura *"Aqui nasce a [logo]"* como título principal de destaque.
+- **CA2.** A Hero Section deve renderizar a frase do problema com quebra em "2 minutos" e a assinatura *"Aqui nasce a"* acompanhada do logotipo oficial `<TrattoWordmark />`, cujo ponto de selo final adota dinamicamente a cor do tema ativo (`var(--accent-primary)`).
 - **CA3.** Por padrão, o segmento inicial selecionado na Minuta Viva deve ser "Coworking", exibindo a variável `{{cliente_nome}}` como "Estúdio Nexo Arquitetura Ltda" e o valor `R$ 2.450,00 / mês`.
 - **CA4.** Ao selecionar o segmento "Advocacia", a Minuta Viva deve atualizar para exibir o cliente e objeto de advocacia (ex: honorários / partido mensal).
 - **CA5.** Ao selecionar "Academias", "Escolas" ou "Contabilidade", os textos e variáveis da Minuta Viva devem refletir os respectivos segmentos de acordo com o dicionário tipado.
@@ -59,7 +59,8 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 - `src/app/layout.tsx`: Configuração de metadados, fontes Google/Geist e layout base.
 - `src/app/page.tsx`: Composição da Home (Navbar + Hero).
 - `src/components/navbar.tsx`: Cabeçalho institucional.
-- `src/components/hero.tsx`: Seção Hero em split layout.
+- `src/components/tratto-wordmark.tsx`: Logotipo oficial com SVG inline e ponto de selo dinâmico com o tema.
+- `src/components/hero.tsx`: Seção Hero em layout manifesto centrado.
 - `src/components/live-document-card.tsx`: Componente interativo da Minuta Viva.
 - `src/lib/segments.ts`: Dicionário tipado dos segmentos com textos, variáveis e cláusulas de exemplo.
 - `tests/unit/segments.test.ts`: Testes unitários do dicionário e do fallback de segmentos.

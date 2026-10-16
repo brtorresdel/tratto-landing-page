@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { TrattoWordmark } from "./tratto-wordmark";
 
 export function Hero() {
   return (
@@ -9,7 +10,9 @@ export function Hero() {
         {/* Frase Inicial / Problema em 2 linhas sem travessão */}
         <h2 className="mx-auto max-w-3xl text-lg tracking-tight sm:text-2xl lg:text-[28px] lg:leading-snug">
           <span className="block font-medium text-[var(--text-main)]">
-            Seus contratos deveriam levar menos de 2 minutos para ficar pronto
+            Seus contratos deveriam levar menos de 2 minutos
+            <br />
+            para ficar pronto
           </span>
           <span className="mt-1.5 block font-serif italic text-[var(--accent-primary)]">
             e zero planilhas para controlar vencimentos.
@@ -22,13 +25,7 @@ export function Hero() {
             <span className="font-light text-[var(--text-muted)] text-base sm:text-2xl lg:text-[28px]">
               Aqui nasce a
             </span>
-            <img
-              src="/logo.svg"
-              alt="Tratto"
-              width={190}
-              height={56}
-              className="inline-block h-9 w-auto translate-y-[-2px] sm:h-14 lg:h-16"
-            />
+            <TrattoWordmark className="inline-block h-9 w-auto translate-y-[-2px] sm:h-14 lg:h-16" />
           </h1>
         </div>
       </div>
