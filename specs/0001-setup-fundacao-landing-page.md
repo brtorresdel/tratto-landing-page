@@ -15,8 +15,11 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 - Configuração das variáveis semânticas CSS do *Sage Paper* no `globals.css` (canvas `#EBF2ED`, nanquim `#0E1210`, floresta `#24523B`, bordas `#D2E0D6`) e fontes `Geist`, `Geist Mono` (`tabular-nums`) e `Newsreader`.
 - Componente de Navbar com o logotipo oficial `tratto` ([`public/logo.svg`](../public/logo.svg)) e link/botão para a lista de espera.
 - Hero Section em Layout Editorial Centrado (Manifesto Focado no Problema):
-  - Headline de alto impacto dividida em duas linhas: *"Seus contratos deveriam levar menos de 2 minutos para ficar pronto"* e *"e zero planilhas para controlar vencimentos."* com destaque itálico em `Newsreader` e cor do tema ativo.
-  - O Protagonista: texto sutil e leve *"Aqui nasce a"* dando destaque principal para a logo oficial do Tratto ampliada.
+  - Headline de alto impacto dividida em 3 blocos:
+    - Linha 1: *"Seus contratos deveriam levar menos de"*
+    - Linha 2: *"2 minutos para ficar pronto"*
+    - Linha 3: *"e zero planilhas para controlar vencimentos."* em destaque maior, itálico `Newsreader`, peso `font-semibold` e cor dinâmica do tema ativo (`var(--accent-primary)`).
+  - O Protagonista: texto *"Aqui nasce a"* em peso médio (`font-medium`) que evidencia a sutil variação da tinta do tema (`var(--text-muted)`) dando destaque principal para a logo oficial ampliada do Tratto (`<TrattoWordmark />`) com selo dinâmico.
 - Dicionário tipado de dados para os 5 segmentos iniciais na Minuta Viva (preservado para a demonstração da solução nas próximas seções).
 
 **Não inclui (ficará para as próximas specs):**
@@ -34,7 +37,7 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 ## Critérios de Aceitação
 
 - **CA1.** A Navbar deve renderizar o ícone oficial do Tratto com link para a home e o botão de ação para a lista de espera.
-- **CA2.** A Hero Section deve renderizar a frase do problema com quebra em "2 minutos" e a assinatura *"Aqui nasce a"* acompanhada do logotipo oficial `<TrattoWordmark />`, cujo ponto de selo final adota dinamicamente a cor do tema ativo (`var(--accent-primary)`).
+- **CA2.** A Hero Section deve renderizar a headline em 3 linhas (L1: *"Seus contratos deveriam levar menos de"*, L2: *"2 minutos para ficar pronto"*, L3: *"e zero planilhas para controlar vencimentos."* ampliada e em `Newsreader` itálico `font-semibold`) e o bloco *"Aqui nasce a"* em peso médio acompanhado do `<TrattoWordmark />` com ponto de selo sincronizado ao tema ativo.
 - **CA3.** Por padrão, o segmento inicial selecionado na Minuta Viva deve ser "Coworking", exibindo a variável `{{cliente_nome}}` como "Estúdio Nexo Arquitetura Ltda" e o valor `R$ 2.450,00 / mês`.
 - **CA4.** Ao selecionar o segmento "Advocacia", a Minuta Viva deve atualizar para exibir o cliente e objeto de advocacia (ex: honorários / partido mensal).
 - **CA5.** Ao selecionar "Academias", "Escolas" ou "Contabilidade", os textos e variáveis da Minuta Viva devem refletir os respectivos segmentos de acordo com o dicionário tipado.

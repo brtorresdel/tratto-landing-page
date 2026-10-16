@@ -13,18 +13,28 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     expect(screen.getByRole("link", { name: /entrar na lista/i })).toBeInTheDocument();
   });
 
-  it("CA2: Hero deve renderizar headline com quebra em '2 minutos' e logo com ponto dinâmico", () => {
+  it("CA2: Hero deve renderizar headline em 3 linhas com ênfase no itálico e logo com ponto dinâmico", () => {
     render(<Hero />);
     expect(
-      screen.getByText(/Seus contratos deveriam levar menos de 2 minutos/i)
+      screen.getByText("Seus contratos deveriam levar menos de")
     ).toBeInTheDocument();
-    expect(screen.getByText(/para ficar pronto/i)).toBeInTheDocument();
+    expect(screen.getByText("2 minutos para ficar pronto")).toBeInTheDocument();
+    
+    const italicLine = screen.getByText("e zero planilhas para controlar vencimentos.");
+    expect(italicLine).toBeInTheDocument();
+    expect(italicLine).toHaveClass("font-semibold");
+    expect(italicLine).toHaveClass("font-serif");
+
     expect(
       screen.getByRole("heading", {
         level: 1,
         name: /Aqui nasce a/i,
       })
     ).toBeInTheDocument();
+
+    const aquiNasce = screen.getByText("Aqui nasce a");
+    expect(aquiNasce).toHaveClass("font-medium");
+
     const logo = screen.getByRole("img", { name: /Tratto/i });
     expect(logo).toBeInTheDocument();
     const sealDot = logo.querySelector("circle");
