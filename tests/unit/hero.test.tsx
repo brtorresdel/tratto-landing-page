@@ -13,10 +13,10 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     expect(screen.getByRole("link", { name: /entrar na lista/i })).toBeInTheDocument();
   });
 
-  it("CA2: Hero deve renderizar headline, subtítulo e botão de chamada para lista de espera", () => {
+  it("CA2: Hero deve renderizar headline do problema, subtítulo e botão de chamada para lista de espera", () => {
     render(<Hero />);
     expect(
-      screen.getByRole("heading", { level: 1, name: /Crie contratos em minutos a partir dos seus modelos/i })
+      screen.getByRole("heading", { level: 1, name: /Seus contratos deveriam levar menos de 2 minutos para gerar/i })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: /entrar na lista de espera/i })

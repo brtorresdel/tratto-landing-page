@@ -14,10 +14,11 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 - Setup do Next.js 15 (App Router), TypeScript em modo `strict`, Tailwind CSS v4 e Vitest para testes automatizados.
 - Configuração das variáveis semânticas CSS do *Sage Paper* no `globals.css` (canvas `#EBF2ED`, nanquim `#0E1210`, floresta `#24523B`, bordas `#D2E0D6`) e fontes `Geist`, `Geist Mono` (`tabular-nums`) e `Newsreader`.
 - Componente de Navbar com o logotipo oficial `tratto` ([`public/logo.svg`](../public/logo.svg)) e link/botão para a lista de espera.
-- Hero Section em Split Layout (Decisão 1 do documento de curadoria):
-  - Coluna esquerda: Headline com destaque editorial em `Newsreader`, subtítulo e botão direto de chamada para a lista de espera.
-  - Coluna direita: Card interativo da "Minuta Viva", simulando um contrato real com marcadores `{{ }}` e pílulas no topo para alternar entre os 5 segmentos iniciais (*Coworking, Advocacia, Academias, Escolas, Contabilidade*).
-- Dicionário tipado de dados para os 5 segmentos iniciais na Minuta Viva.
+- Hero Section em Layout Editorial Centrado (Manifesto Focado no Problema):
+  - Headline de alto impacto: *"Seus contratos deveriam levar menos de 2 minutos para gerar — e zero planilhas para controlar vencimentos."* com destaque itálico em `Newsreader`.
+  - Subtítulo empático expondo as dores reais (trabalho manual no Word, erros e reajustes anuais perdidos) e apresentando a proposta do Tratto.
+  - Botão de ação direta para a lista de espera.
+- Dicionário tipado de dados para os 5 segmentos iniciais na Minuta Viva (preservado para a demonstração da solução nas próximas seções).
 
 **Não inclui (ficará para as próximas specs):**
 - O fluxo completo de formulário em 2 etapas com gravação de lead no banco/API (Spec 0002).
@@ -28,14 +29,13 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 ## Requisitos
 
 - **R1. Identidade Visual Sage Paper:** Toda a página deve obedecer às cores e contrastes do Doc 21, com fundo `#EBF2ED` contínuo, cartões brancos com bordas finas de 1px `#D2E0D6` e zero efeitos de IA (sem gradientes neon, sem cantos `rounded-3xl`).
-- **R2. Tipografia Editorial:** Utilizar `Geist Sans` para o texto base e botões, `Geist Mono` com números tabulares (`tnum`) para valores e variáveis, e `Newsreader` (itálico) para os destaques e o texto do contrato.
-- **R3. Minuta Viva Interativa:** Ao clicar nas pílulas de segmento (*Coworking*, *Advocacia*, *Academias*, *Escolas*, *Contabilidade*), o texto da cláusula e as variáveis correspondentes no card da minuta devem mudar instantaneamente sem recarregar a página.
-- **R4. Acessibilidade:** Navbar e Hero devem possuir marcação semântica adequada (`<header>`, `<main>`, `<h1>`, `role="tab"` / `role="tablist"` para as pílulas).
+- **R2. Tipografia Editorial:** Utilizar `Geist Sans` para o texto base e botões, `Geist Mono` com números tabulares (`tnum`) para valores e variáveis, e `Newsreader` (itálico) para os destaques.
+- **R3. Acessibilidade:** Navbar e Hero devem possuir marcação semântica adequada (`<header>`, `<main>`, `<h1>`).
 
 ## Critérios de Aceitação
 
 - **CA1.** A Navbar deve renderizar o logotipo do Tratto com link para a home e o botão de ação para a lista de espera.
-- **CA2.** A Hero Section deve renderizar o título principal, o subtítulo e o botão de chamada direta para a lista de espera.
+- **CA2.** A Hero Section deve renderizar a headline do manifesto (*"Seus contratos deveriam levar menos de 2 minutos para gerar — e zero planilhas para controlar vencimentos."*), o subtítulo do problema e o botão de chamada para a lista de espera.
 - **CA3.** Por padrão, o segmento inicial selecionado na Minuta Viva deve ser "Coworking", exibindo a variável `{{cliente_nome}}` como "Estúdio Nexo Arquitetura Ltda" e o valor `R$ 2.450,00 / mês`.
 - **CA4.** Ao selecionar o segmento "Advocacia", a Minuta Viva deve atualizar para exibir o cliente e objeto de advocacia (ex: honorários / partido mensal).
 - **CA5.** Ao selecionar "Academias", "Escolas" ou "Contabilidade", os textos e variáveis da Minuta Viva devem refletir os respectivos segmentos de acordo com o dicionário tipado.
