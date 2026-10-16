@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
+import { ProblemBanner } from "@/components/problem-banner";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function HomePage() {
@@ -9,6 +10,7 @@ export default function HomePage() {
       <Navbar />
       <main className="flex-1">
         <Hero />
+        <ProblemBanner />
 
         {/* Marcador de destino suave para a lista de espera (será expandido na Spec 0002) */}
         <section id="lista-de-espera" className="py-8 text-center">
