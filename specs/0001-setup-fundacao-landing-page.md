@@ -15,9 +15,8 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 - Configuração das variáveis semânticas CSS do *Sage Paper* no `globals.css` (canvas `#EBF2ED`, nanquim `#0E1210`, floresta `#24523B`, bordas `#D2E0D6`) e fontes `Geist`, `Geist Mono` (`tabular-nums`) e `Newsreader`.
 - Componente de Navbar com o logotipo oficial `tratto` ([`public/logo.svg`](../public/logo.svg)) e link/botão para a lista de espera.
 - Hero Section em Layout Editorial Centrado (Manifesto Focado no Problema):
-  - Headline de alto impacto: *"Seus contratos deveriam levar menos de 2 minutos para gerar — e zero planilhas para controlar vencimentos."* com destaque itálico em `Newsreader`.
-  - Subtítulo empático expondo as dores reais (trabalho manual no Word, erros e reajustes anuais perdidos) e apresentando a proposta do Tratto.
-  - Botão de ação direta para a lista de espera.
+  - Headline de alto impacto dividida em duas linhas: *"Seus contratos deveriam levar menos de 2 minutos para ficar pronto"* e *"e zero planilhas para controlar vencimentos."* com destaque itálico em `Newsreader` e cor do tema ativo.
+  - O Protagonista: texto sutil e leve *"Aqui nasce a"* dando destaque principal para a logo oficial do Tratto ampliada.
 - Dicionário tipado de dados para os 5 segmentos iniciais na Minuta Viva (preservado para a demonstração da solução nas próximas seções).
 
 **Não inclui (ficará para as próximas specs):**

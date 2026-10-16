@@ -16,7 +16,7 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
   it("CA2: Hero deve renderizar headline do problema e o bloco 'Aqui nasce a' com a logo oficial", () => {
     render(<Hero />);
     expect(
-      screen.getByText(/Seus contratos deveriam levar menos de 2 minutos para chegar aos seus clientes/i)
+      screen.getByText(/Seus contratos deveriam levar menos de 2 minutos para ficar pronto/i)
     ).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
