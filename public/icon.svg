@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="50" height="50" fill="none">
+  <!-- Tratto Icon Oficial (The Executive T — Mark I) -->
+  <g stroke="#0E1210" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Travessão horizontal com curvatura fluida e confiante -->
+    <path d="M 6 22 C 14 20, 26 17, 40 19 C 45 20, 48 21, 48 21" stroke-width="3.8" />
+    <!-- Haste e laço de fechamento da assinatura executiva -->
+    <path d="M 31 11 C 30 19, 24 31, 18 36 C 14 40, 15 44, 18 44 C 23 44, 28 37, 33 27 C 34 23, 35 17, 35 13" stroke-width="3.2" />
+  </g>
+</svg>
