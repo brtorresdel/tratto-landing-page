@@ -1,6 +1,6 @@
 # 0001. Setup da Fundação, Design Tokens Sage Paper e Hero do Documento Vivo
 
-- **Status:** rascunho
+- **Status:** implementada
 - **Projeto:** landing page
 - **Docs relacionados:** `docs/21-diretrizes-de-design-ui-ux.md`, `docs/referencias/01-curadoria-landing-page.md`
 
