@@ -1,6 +1,7 @@
 import React from "react";
 import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
+import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function HomePage() {
   return (
@@ -16,6 +17,9 @@ export default function HomePage() {
           </div>
         </section>
       </main>
+
+      {/* Seletor flutuante de temas pastéis (Sage Paper) */}
+      <ThemeSwitcher />
     </div>
   );
 }

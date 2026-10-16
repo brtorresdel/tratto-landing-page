@@ -7,7 +7,8 @@
 }
 
 @layer base {
-  :root {
+  /* 1. SÁLVIA (OFICIAL) */
+  :root, [data-theme="sage"] {
     --bg-canvas: #EBF2ED;
     --bg-card: #FFFFFF;
     --border-subtle: #D2E0D6;
@@ -24,10 +25,83 @@
     --badge-alert-text: #8F323D;
   }
 
+  /* 2. MANTEIGA */
+  [data-theme="butter"] {
+    --bg-canvas: #FAF8ED;
+    --bg-card: #FFFFFF;
+    --border-subtle: #ECE5C6;
+    --border-strong: #D5CA96;
+    --accent-primary: #755B13;
+    --accent-soft: #F5EFCF;
+    --text-main: #14120B;
+    --text-muted: #665D44;
+    --badge-active-bg: #F7F1D2;
+    --badge-active-text: #6B520C;
+    --badge-pending-bg: #FDF3E7;
+    --badge-pending-text: #8F5522;
+    --badge-alert-bg: #FAEAEC;
+    --badge-alert-text: #8F323D;
+  }
+
+  /* 3. PÊSSEGO */
+  [data-theme="apricot"] {
+    --bg-canvas: #FAF3EC;
+    --bg-card: #FFFFFF;
+    --border-subtle: #ECDCCD;
+    --border-strong: #D7BFA8;
+    --accent-primary: #8E4924;
+    --accent-soft: #F5E5D5;
+    --text-main: #140E0A;
+    --text-muted: #6B574C;
+    --badge-active-bg: #F7E7D9;
+    --badge-active-text: #823E1B;
+    --badge-pending-bg: #FDF3E7;
+    --badge-pending-text: #8F5522;
+    --badge-alert-bg: #FAEAEC;
+    --badge-alert-text: #8F323D;
+  }
+
+  /* 4. CORAL */
+  [data-theme="coral"] {
+    --bg-canvas: #FAF0F2;
+    --bg-card: #FFFFFF;
+    --border-subtle: #ECD1D6;
+    --border-strong: #D7AAB3;
+    --accent-primary: #8A3340;
+    --accent-soft: #F6DDE2;
+    --text-main: #140C0E;
+    --text-muted: #6B4E53;
+    --badge-active-bg: #F7DFE4;
+    --badge-active-text: #7D2835;
+    --badge-pending-bg: #FDF3E7;
+    --badge-pending-text: #8F5522;
+    --badge-alert-bg: #FAEAEC;
+    --badge-alert-text: #8F323D;
+  }
+
+  /* 5. CÉU */
+  [data-theme="sky"] {
+    --bg-canvas: #F0F5FA;
+    --bg-card: #FFFFFF;
+    --border-subtle: #D2E0EE;
+    --border-strong: #A8C2DC;
+    --accent-primary: #22517E;
+    --accent-soft: #DCE8F6;
+    --text-main: #0B1117;
+    --text-muted: #4F5E6E;
+    --badge-active-bg: #DFECF9;
+    --badge-active-text: #1C4872;
+    --badge-pending-bg: #FDF3E7;
+    --badge-pending-text: #8F5522;
+    --badge-alert-bg: #FAEAEC;
+    --badge-alert-text: #8F323D;
+  }
+
   body {
     background-color: var(--bg-canvas);
     color: var(--text-main);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 }
