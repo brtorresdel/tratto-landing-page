@@ -7,18 +7,18 @@ export function Navbar() {
       className="fixed inset-x-0 top-4 z-50 mx-auto w-[92%] max-w-5xl transition-all sm:top-6"
     >
       <div className="flex h-14 items-center justify-between rounded-full border border-[#D2E0D6] bg-white/80 px-4 shadow-[0_4px_24px_rgba(14,18,16,0.06)] backdrop-blur-md sm:h-16 sm:px-6">
-        {/* Logotipo */}
+        {/* Ícone Oficial (The Executive T) */}
         <a
           href="/"
           className="group flex items-center gap-2 transition hover:opacity-90"
           aria-label="Página Inicial do Tratto"
         >
           <img
-            src="/logo.svg"
-            alt="Logotipo Tratto"
-            width={105}
-            height={30}
-            className="h-7 w-auto transition-transform group-hover:scale-[1.02] sm:h-8"
+            src="/icon.svg"
+            alt="Ícone Tratto"
+            width={34}
+            height={34}
+            className="h-8 w-8 transition-transform group-hover:scale-105"
           />
         </a>
 

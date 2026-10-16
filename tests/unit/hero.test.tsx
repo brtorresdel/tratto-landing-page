@@ -6,22 +6,24 @@ import { Hero } from "@/components/hero";
 import { LiveDocumentCard } from "@/components/live-document-card";
 
 describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => {
-  it("CA1: Navbar deve renderizar o logotipo e botão de lista de espera", () => {
+  it("CA1: Navbar deve renderizar o ícone oficial e botão de lista de espera", () => {
     render(<Navbar />);
     expect(screen.getByRole("banner")).toBeInTheDocument();
-    expect(screen.getByAltText("Logotipo Tratto")).toBeInTheDocument();
+    expect(screen.getByAltText("Ícone Tratto")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /entrar na lista/i })).toBeInTheDocument();
   });
 
   it("CA2: Hero deve renderizar headline do problema e o bloco 'Aqui nasce a' com a logo oficial", () => {
     render(<Hero />);
     expect(
+      screen.getByText(/Seus contratos deveriam levar menos de 2 minutos para chegar aos seus clientes/i)
+    ).toBeInTheDocument();
+    expect(
       screen.getByRole("heading", {
         level: 1,
-        name: /Seus contratos deveriam levar menos de 2 minutos para chegar aos seus clientes/i,
+        name: /Aqui nasce a/i,
       })
     ).toBeInTheDocument();
-    expect(screen.getByText(/Aqui nasce a/i)).toBeInTheDocument();
     expect(screen.getByAltText("Tratto")).toBeInTheDocument();
   });
 

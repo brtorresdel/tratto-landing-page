@@ -34,8 +34,8 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 
 ## Critérios de Aceitação
 
-- **CA1.** A Navbar deve renderizar o logotipo do Tratto com link para a home e o botão de ação para a lista de espera.
-- **CA2.** A Hero Section deve renderizar a headline do manifesto (*"Seus contratos deveriam levar menos de 2 minutos para chegar aos seus clientes — e zero planilhas para controlar vencimentos."*) e a assinatura editorial *"Aqui nasce a [logo]"*.
+- **CA1.** A Navbar deve renderizar o ícone oficial do Tratto com link para a home e o botão de ação para a lista de espera.
+- **CA2.** A Hero Section deve renderizar a frase do problema com peso editorial secundário e a assinatura *"Aqui nasce a [logo]"* como título principal de destaque.
 - **CA3.** Por padrão, o segmento inicial selecionado na Minuta Viva deve ser "Coworking", exibindo a variável `{{cliente_nome}}` como "Estúdio Nexo Arquitetura Ltda" e o valor `R$ 2.450,00 / mês`.
 - **CA4.** Ao selecionar o segmento "Advocacia", a Minuta Viva deve atualizar para exibir o cliente e objeto de advocacia (ex: honorários / partido mensal).
 - **CA5.** Ao selecionar "Academias", "Escolas" ou "Contabilidade", os textos e variáveis da Minuta Viva devem refletir os respectivos segmentos de acordo com o dicionário tipado.
