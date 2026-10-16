@@ -5,7 +5,7 @@ import { LiveDocumentCard } from "@/components/live-document-card";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden py-12 sm:py-20">
+    <section className="relative overflow-hidden pt-24 pb-12 sm:pt-32 sm:pb-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-8">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
           {/* Coluna Esquerda: Proposta de Valor Editorial */}
