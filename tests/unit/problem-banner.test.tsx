@@ -52,8 +52,13 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(letterContainer).not.toBeNull();
     expect(letterContainer?.className).toMatch(/italic/);
 
-    // Gancho de transição para o mercado
+    // Gancho de transição para o mercado e largura unificada
     expect(screen.getByText(/O custo invisível de gerenciar contratos no improviso/i)).toBeInTheDocument();
+
+    // Valida que a carta e o diagnóstico estão com largura padronizada (sem restrição max-w-3xl)
+    const contentWrapper = heading.closest("div.text-left");
+    expect(contentWrapper).not.toBeNull();
+    expect(contentWrapper?.className).not.toMatch(/max-w-3xl/);
   });
 
   it("CA2: Deve renderizar a grade com as 3 métricas de prejuízo invisível e o card de impacto comparativo", () => {

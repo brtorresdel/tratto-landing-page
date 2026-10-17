@@ -10,7 +10,7 @@ export function ProblemBanner() {
         {/* ========================================================= */}
         {/* PARTE 1: CARTA DO DEV */}
         {/* ========================================================= */}
-        <div className="mx-auto max-w-3xl text-left">
+        <div className="w-full text-left">
           {/* Header da Carta: Título centralizado no mobile (< 712px) e lado a lado a partir de 712px */}
           <div className="flex flex-col items-center justify-center text-center min-[712px]:flex-row min-[712px]:items-center min-[712px]:justify-between min-[712px]:text-left gap-4 pb-2">
             <h2 className="font-serif text-4xl min-[712px]:text-5xl italic font-semibold text-white leading-tight tracking-tight text-center min-[712px]:text-left whitespace-nowrap">
@@ -75,7 +75,7 @@ export function ProblemBanner() {
             <h3 className="mt-2 font-serif text-2xl sm:text-4xl italic font-semibold text-white leading-snug">
               O custo invisível de gerenciar contratos no improviso
             </h3>
-            <p className="mt-3 text-sm sm:text-base text-white/80 leading-relaxed max-w-2xl">
+            <p className="mt-3 text-sm sm:text-base text-white/80 leading-relaxed max-w-3xl">
               Essa dor não era exclusividade minha. Conversando com dezenas de empresas de serviços, consultorias e gestores,
               percebi que a falta de um fluxo automatizado cobra um preço alto e silencioso todos os meses:
             </p>
