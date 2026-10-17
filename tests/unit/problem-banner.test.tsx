@@ -58,10 +58,16 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(screen.getByText(/O que pensei ser uma dor concentrada ou de empresa específica/i)).toBeInTheDocument();
     expect(screen.getByText(/Acredito que números aqui expressem melhor o que estou querendo te dizer:/i)).toBeInTheDocument();
 
-    // Valida que a carta e o diagnóstico estão com largura padronizada (sem restrição max-w-3xl)
+    // Valida que a carta e o diagnóstico estão com largura padronizada aos quadros e tipografia ampliada
     const contentWrapper = heading.closest("div.text-left");
     expect(contentWrapper).not.toBeNull();
     expect(contentWrapper?.className).not.toMatch(/max-w-3xl/);
+
+    const diagParagraph = screen.getByText(/O que pensei ser uma dor concentrada ou de empresa específica/i);
+    expect(diagParagraph).toHaveClass("text-base");
+    expect(diagParagraph).toHaveClass("sm:text-lg");
+    expect(diagParagraph.className).not.toMatch(/max-w-3xl/);
+    expect(diagParagraph.className).not.toMatch(/max-w-2xl/);
   });
 
   it("CA2: Deve renderizar a grade com as 3 métricas de prejuízo invisível e o card de impacto comparativo", () => {

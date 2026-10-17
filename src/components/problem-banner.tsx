@@ -68,11 +68,11 @@ export function ProblemBanner() {
           </div>
 
           {/* Gancho para as Métricas e o Mercado */}
-          <div className="mt-14 text-center sm:text-left">
+          <div className="mt-14 text-left">
             <h3 className="font-serif text-2xl sm:text-4xl italic font-semibold text-white leading-snug">
               O custo invisível de gerenciar contratos no improviso...
             </h3>
-            <p className="mt-4 text-sm sm:text-base text-white/80 leading-relaxed max-w-3xl">
+            <p className="mt-4 text-base sm:text-lg text-white/85 leading-relaxed">
               O que pensei ser uma dor concentrada ou de empresa específica, na verdade se trata de uma dor que muitos lugares passam, independente de qual o segmento ou o tamanho da empresa. Se a sua empresa elabora e gerencia contratos, ela está suscetível a erros, se não for bem gerenciada. Acredito que números aqui expressem melhor o que estou querendo te dizer:
             </p>
           </div>
