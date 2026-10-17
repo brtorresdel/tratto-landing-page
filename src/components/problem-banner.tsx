@@ -25,31 +25,31 @@ export function ProblemBanner() {
           <div className="mt-8 rounded-2xl border border-white/15 bg-white/10 p-6 sm:p-9 backdrop-blur-xs text-white/90 shadow-[0_12px_32px_rgba(0,0,0,0.08)]">
             <div className="space-y-5 font-sans text-base sm:text-lg leading-relaxed text-white/90">
               <p>
-                Antes de me dedicar à engenharia de software no dia a dia, trabalhei em um{" "}
-                <strong className="text-white font-semibold underline decoration-white/30 decoration-1 underline-offset-4">
-                  escritório de advocacia
-                </strong>
-                . Lá, vi em primeira mão a angústia de redigir minutas à mão, salvar dezenas de arquivos
-                Word renomeados com <code className="bg-black/20 px-1.5 py-0.5 rounded text-xs font-mono">_v3_final_revisado.docx</code> e
-                passar horas rezando para que ninguém tivesse apagado uma cláusula importante.
+                Em duas das minhas maiores experiências profissionais antigas antes de me tornar oficialmente desenvolvedor, vivi momentos que beiravam o desespero quando o assunto era contrato. Não minto que, em algum momento, já cheguei até a chorar quando ouvia essa palavra.
               </p>
 
               <p>
-                Mais tarde, vivenciei a rotina em um{" "}
-                <strong className="text-white font-semibold underline decoration-white/30 decoration-1 underline-offset-4">
-                  coworking
-                </strong>
-                . A escala era outra, mas o caos era idêntico: dezenas de contratos ativos sendo administrados
-                por um &ldquo;pseudosistema&rdquo; em planilhas cheias de fórmulas manuais e macros. Reajustes
-                anuais de inflação eram simplesmente esquecidos, vias assinadas sumiam nas gavetas da recepção
-                e o controle de rescisões dependia da memória da equipe.
+                Em uma dessas experiências, os contratos eram gerados 100% na mão. Tínhamos um modelo guardado e, sempre que precisávamos gerar um novo documento para um cliente, era a mesma coisa: abrir o arquivo, trocar os dados &ldquo;no olho&rdquo;, salvar com outro nome para não sobrescrever o original, imprimir e vida que segue. O resultado, como já dá para imaginar: arquivo salvo por cima do modelo, documento perdido, dados trocados de clientes anteriores... um caos.
               </p>
 
               <p>
-                A verdade é dura: pequenas e médias empresas não precisam de um ERP corporativo de R$ 5.000/mês
-                com meses de implantação. Mas também não deveriam perder dinheiro e noites de sono gerenciando
-                contratos no improviso. O Tratto nasceu dessa inquietação — um instrumento artesanal, simples e
-                preciso, para transformar modelos comuns do Word em contratos vivos e automatizados.
+                Na outra empresa, até tínhamos uma alternativa &ldquo;semiautomática&rdquo;: uma planilha cheia de macros que gerava o documento. Mas, sendo bem honesto, uma planilha definitivamente não foi feita para isso, né? Além de ser offline, tínhamos problemas constantes de versões conflitantes e dores de cabeça para gerenciar tudo.
+              </p>
+
+              <p>
+                Incomodado com isso, fui pesquisar a fundo para entender como esse calo aperta em outras empresas e segmentos. E, com esse levantamento, encontrei um verdadeiro espaço em branco no Brasil.
+              </p>
+
+              <p>
+                Não que a ideia de automatizar contratos seja 100% inédita no planeta; mas uma solução nacional, simples, acessível e desenhada de verdade para a realidade de micro e pequenas empresas, na opinião deste que vos fala, simplesmente não existe. Bem, não existia.
+              </p>
+
+              <p>
+                Para preencher essa lacuna, decidi criar a <strong className="text-white font-semibold">Tratto</strong>: uma plataforma onde você sobe seus próprios modelos de contrato em .docx com marcadores simples, gera documentos de forma rápida e sem erro de preenchimento e acompanha todo o ciclo de vigência e reajustes sem depender de planilhas.
+              </p>
+
+              <p className="font-serif italic text-white/95 text-lg sm:text-xl pt-2 border-t border-white/10">
+                &ldquo;Essa ideia ainda está saindo do papel, mas já posso adiantar que, só de planejar a arquitetura e a identidade desse projeto, sinto que dei um abraço naquele Bruno do passado que passou por poucas e boas mexendo com esse tipo de documento...&rdquo;
               </p>
             </div>
 

@@ -15,9 +15,11 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     // Chapéu editorial
     expect(screen.getByText(/Carta do Desenvolvedor|De quem viveu o problema na pele/i)).toBeInTheDocument();
 
-    // Narrativa do relato
-    expect(screen.getByText(/escritório de advocacia/i)).toBeInTheDocument();
-    expect(screen.getByText(/coworking/i)).toBeInTheDocument();
+    // Narrativa do relato real do desenvolvedor
+    expect(screen.getByText(/momentos que beiravam o desespero/i)).toBeInTheDocument();
+    expect(screen.getByText(/gerados 100% na mão/i)).toBeInTheDocument();
+    expect(screen.getByText(/planilha cheia de macros/i)).toBeInTheDocument();
+    expect(screen.getByText(/abraço naquele Bruno do passado/i)).toBeInTheDocument();
 
     // Assinatura do autor
     expect(screen.getByText(/Bruno Torres/i)).toBeInTheDocument();
