@@ -80,17 +80,22 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     expect(screen.getAllByText(/esqueci de anexar o arquivo \.docx/i)[0]).toBeInTheDocument();
     expect(screen.getAllByText(/pasta_suspensa_arquivo_2023\.scan/i)[0]).toBeInTheDocument();
 
-    // Verifica que existem grupos independentes para pilha esquerda, direita e mobile
+    // Verifica que existem grupos independentes para pilha esquerda e direita no desktop (lg)
     const leftCluster = screen.getAllByText(/contrato_prestacao_v3_final/i)[0].closest("div[class*='group/left']");
     expect(leftCluster).not.toBeNull();
     expect(leftCluster?.className).toMatch(/lg:scale-\[0\.72\]/);
+    expect(leftCluster?.className).toMatch(/hidden lg:block/);
 
     const rightCluster = screen.getAllByText(/termo_adesao_pendente\.pdf/i)[0].closest("div[class*='group/right']");
     expect(rightCluster).not.toBeNull();
     expect(rightCluster?.className).toMatch(/lg:scale-\[0\.72\]/);
+    expect(rightCluster?.className).toMatch(/hidden lg:block/);
 
-    const mobileCluster = document.querySelector("div[class*='group/mobile']");
-    expect(mobileCluster).not.toBeNull();
+    // Verifica que existe o container espalhado na base para tablet e mobile (< 1024px)
+    const spreadCluster = document.querySelector("div[class*='group/spread']");
+    expect(spreadCluster).not.toBeNull();
+    expect(spreadCluster?.className).toMatch(/block lg:hidden/);
+    expect(spreadCluster?.innerHTML).toMatch(/-translate-y/);
 
     // Verifica que os cartões possuem background sólido (sem glassmorphism/backdrop-blur)
     const firstCard = screen.getAllByText(/contrato_prestacao_v3_final/i)[0].closest("div[class*='rounded-lg']");

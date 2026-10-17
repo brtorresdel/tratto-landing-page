@@ -288,9 +288,9 @@ export function HeroChaosPapers() {
     >
       <div className="relative mx-auto h-full max-w-7xl">
         {/* ========================================================= */}
-        {/* PILHA ESQUERDA (DESKTOP E TABLET - CALIBRADA PARA 1024px A 1130px) */}
+        {/* PILHA ESQUERDA (DESKTOP - A PARTIR DE 1024px) */}
         {/* ========================================================= */}
-        <div className="group/left pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-6px] xl:bottom-0 left-0 md:left-[2%] lg:-left-6 xl:left-2 2xl:left-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden md:block md:scale-[0.88] lg:scale-[0.72] xl:scale-100 origin-bottom-left transition-transform duration-300">
+        <div className="group/left pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-6px] xl:bottom-0 left-0 md:left-[2%] lg:-left-6 xl:left-2 2xl:left-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden lg:block lg:scale-[0.72] xl:scale-100 origin-bottom-left transition-transform duration-300">
           {/* L1. DOCX em formato de Folha Vertical A4 */}
           <DocxPaperCard className="absolute bottom-2 lg:bottom-8 left-1 lg:left-4 xl:left-8 w-[260px] lg:w-[285px] min-h-[340px] lg:min-h-[370px] rotate-[-9deg] group-hover/left:rotate-[-14deg] group-hover/left:-translate-x-6 group-hover/left:-translate-y-6 group-hover/left:shadow-[0_16px_36px_rgba(14,18,16,0.1)] z-10" />
 
@@ -305,9 +305,9 @@ export function HeroChaosPapers() {
         </div>
 
         {/* ========================================================= */}
-        {/* PILHA DIREITA (DESKTOP E TABLET - CALIBRADA PARA 1024px A 1130px) */}
+        {/* PILHA DIREITA (DESKTOP - A PARTIR DE 1024px) */}
         {/* ========================================================= */}
-        <div className="group/right pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-6px] xl:bottom-0 right-0 md:right-[2%] lg:-right-6 xl:right-2 2xl:right-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden md:block md:scale-[0.88] lg:scale-[0.72] xl:scale-100 origin-bottom-right transition-transform duration-300">
+        <div className="group/right pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-6px] xl:bottom-0 right-0 md:right-[2%] lg:-right-6 xl:right-2 2xl:right-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden lg:block lg:scale-[0.72] xl:scale-100 origin-bottom-right transition-transform duration-300">
           {/* R1. PDF em formato de Folha Vertical A4 */}
           <PdfPaperCard className="absolute bottom-2 lg:bottom-8 right-1 lg:right-4 xl:right-8 w-[260px] lg:w-[285px] min-h-[340px] lg:min-h-[370px] rotate-[8deg] group-hover/right:rotate-[13deg] group-hover/right:translate-x-6 group-hover/right:-translate-y-6 group-hover/right:shadow-[0_16px_36px_rgba(14,18,16,0.1)] z-10" />
 
@@ -322,32 +322,32 @@ export function HeroChaosPapers() {
         </div>
 
         {/* ========================================================= */}
-        {/* PILHA UNIFICADA MOBILE (TODOS OS 8 JUNTOS EM UM BOLO CENTRAL) */}
+        {/* COMPOSIÇÃO ESPALHADA NA BASE (TABLET E CELULAR - < 1024px) */}
         {/* ========================================================= */}
-        <div className="group/mobile pointer-events-auto absolute bottom-1 sm:bottom-3 left-1/2 -translate-x-1/2 w-[300px] sm:w-[330px] h-[330px] block md:hidden scale-[0.78] sm:scale-[0.88] origin-bottom">
-          {/* 1. Folha DOCX (Base esquerda do bolo mobile) */}
-          <DocxPaperCard className="absolute bottom-2 left-0 w-[235px] min-h-[290px] rotate-[-9deg] group-hover/mobile:rotate-[-15deg] group-hover/mobile:-translate-x-6 group-hover/mobile:-translate-y-4 z-10" />
+        <div className="group/spread pointer-events-auto absolute bottom-0 left-1/2 -translate-x-1/2 w-[760px] sm:w-[840px] md:w-[940px] h-[220px] sm:h-[240px] md:h-[260px] block lg:hidden scale-[0.44] xs:scale-[0.50] sm:scale-[0.66] md:scale-[0.85] origin-bottom transition-all duration-300">
+          {/* 1. Folha DOCX */}
+          <DocxPaperCard className="absolute bottom-2 left-0 w-[240px] min-h-[300px] rotate-[-5deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-6 hover:!-translate-y-10 z-10" />
 
-          {/* 2. Folha PDF (Base direita do bolo mobile) */}
-          <PdfPaperCard className="absolute bottom-4 right-0 w-[235px] min-h-[290px] rotate-[8deg] group-hover/mobile:rotate-[14deg] group-hover/mobile:translate-x-6 group-hover/mobile:-translate-y-4 z-11" />
+          {/* 2. Post-it Urgente */}
+          <PostitUrgenteCard className="absolute bottom-16 left-[90px] sm:left-[110px] md:left-[120px] w-[210px] rotate-[3deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-7 hover:!-translate-y-11 z-20" />
 
           {/* 3. Planilha XLSX */}
-          <XlsxPaperCard className="absolute bottom-6 left-2 w-[240px] rotate-[3deg] group-hover/mobile:rotate-[7deg] group-hover/mobile:-translate-x-4 group-hover/mobile:-translate-y-8 z-12" />
+          <XlsxPaperCard className="absolute bottom-4 left-[170px] sm:left-[210px] md:left-[230px] w-[250px] rotate-[-2deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-6 hover:!-translate-y-10 z-14" />
 
-          {/* 4. Arquivo Morto */}
-          <ArquivoMortoCard className="absolute bottom-8 right-1 w-[220px] rotate-[-5deg] group-hover/mobile:rotate-[-10deg] group-hover/mobile:translate-x-4 group-hover/mobile:-translate-y-8 z-13" />
+          {/* 4. Notificação Rescisão */}
+          <NotificacaoRescisaoCard className="absolute bottom-14 left-[280px] sm:left-[330px] md:left-[360px] w-[215px] rotate-[4deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 hover:!-translate-y-12 z-22" />
 
-          {/* 5. E-mail Minuta */}
-          <EmailMinutaCard className="absolute bottom-12 left-3 w-[225px] rotate-[-3deg] group-hover/mobile:rotate-[-7deg] group-hover/mobile:-translate-x-3 group-hover/mobile:-translate-y-12 z-14" />
+          {/* 5. Folha PDF */}
+          <PdfPaperCard className="absolute bottom-2 left-[380px] sm:left-[440px] md:left-[480px] w-[240px] min-h-[300px] rotate-[-4deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-6 hover:!-translate-y-10 z-12" />
 
-          {/* 6. Notificação Rescisão */}
-          <NotificacaoRescisaoCard className="absolute bottom-14 right-3 w-[215px] rotate-[5deg] group-hover/mobile:rotate-[10deg] group-hover/mobile:translate-x-3 group-hover/mobile:-translate-y-12 z-15" />
+          {/* 6. E-mail Minuta */}
+          <EmailMinutaCard className="absolute bottom-16 left-[480px] sm:left-[550px] md:left-[590px] w-[230px] rotate-[3deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-7 hover:!-translate-y-11 z-24" />
 
-          {/* 7. Post-it Urgente */}
-          <PostitUrgenteCard className="absolute bottom-20 left-4 w-[205px] rotate-[-2deg] group-hover/mobile:rotate-[-5deg] group-hover/mobile:-translate-x-2 group-hover/mobile:-translate-y-16 z-20" />
+          {/* 7. Post-it Reajuste IPCA */}
+          <PostitReajusteCard className="absolute bottom-8 left-[570px] sm:left-[640px] md:left-[690px] w-[215px] rotate-[-5deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-6 hover:!-translate-y-10 z-18" />
 
-          {/* 8. Post-it Reajuste IPCA */}
-          <PostitReajusteCard className="absolute bottom-22 right-4 w-[210px] rotate-[6deg] group-hover/mobile:rotate-[9deg] group-hover/mobile:translate-x-2 group-hover/mobile:-translate-y-16 z-21" />
+          {/* 8. Arquivo Morto */}
+          <ArquivoMortoCard className="absolute bottom-2 left-[640px] sm:left-[720px] md:left-[770px] w-[220px] rotate-[2deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 hover:!-translate-y-12 z-16" />
         </div>
       </div>
     </div>

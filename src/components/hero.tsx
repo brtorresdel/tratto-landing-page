@@ -6,7 +6,7 @@ import { HeroChaosPapers } from "./hero-chaos-papers";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden min-h-[880px] md:min-h-[960px] lg:min-h-[730px] xl:min-h-[840px] pt-28 sm:pt-36 lg:pt-20 xl:pt-32 pb-80 md:pb-96 lg:pb-12 xl:pb-24 flex flex-col justify-start lg:justify-center">
+    <section className="relative overflow-hidden min-h-[640px] sm:min-h-[680px] md:min-h-[700px] lg:min-h-[730px] xl:min-h-[840px] pt-24 sm:pt-28 md:pt-24 lg:pt-20 xl:pt-32 pb-40 sm:pb-44 md:pb-44 lg:pb-12 xl:pb-24 flex flex-col justify-start lg:justify-center">
       {/* Artefatos Visuais de Contratos Aglomerados nos Cantos Inferiores */}
       <HeroChaosPapers />
 
@@ -25,7 +25,7 @@ export function Hero() {
         </h2>
 
         {/* O Protagonista: Texto e Logo oficial em escala ampliada */}
-        <div className="mt-14 sm:mt-20 lg:mt-12 xl:mt-20">
+        <div className="mt-10 sm:mt-12 md:mt-14 lg:mt-12 xl:mt-20">
           <h1 className="flex flex-wrap items-center justify-center gap-3.5 sm:gap-5 tracking-tight">
             <span className="font-medium text-[var(--text-muted)] text-lg sm:text-2xl lg:text-[32px] transition-colors duration-300">
               Aqui nasce a
