@@ -92,6 +92,17 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
 
     const detailPanel = screen.getByRole("tabpanel");
     expect(detailPanel).toHaveClass("md:col-span-8");
+    expect(detailPanel).toHaveClass("min-h-[260px]");
+    expect(detailPanel).toHaveClass("h-[260px]");
+    expect(detailPanel).toHaveClass("sm:min-h-[250px]");
+    expect(detailPanel).toHaveClass("sm:h-[250px]");
+
+    // Valida que o cabeçalho 'Impacto Operacional' e divisores foram removidos
+    expect(screen.queryByText(/Impacto Operacional/i)).toBeNull();
+
+    // Valida animação de transição suave animate-metric-fade-in no conteúdo do card
+    const animatedContent = detailPanel.querySelector(".animate-metric-fade-in");
+    expect(animatedContent).not.toBeNull();
 
     // Valida estilo minimalista da lista (sem background ou bordas de cartão)
     expect(tab1.className).not.toMatch(/border-white/);

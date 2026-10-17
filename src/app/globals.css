@@ -125,10 +125,32 @@
   transform-origin: left;
 }
 
+@keyframes metricFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-metric-fade-in {
+  animation: metricFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-metric-progress {
     animation: none;
     transform: scaleX(1);
+  }
+
+  .animate-metric-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }
 

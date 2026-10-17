@@ -179,33 +179,23 @@ export function ProblemBanner() {
             })}
           </div>
 
-          {/* Lado direito: Detalhe da métrica selecionada (md:col-span-8) */}
+          {/* Lado direito: Detalhe da métrica selecionada (md:col-span-8) com altura padronizada */}
           <div
             role="tabpanel"
-            className="md:col-span-8 rounded-2xl border border-white/20 bg-white/10 p-6 sm:p-10 backdrop-blur-xs flex flex-col justify-center min-h-[240px] transition-all shadow-[0_12px_32px_rgba(0,0,0,0.08)]"
+            className="md:col-span-8 rounded-2xl border border-white/20 bg-white/10 px-6 py-6 sm:px-8 md:px-10 backdrop-blur-xs flex flex-col justify-center min-h-[260px] h-[260px] sm:min-h-[250px] sm:h-[250px] shadow-[0_12px_32px_rgba(0,0,0,0.08)] overflow-hidden"
           >
-            <div className="flex items-center justify-between pb-3 border-b border-white/15 mb-4">
-              <span className="font-mono text-xs uppercase tracking-wider text-white/70">
-                {activeMetric.title}
-              </span>
-              <span className="font-mono text-[11px] text-emerald-300 bg-emerald-950/40 border border-emerald-400/30 px-2 py-0.5 rounded">
-                Impacto Operacional
-              </span>
-            </div>
-
             <div
               key={activeMetric.id}
-              className="font-mono text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white tabular-nums transition-all"
+              className="animate-metric-fade-in flex flex-col justify-center"
             >
-              {activeMetric.stat}
-            </div>
+              <div className="font-mono text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white tabular-nums">
+                {activeMetric.stat}
+              </div>
 
-            <p
-              key={`desc-${activeMetric.id}`}
-              className="mt-4 text-base sm:text-lg text-white/90 leading-relaxed transition-all"
-            >
-              {activeMetric.description}
-            </p>
+              <p className="mt-4 text-base sm:text-lg text-white/90 leading-relaxed">
+                {activeMetric.description}
+              </p>
+            </div>
           </div>
         </div>
 
