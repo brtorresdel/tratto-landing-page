@@ -63,30 +63,34 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
   it("CA6: Hero deve renderizar 8 papéis aglomerados nos cantos com animação fanning out independente por pilha", () => {
     render(<Hero />);
     // 4 na lateral esquerda
-    expect(screen.getByText(/contrato_prestacao_v3_final/i)).toBeInTheDocument();
-    expect(screen.getByText(/tirar multa por atraso/i)).toBeInTheDocument();
-    expect(screen.getByText(/vencimentos_2024\.xlsx/i)).toBeInTheDocument();
-    expect(screen.getByText(/Alpha Logística/i)).toBeInTheDocument();
-    expect(screen.getByText(/Prisma Consultoria/i)).toBeInTheDocument();
-    expect(screen.getByText(/notificacao_rescisao_atrasada\.pdf/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/contrato_prestacao_v3_final/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/tirar multa por atraso/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/vencimentos_2024\.xlsx/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/Alpha Logística/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/Prisma Consultoria/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/notificacao_rescisao_atrasada\.pdf/i)[0]).toBeInTheDocument();
 
     // 4 na lateral direita
-    expect(screen.getByText(/reajuste pelo ipca venceu/i)).toBeInTheDocument();
-    expect(screen.getByText(/termo_adesao_pendente\.pdf/i)).toBeInTheDocument();
-    expect(screen.getByText(/esqueci de anexar o arquivo \.docx/i)).toBeInTheDocument();
-    expect(screen.getByText(/pasta_suspensa_arquivo_2023\.scan/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/reajuste pelo ipca venceu/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/termo_adesao_pendente\.pdf/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/esqueci de anexar o arquivo \.docx/i)[0]).toBeInTheDocument();
+    expect(screen.getAllByText(/pasta_suspensa_arquivo_2023\.scan/i)[0]).toBeInTheDocument();
 
-    // Verifica que existem grupos independentes para pilha esquerda e direita
-    const leftCluster = screen.getByText(/contrato_prestacao_v3_final/i).closest("div[class*='group/left']");
+    // Verifica que existem grupos independentes para pilha esquerda, direita e mobile
+    const leftCluster = screen.getAllByText(/contrato_prestacao_v3_final/i)[0].closest("div[class*='group/left']");
     expect(leftCluster).not.toBeNull();
 
-    const rightCluster = screen.getByText(/termo_adesao_pendente\.pdf/i).closest("div[class*='group/right']");
+    const rightCluster = screen.getAllByText(/termo_adesao_pendente\.pdf/i)[0].closest("div[class*='group/right']");
     expect(rightCluster).not.toBeNull();
 
-    // Verifica que os cartões possuem background suave da cor do tema e classes group-hover
-    const firstCard = screen.getByText(/contrato_prestacao_v3_final/i).closest("div[class*='rounded-lg']");
+    const mobileCluster = document.querySelector("div[class*='group/mobile']");
+    expect(mobileCluster).not.toBeNull();
+
+    // Verifica que os cartões possuem background sólido (sem glassmorphism/backdrop-blur)
+    const firstCard = screen.getAllByText(/contrato_prestacao_v3_final/i)[0].closest("div[class*='rounded-lg']");
     expect(firstCard).not.toBeNull();
     expect(firstCard?.className).toMatch(/var\(--accent-surface\)/);
+    expect(firstCard?.className).not.toMatch(/backdrop-blur/);
     expect(firstCard?.className).toMatch(/group-hover\/left:/);
   });
 });

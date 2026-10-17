@@ -6,7 +6,7 @@ import { HeroChaosPapers } from "./hero-chaos-papers";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden min-h-[760px] lg:min-h-[840px] pt-32 pb-24 sm:pt-40 sm:pb-32 flex flex-col justify-center">
+    <section className="relative overflow-hidden min-h-[880px] md:min-h-[960px] lg:min-h-[840px] pt-28 sm:pt-36 lg:pt-32 pb-80 md:pb-96 lg:pb-24 flex flex-col justify-start lg:justify-center">
       {/* Artefatos Visuais de Contratos Aglomerados nos Cantos Inferiores */}
       <HeroChaosPapers />
 
