@@ -49,7 +49,7 @@ export function AudienceSection() {
 
         {/* Subtítulo */}
         <p className="mt-4 mx-auto max-w-2xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-          O Tratto é um software genérico e flexível. Se a sua empresa presta serviços e formaliza relações em contrato, ele foi desenhado para eliminar o caos da sua rotina.
+          A Tratto é uma plataforma genérica e flexível. Se a sua empresa presta serviços e formaliza relações em contrato, ela foi desenhada para eliminar o caos da sua rotina.
         </p>
 
         {/* Grade de Segmentos */}
@@ -96,7 +96,7 @@ export function AudienceSection() {
                 Não encontrou seu nicho específico?
               </h4>
               <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-0.5">
-                Clínicas, agências, escolas de idiomas, TI: qualquer contrato em .docx se adapta instantaneamente ao Tratto.
+                Clínicas, agências, escolas de idiomas, TI: qualquer contrato em .docx se adapta instantaneamente à Tratto.
               </p>
             </div>
           </div>

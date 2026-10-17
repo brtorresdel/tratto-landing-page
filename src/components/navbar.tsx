@@ -11,7 +11,7 @@ export function Navbar() {
         <a
           href="/"
           className="group flex items-center gap-2 transition hover:opacity-90"
-          aria-label="Página Inicial do Tratto"
+          aria-label="Página Inicial da Tratto"
         >
           <img
             src="/icon.svg"

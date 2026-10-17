@@ -24,7 +24,7 @@ export function HowItWorksSection() {
       icon: PenTool,
       title: "Assine com validade jurídica",
       description:
-        "Integração nativa com ZapSign e Clicksign usando o seu próprio token de API (BYOT — sem custos adicionais do Tratto), além de suporte total ao modo manual com upload da via física assinada e escaneada.",
+        "Integração nativa com ZapSign e Clicksign usando o seu próprio token de API (BYOT — sem custos adicionais da Tratto), além de suporte total ao modo manual com upload da via física assinada e escaneada.",
       highlight: "ZapSign · Clicksign · Modo Manual",
     },
     {
@@ -53,7 +53,7 @@ export function HowItWorksSection() {
 
         {/* Subtítulo */}
         <p className="mt-4 mx-auto max-w-2xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-          Como o Tratto transforma a rotina contratual da sua empresa em um fluxo contínuo e previsível, sem exigir migrações dolorosas ou treinamentos longos.
+          Como a Tratto transforma a rotina contratual da sua empresa em um fluxo contínuo e previsível, sem exigir migrações dolorosas ou treinamentos longos.
         </p>
 
         {/* Grade dos 4 Passos */}

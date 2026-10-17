@@ -19,7 +19,7 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
     - Linha 1: *"Seus contratos deveriam levar menos de"*
     - Linha 2: *"2 minutos para ficar pronto"*
     - Linha 3: *"e zero planilhas para controlar vencimentos."* em destaque maior, itálico `Newsreader`, peso `font-semibold` e cor dinâmica do tema ativo (`var(--accent-primary)`).
-  - O Protagonista: texto *"Aqui nasce a"* em peso médio (`font-medium`) que evidencia a sutil variação da tinta do tema (`var(--text-muted)`) dando destaque principal para a logo oficial ampliada do Tratto (`<TrattoWordmark />`) com selo dinâmico.
+  - O Protagonista: texto *"Aqui nasce a"* em peso médio (`font-medium`) que evidencia a sutil variação da tinta do tema (`var(--text-muted)`) dando destaque principal para a logo oficial ampliada da Tratto (`<TrattoWordmark />`) com selo dinâmico.
 - Dicionário tipado de dados para os 5 segmentos iniciais na Minuta Viva (preservado para a demonstração da solução nas próximas seções).
 
 **Não inclui (ficará para as próximas specs):**
@@ -36,7 +36,7 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 
 ## Critérios de Aceitação
 
-- **CA1.** A Navbar deve renderizar o ícone oficial do Tratto com link para a home e o botão de ação para a lista de espera.
+- **CA1.** A Navbar deve renderizar o ícone oficial da Tratto com link para a home e o botão de ação para a lista de espera.
 - **CA2.** A Hero Section deve renderizar a headline em 3 linhas com escala visual ampliada (L1 e L2 em `text-xl sm:text-3xl lg:text-[36px]`, L3 ampliada em `Newsreader` itálico `font-semibold` `text-2xl sm:text-4xl lg:text-[46px]`), respiro superior calibrado (`pt-28 sm:pt-32 md:pt-32 lg:pt-28 xl:pt-36`) garantindo margem segura (~40px) abaixo da Navbar fixa flutuante em todos os viewports sem sobreposição do texto inicial, e o bloco *"Aqui nasce a"* acompanhado do `<TrattoWordmark />` com escala ampliada (`h-12 sm:h-16 lg:h-20`) e ponto de selo sincronizado ao tema ativo.
 - **CA3.** Por padrão, o segmento inicial selecionado na Minuta Viva deve ser "Coworking", exibindo a variável `{{cliente_nome}}` como "Estúdio Nexo Arquitetura Ltda" e o valor `R$ 2.450,00 / mês`.
 - **CA4.** Ao selecionar o segmento "Advocacia", a Minuta Viva deve atualizar para exibir o cliente e objeto de advocacia (ex: honorários / partido mensal).

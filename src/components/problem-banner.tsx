@@ -19,7 +19,7 @@ export function ProblemBanner() {
               </h2>
             </div>
 
-            <div className="flex items-center gap-3.5 bg-white/10 border border-white/15 px-4 py-2.5 rounded-full backdrop-blur-xs w-fit">
+            <div className="flex items-center gap-3.5 w-fit">
               <img
                 src="/bruno-torres.webp"
                 alt="Foto de Bruno Torres"
@@ -30,7 +30,7 @@ export function ProblemBanner() {
                   Bruno Torres
                 </div>
                 <div className="text-[11px] sm:text-xs text-white/75 font-mono">
-                  Desenvolvedor & Criador do Tratto
+                  Desenvolvedor Fullstack & Criador da Tratto
                 </div>
               </div>
             </div>
@@ -167,10 +167,10 @@ export function ProblemBanner() {
               </ul>
             </div>
 
-            {/* Coluna 2: Com o Tratto */}
+            {/* Coluna 2: Com a Tratto */}
             <div className="rounded-xl border border-emerald-400/30 bg-emerald-950/20 p-5">
               <div className="flex items-center justify-between text-emerald-300 font-semibold text-sm">
-                <span>Com o Tratto</span>
+                <span>Com a Tratto</span>
                 <span className="font-mono text-xs bg-emerald-900/50 px-2 py-0.5 rounded">Previsibilidade</span>
               </div>
               <ul className="mt-4 space-y-2.5 text-xs sm:text-sm text-white/80">

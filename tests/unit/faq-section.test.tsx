@@ -12,7 +12,7 @@ describe("FaqSection (Spec 0002 - CA6 e CA7: FAQ Editorial em Accordion)", () =>
 
     expect(screen.getByText(/Perguntas Frequentes|Dúvidas Comuns/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/Respostas claras para quem quer entender como o Tratto funciona/i)
+      screen.getByText(/Respostas claras para quem quer entender como a Tratto funciona/i)
     ).toBeInTheDocument();
   });
 
@@ -28,9 +28,9 @@ describe("FaqSection (Spec 0002 - CA6 e CA7: FAQ Editorial em Accordion)", () =>
     });
 
     expect(screen.getByText(/Preciso trocar meus modelos de contrato em \.docx/i)).toBeInTheDocument();
-    expect(screen.getByText(/O Tratto é uma plataforma de assinatura eletrônica/i)).toBeInTheDocument();
+    expect(screen.getByText(/A Tratto é uma plataforma de assinatura eletrônica/i)).toBeInTheDocument();
     expect(screen.getByText(/Como funciona o cálculo de reajuste por inflação/i)).toBeInTheDocument();
-    expect(screen.getByText(/Quanto vai custar o Tratto quando for lançado/i)).toBeInTheDocument();
+    expect(screen.getByText(/Quanto vai custar a Tratto quando for lançada/i)).toBeInTheDocument();
     expect(screen.getByText(/Quando os convites da lista de espera serão liberados/i)).toBeInTheDocument();
   });
 
@@ -60,7 +60,7 @@ describe("FaqSection (Spec 0002 - CA6 e CA7: FAQ Editorial em Accordion)", () =>
       name: /Preciso trocar meus modelos de contrato em \.docx/i,
     });
     const secondBtn = screen.getByRole("button", {
-      name: /O Tratto é uma plataforma de assinatura eletrônica/i,
+      name: /A Tratto é uma plataforma de assinatura eletrônica/i,
     });
 
     // Abre o primeiro

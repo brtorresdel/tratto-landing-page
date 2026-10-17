@@ -10,6 +10,7 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     render(<Navbar />);
     expect(screen.getByRole("banner")).toBeInTheDocument();
     expect(screen.getByAltText("Ícone Tratto")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Página Inicial da Tratto/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /entrar na lista/i })).toBeInTheDocument();
   });
 

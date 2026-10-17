@@ -21,9 +21,15 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(authorPhoto).toBeInTheDocument();
     expect(authorPhoto).toHaveAttribute("src", "/bruno-torres.webp");
 
-    // Citação do autor no topo
-    expect(screen.getByText(/Bruno Torres/i)).toBeInTheDocument();
-    expect(screen.getByText(/Criador do Tratto/i)).toBeInTheDocument();
+    // Citação do autor no topo (limpa, sem fundo/borda e com cargo Fullstack)
+    const authorName = screen.getByText(/Bruno Torres/i);
+    expect(authorName).toBeInTheDocument();
+    expect(screen.getByText(/Desenvolvedor Fullstack & Criador da Tratto/i)).toBeInTheDocument();
+
+    const authorCard = authorName.closest("div[class*='w-fit']");
+    expect(authorCard).not.toBeNull();
+    expect(authorCard?.className).not.toMatch(/bg-white\/10/);
+    expect(authorCard?.className).not.toMatch(/rounded-full/);
 
     // Narrativa do relato real do desenvolvedor com tipografia Newsreader itálico
     const firstPara = screen.getByText(/momentos que beiravam o desespero/i);
@@ -67,6 +73,6 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     // Card de impacto financeiro comparativo
     expect(screen.getByText(/Impacto Financeiro Anual/i)).toBeInTheDocument();
     expect(screen.getByText(/No improviso \(planilhas e Word\)/i)).toBeInTheDocument();
-    expect(screen.getByText(/Com o Tratto/i)).toBeInTheDocument();
+    expect(screen.getByText(/Com a Tratto/i)).toBeInTheDocument();
   });
 });

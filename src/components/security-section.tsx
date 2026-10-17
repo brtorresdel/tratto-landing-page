@@ -49,7 +49,7 @@ export function SecuritySection() {
 
         {/* Subtítulo */}
         <p className="mt-4 mx-auto max-w-2xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-          Contratos contêm valores de faturamento, dados pessoais de partes e tokens de assinatura. Segurança técnica e rastreabilidade não são itens opcionais: são o núcleo do Tratto.
+          Contratos contêm valores de faturamento, dados pessoais de partes e tokens de assinatura. Segurança técnica e rastreabilidade não são itens opcionais: são o núcleo da Tratto.
         </p>
 
         {/* Grade dos 4 Pilares */}

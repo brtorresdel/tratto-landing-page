@@ -10,27 +10,27 @@ export function FaqSection() {
     {
       question: "Preciso trocar meus modelos de contrato em .docx por outro formato?",
       answer:
-        "Não. Você continua usando exatamente os arquivos do Word que sua empresa já possui. Basta adicionar os marcadores entre chaves duplas, como {{cliente_nome}} ou {{valor_mensal}}. O Tratto processa o .docx preservando 100% da sua tipografia, logotipos, cabeçalhos e formatações originais.",
+        "Não. Você continua usando exatamente os arquivos do Word que sua empresa já possui. Basta adicionar os marcadores entre chaves duplas, como {{cliente_nome}} ou {{valor_mensal}}. A Tratto processa o .docx preservando 100% da sua tipografia, logotipos, cabeçalhos e formatações originais.",
     },
     {
-      question: "O Tratto é uma plataforma de assinatura eletrônica própria?",
+      question: "A Tratto é uma plataforma de assinatura eletrônica própria?",
       answer:
-        "Não somos uma certificadora própria. O Tratto se integra via API com as plataformas líderes do mercado brasileiro (ZapSign e Clicksign) no modelo BYOT (Bring Your Own Token), onde você informa sua chave e os custos ocorrem na sua conta sem margem extra nossa. Além disso, você sempre pode utilizar o modo manual com upload da via física assinada e escaneada.",
+        "Não somos uma certificadora própria. A Tratto se integra via API com as plataformas líderes do mercado brasileiro (ZapSign e Clicksign) no modelo BYOT (Bring Your Own Token), onde você informa sua chave e os custos ocorrem na sua conta sem margem extra nossa. Além disso, você sempre pode utilizar o modo manual com upload da via física assinada e escaneada.",
     },
     {
       question: "Como funciona o cálculo de reajuste por inflação?",
       answer:
-        "O Tratto conecta-se diretamente à API pública oficial do Banco Central (SGS) para obter as séries temporais dos índices oficiais (IPCA, IGP-M e INPC). O sistema aplica a fórmula de cálculo composto exato no mês de aniversário do contrato, com piso zero obrigatório em caso de deflação (em conformidade com a Lei 10.192/2001).",
+        "A Tratto conecta-se diretamente à API pública oficial do Banco Central (SGS) para obter as séries temporais dos índices oficiais (IPCA, IGP-M e INPC). O sistema aplica a fórmula de cálculo composto exato no mês de aniversário do contrato, com piso zero obrigatório em caso de deflação (em conformidade com a Lei 10.192/2001).",
     },
     {
-      question: "Quanto vai custar o Tratto quando for lançado?",
+      question: "Quanto vai custar a Tratto quando for lançada?",
       answer:
-        "O Tratto está atualmente em fase de pré-lançamento e validação. O produto terá planos acessíveis pensados para a realidade de PMEs brasileiras, muito abaixo do custo de ERPs complexos. Quem entrar na lista de espera terá acesso antecipado prioritário e condições fundadoras permanentes.",
+        "A Tratto está atualmente em fase de pré-lançamento e validação. O produto terá planos acessíveis pensados para a realidade de PMEs brasileiras, muito abaixo do custo de ERPs complexos. Quem entrar na lista de espera terá acesso antecipado prioritário e condições fundadoras permanentes.",
     },
     {
       question: "Quando os convites da lista de espera serão liberados?",
       answer:
-        "O desenvolvimento do Tratto está acontecendo em ritmo acelerado e com arquitetura validada. Os primeiros lotes de convites serão liberados em ondas graduais nas próximas semanas para os inscritos da lista de espera que participarem da validação.",
+        "O desenvolvimento da Tratto está acontecendo em ritmo acelerado e com arquitetura validada. Os primeiros lotes de convites serão liberados em ondas graduais nas próximas semanas para os inscritos da lista de espera que participarem da validação.",
     },
   ];
 
@@ -49,7 +49,7 @@ export function FaqSection() {
 
         {/* Título Principal */}
         <h2 className="mt-5 font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">
-          Respostas claras para quem quer entender como o Tratto funciona
+          Respostas claras para quem quer entender como a Tratto funciona
         </h2>
 
         {/* Subtítulo */}

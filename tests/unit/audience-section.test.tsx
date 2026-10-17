@@ -3,14 +3,14 @@ import { render, screen } from "@testing-library/react";
 import React from "react";
 import { AudienceSection } from "@/components/audience-section";
 
-describe("AudienceSection (Spec 0002 - CA4: Para quem é o Tratto)", () => {
+describe("AudienceSection (Spec 0002 - CA4: Para quem é a Tratto)", () => {
   it("deve renderizar a seção #para-quem-e com o posicionamento genérico e editorial", () => {
     const { container } = render(<AudienceSection />);
     const section = container.querySelector("section");
     expect(section).not.toBeNull();
     expect(section?.id).toBe("para-quem-e");
 
-    expect(screen.getByText(/Para quem é o Tratto|Versatilidade & Aderência/i)).toBeInTheDocument();
+    expect(screen.getByText(/Para quem é a Tratto|Versatilidade & Aderência/i)).toBeInTheDocument();
     expect(
       screen.getByText(/Desenhado para quem vive de contratos, não importa o segmento/i)
     ).toBeInTheDocument();

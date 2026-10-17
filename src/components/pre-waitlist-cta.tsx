@@ -22,7 +22,7 @@ export function PreWaitlistCta() {
 
           {/* Subtítulo */}
           <p className="mt-4 mx-auto max-w-2xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-            O Tratto está sendo construído para colocar a criação, assinatura e o reajuste anual de contratos no piloto automático. Garanta seu lugar na lista de espera para testar primeiro e receber condições fundadoras permanentes.
+            A Tratto está sendo construída para colocar a criação, assinatura e o reajuste anual de contratos no piloto automático. Garanta seu lugar na lista de espera para testar primeiro e receber condições fundadoras permanentes.
           </p>
 
           {/* Botão de Ação Suave para a Âncora */}

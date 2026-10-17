@@ -10,7 +10,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: O Ciclo em 4 Passos)", () => {
     expect(section).not.toBeNull();
     expect(section?.id).toBe("como-funciona");
 
-    expect(screen.getByText(/Como Funciona o Tratto|O Ciclo em 4 Passos/i)).toBeInTheDocument();
+    expect(screen.getByText(/Como Funciona a Tratto|O Ciclo em 4 Passos/i)).toBeInTheDocument();
     expect(screen.getByText(/Do modelo no Word ao reajuste anual automático/i)).toBeInTheDocument();
   });
 

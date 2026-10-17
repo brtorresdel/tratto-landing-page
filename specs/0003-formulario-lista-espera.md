@@ -6,7 +6,7 @@
 
 ## Objetivo
 
-Capturar e qualificar potenciais clientes para o pré-lançamento do Tratto através de um formulário de lista de espera com revelação progressiva (*progressive disclosure*) em 2 etapas:
+Capturar e qualificar potenciais clientes para o pré-lançamento da Tratto através de um formulário de lista de espera com revelação progressiva (*progressive disclosure*) em 2 etapas:
 1. **Etapa 1 (Captura Imediata sem Fricção):** Coleta rápida do e-mail com consentimento LGPD explícito e salvamento instantâneo para garantir a conversão mesmo se o usuário sair em seguida.
 2. **Etapa 2 (Qualificação Editorial Voluntária):** Coleta estruturada do perfil do interessado (segmento de atuação, volume mensal de contratos, ferramentas utilizadas e disponibilidade para entrevista de 20 minutos de validação de produto).
 
@@ -37,7 +37,7 @@ Apresentar feedback acolhedor no padrão artesanal *Sage Paper*, proteção nati
 - **R2. Identidade Visual Sage Paper (Doc 21):** O formulário deve utilizar fundo neutro de cartão (`#FFFFFF` com borda de 1px `#D2E0D6`), inputs com foco discreto no verde do tema, tipografia `Geist Sans` para labels e botões, e `Newsreader` itálico para os cabeçalhos. Zero gradientes neon, zero cantos `rounded-3xl` e zero sombras coloridas.
 - **R3. Proteção Anti-Bot:** Implementar um campo honeypot invisível para humanos (`website` ou `empresa_hp`). Se preenchido, o servidor simula sucesso sem gravar nada.
 - **R4. Validação Rigorosa (Zod):** E-mail com formato válido, sanitização de strings contra injeção e validação de enums nas opções de qualificação.
-- **R5. Conformidade LGPD (Item 1 de docs/17):** Checkbox explícito de consentimento informando o uso do e-mail exclusivamente para comunicações sobre o pré-lançamento do Tratto e convite para testes.
+- **R5. Conformidade LGPD (Item 1 de docs/17):** Checkbox explícito de consentimento informando o uso do e-mail exclusivamente para comunicações sobre o pré-lançamento da Tratto e convite para testes.
 - **R6. Resiliência de Notificação:** Falha no disparo do e-mail transacional nunca deve abortar o salvamento do lead no banco/storage.
 
 ---
