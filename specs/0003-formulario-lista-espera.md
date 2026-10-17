@@ -1,6 +1,6 @@
-# 0002. Formulário de Lista de Espera em 2 Etapas e Disparo de E-mail
+# 0003. Formulário de Lista de Espera em 2 Etapas e Disparo de E-mail
 
-- **Status:** em revisão
+- **Status:** rascunho (guardado para revisão após a Spec 0002)
 - **Projeto:** landing page
 - **Docs relacionados:** `docs/18-landing-page.md`, `docs/21-diretrizes-de-design-ui-ux.md`, `docs/17-lgpd-e-conformidade.md`, `specs/0001-setup-fundacao-landing-page.md`
 
