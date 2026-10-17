@@ -60,7 +60,7 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     expect(screen.getAllByText("R$ 4.800,00 / mês")).toHaveLength(2);
   });
 
-  it("CA6: Hero deve renderizar 8 papéis aglomerados nos cantos com background suave do tema e sem hover", () => {
+  it("CA6: Hero deve renderizar 8 papéis aglomerados nos cantos com animação fanning out independente por pilha", () => {
     render(<Hero />);
     // 4 na lateral esquerda
     expect(screen.getByText(/contrato_prestacao_v3_final/i)).toBeInTheDocument();
@@ -76,11 +76,17 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     expect(screen.getByText(/esqueci de anexar o arquivo \.docx/i)).toBeInTheDocument();
     expect(screen.getByText(/pasta_suspensa_arquivo_2023\.scan/i)).toBeInTheDocument();
 
-    // Verifica que o primeiro cartão possui background suave da cor do tema e não tem hover
+    // Verifica que existem grupos independentes para pilha esquerda e direita
+    const leftCluster = screen.getByText(/contrato_prestacao_v3_final/i).closest("div[class*='group/left']");
+    expect(leftCluster).not.toBeNull();
+
+    const rightCluster = screen.getByText(/termo_adesao_pendente\.pdf/i).closest("div[class*='group/right']");
+    expect(rightCluster).not.toBeNull();
+
+    // Verifica que os cartões possuem background suave da cor do tema e classes group-hover
     const firstCard = screen.getByText(/contrato_prestacao_v3_final/i).closest("div[class*='rounded-lg']");
     expect(firstCard).not.toBeNull();
     expect(firstCard?.className).toMatch(/var\(--accent-surface\)/);
-    expect(firstCard).not.toHaveClass("hover:rotate-0");
-    expect(firstCard).not.toHaveClass("hover:scale-105");
+    expect(firstCard?.className).toMatch(/group-hover\/left:/);
   });
 });
