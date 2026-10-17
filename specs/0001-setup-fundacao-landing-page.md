@@ -37,11 +37,11 @@ Configurar a infraestrutura inicial do projeto Next.js 15 com Tailwind CSS v4, d
 ## Critérios de Aceitação
 
 - **CA1.** A Navbar deve renderizar o ícone oficial do Tratto com link para a home e o botão de ação para a lista de espera.
-- **CA2.** A Hero Section deve renderizar a headline em 3 linhas (L1: *"Seus contratos deveriam levar menos de"*, L2: *"2 minutos para ficar pronto"*, L3: *"e zero planilhas para controlar vencimentos."* ampliada e em `Newsreader` itálico `font-semibold`) e o bloco *"Aqui nasce a"* em peso médio acompanhado do `<TrattoWordmark />` com ponto de selo sincronizado ao tema ativo.
+- **CA2.** A Hero Section deve renderizar a headline em 3 linhas com escala visual ampliada (L1 e L2 em `text-xl sm:text-3xl lg:text-[36px]`, L3 ampliada em `Newsreader` itálico `font-semibold` `text-2xl sm:text-4xl lg:text-[46px]`) e o bloco *"Aqui nasce a"* acompanhado do `<TrattoWordmark />` com escala ampliada (`h-12 sm:h-16 lg:h-20`) e ponto de selo sincronizado ao tema ativo.
 - **CA3.** Por padrão, o segmento inicial selecionado na Minuta Viva deve ser "Coworking", exibindo a variável `{{cliente_nome}}` como "Estúdio Nexo Arquitetura Ltda" e o valor `R$ 2.450,00 / mês`.
 - **CA4.** Ao selecionar o segmento "Advocacia", a Minuta Viva deve atualizar para exibir o cliente e objeto de advocacia (ex: honorários / partido mensal).
 - **CA5.** Ao selecionar "Academias", "Escolas" ou "Contabilidade", os textos e variáveis da Minuta Viva devem refletir os respectivos segmentos de acordo com o dicionário tipado.
-- **CA6.** A Hero Section deve renderizar ao redor do manifesto central 8 cartões ilustrativos ampliados de papéis/contratos desorganizados (4 na lateral esquerda e 4 na direita, posicionados abaixo do header com sobreposições intencionais). Os arquivos .DOCX e .PDF devem assumir a proporção vertical de uma folha de papel real (retângulo vertical tipo A4 com cantos dobrados, clipes e linhas de texto jurídico), e o arquivo .XLSX deve exibir visual autêntico de grade de planilha com colunas (Cliente, Vencimento, Status) e empresas genéricas neutras (ex: Alpha Logística, Prisma Consultoria). Ao passar o mouse (hover), os cartões se desentortam e assumem borda e sombra com as variáveis do tema ativo (`var(--accent-primary)` e `var(--accent-surface)`).
+- **CA6.** A Hero Section deve renderizar 8 cartões ilustrativos de papéis/contratos desorganizados aglomerados nos cantos inferiores esquerdo e direito (4 de cada lado, sobrepostos organicamente como pilhas de documentos). Os cartões devem possuir background suave com a cor de superfície do tema ativo (`var(--accent-surface)` com opacidade sutil) e sem efeitos de hover/rotação interativos, mantendo uma composição visual limpa e integrada.
 
 ## Casos de Erro e Limites
 

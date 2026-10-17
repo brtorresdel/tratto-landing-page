@@ -6,31 +6,31 @@ import { HeroChaosPapers } from "./hero-chaos-papers";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden min-h-[820px] lg:min-h-[920px] pt-36 pb-28 sm:pt-48 sm:pb-40 flex flex-col justify-center">
-      {/* Artefatos Visuais de Contratos e Papéis Desorganizados */}
+    <section className="relative overflow-hidden min-h-[760px] lg:min-h-[840px] pt-32 pb-24 sm:pt-40 sm:pb-32 flex flex-col justify-center">
+      {/* Artefatos Visuais de Contratos Aglomerados nos Cantos Inferiores */}
       <HeroChaosPapers />
 
-      <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-8">
-        {/* Frase Inicial / Problema em 3 linhas estruturadas */}
-        <h2 className="mx-auto max-w-3xl tracking-tight lg:leading-snug">
-          <span className="block text-lg font-medium text-[var(--text-main)] sm:text-2xl lg:text-[28px]">
+      <div className="relative z-30 mx-auto max-w-4xl lg:max-w-5xl px-4 text-center sm:px-8">
+        {/* Frase Inicial / Problema em 3 linhas com escala ampliada */}
+        <h2 className="mx-auto max-w-4xl tracking-tight lg:leading-snug">
+          <span className="block text-xl font-medium text-[var(--text-main)] sm:text-3xl lg:text-[38px] lg:leading-tight">
             Seus contratos deveriam levar menos de
           </span>
-          <span className="mt-0.5 block text-lg font-medium text-[var(--text-main)] sm:text-2xl lg:text-[28px]">
+          <span className="mt-1 block text-xl font-medium text-[var(--text-main)] sm:text-3xl lg:text-[38px] lg:leading-tight">
             2 minutos para ficar pronto
           </span>
-          <span className="mt-2.5 block font-serif text-xl font-semibold italic text-[var(--accent-primary)] transition-colors duration-300 sm:mt-3 sm:text-3xl lg:text-[34px]">
+          <span className="mt-3 block font-serif text-2xl font-semibold italic text-[var(--accent-primary)] transition-colors duration-300 sm:mt-4 sm:text-4xl lg:text-[48px] lg:leading-tight">
             e zero planilhas para controlar vencimentos.
           </span>
         </h2>
 
-        {/* O Protagonista: Texto em peso médio com foco máximo na Logo ampliada */}
-        <div className="mt-12 sm:mt-16">
-          <h1 className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 tracking-tight">
-            <span className="font-medium text-[var(--text-muted)] text-base sm:text-2xl lg:text-[28px] transition-colors duration-300">
+        {/* O Protagonista: Texto e Logo oficial em escala ampliada */}
+        <div className="mt-14 sm:mt-20">
+          <h1 className="flex flex-wrap items-center justify-center gap-3.5 sm:gap-5 tracking-tight">
+            <span className="font-medium text-[var(--text-muted)] text-lg sm:text-2xl lg:text-[32px] transition-colors duration-300">
               Aqui nasce a
             </span>
-            <TrattoWordmark className="inline-block h-9 w-auto translate-y-[-2px] sm:h-14 lg:h-16" />
+            <TrattoWordmark className="inline-block h-12 w-auto translate-y-[-2px] sm:h-16 lg:h-20" />
           </h1>
         </div>
       </div>
