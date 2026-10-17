@@ -43,6 +43,7 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
 
     const heroSection = document.querySelector("section");
     expect(heroSection?.className).toMatch(/lg:min-h-\[730px\]/);
+    expect(heroSection?.className).toMatch(/md:min-h-\[640px\]/);
     expect(heroSection?.className).toMatch(/lg:pb-12/);
   });
 
@@ -95,7 +96,9 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     const spreadCluster = document.querySelector("div[class*='group/spread']");
     expect(spreadCluster).not.toBeNull();
     expect(spreadCluster?.className).toMatch(/block lg:hidden/);
+    expect(spreadCluster?.className).toMatch(/bottom-\[-/);
     expect(spreadCluster?.innerHTML).toMatch(/-translate-y/);
+    expect(spreadCluster?.innerHTML).not.toMatch(/hover:!-translate-y/);
 
     // Verifica que os cartões possuem background sólido (sem glassmorphism/backdrop-blur)
     const firstCard = screen.getAllByText(/contrato_prestacao_v3_final/i)[0].closest("div[class*='rounded-lg']");

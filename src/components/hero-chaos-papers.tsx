@@ -324,30 +324,30 @@ export function HeroChaosPapers() {
         {/* ========================================================= */}
         {/* COMPOSIÇÃO ESPALHADA NA BASE (TABLET E CELULAR - < 1024px) */}
         {/* ========================================================= */}
-        <div className="group/spread pointer-events-auto absolute bottom-0 left-1/2 -translate-x-1/2 w-[760px] sm:w-[840px] md:w-[940px] h-[220px] sm:h-[240px] md:h-[260px] block lg:hidden scale-[0.44] xs:scale-[0.50] sm:scale-[0.66] md:scale-[0.85] origin-bottom transition-all duration-300">
+        <div className="group/spread pointer-events-auto absolute bottom-[-35px] sm:bottom-[-45px] md:bottom-[-55px] left-1/2 -translate-x-1/2 w-[760px] sm:w-[840px] md:w-[940px] h-[220px] sm:h-[240px] md:h-[260px] block lg:hidden scale-[0.44] xs:scale-[0.50] sm:scale-[0.66] md:scale-[0.85] origin-bottom transition-all duration-300">
           {/* 1. Folha DOCX */}
-          <DocxPaperCard className="absolute bottom-2 left-0 w-[240px] min-h-[300px] rotate-[-5deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-6 hover:!-translate-y-10 z-10" />
+          <DocxPaperCard className="absolute bottom-2 left-0 w-[240px] min-h-[300px] rotate-[-5deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 md:group-hover/spread:-translate-y-10 z-10" />
 
           {/* 2. Post-it Urgente */}
-          <PostitUrgenteCard className="absolute bottom-16 left-[90px] sm:left-[110px] md:left-[120px] w-[210px] rotate-[3deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-7 hover:!-translate-y-11 z-20" />
+          <PostitUrgenteCard className="absolute bottom-16 left-[90px] sm:left-[110px] md:left-[120px] w-[210px] rotate-[3deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 md:group-hover/spread:-translate-y-10 z-20" />
 
           {/* 3. Planilha XLSX */}
-          <XlsxPaperCard className="absolute bottom-4 left-[170px] sm:left-[210px] md:left-[230px] w-[250px] rotate-[-2deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-6 hover:!-translate-y-10 z-14" />
+          <XlsxPaperCard className="absolute bottom-4 left-[170px] sm:left-[210px] md:left-[230px] w-[250px] rotate-[-2deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 md:group-hover/spread:-translate-y-10 z-14" />
 
           {/* 4. Notificação Rescisão */}
-          <NotificacaoRescisaoCard className="absolute bottom-14 left-[280px] sm:left-[330px] md:left-[360px] w-[215px] rotate-[4deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 hover:!-translate-y-12 z-22" />
+          <NotificacaoRescisaoCard className="absolute bottom-14 left-[280px] sm:left-[330px] md:left-[360px] w-[215px] rotate-[4deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 md:group-hover/spread:-translate-y-10 z-22" />
 
           {/* 5. Folha PDF */}
-          <PdfPaperCard className="absolute bottom-2 left-[380px] sm:left-[440px] md:left-[480px] w-[240px] min-h-[300px] rotate-[-4deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-6 hover:!-translate-y-10 z-12" />
+          <PdfPaperCard className="absolute bottom-2 left-[380px] sm:left-[440px] md:left-[480px] w-[240px] min-h-[300px] rotate-[-4deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 md:group-hover/spread:-translate-y-10 z-12" />
 
           {/* 6. E-mail Minuta */}
-          <EmailMinutaCard className="absolute bottom-16 left-[480px] sm:left-[550px] md:left-[590px] w-[230px] rotate-[3deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-7 hover:!-translate-y-11 z-24" />
+          <EmailMinutaCard className="absolute bottom-16 left-[480px] sm:left-[550px] md:left-[590px] w-[230px] rotate-[3deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 md:group-hover/spread:-translate-y-10 z-24" />
 
           {/* 7. Post-it Reajuste IPCA */}
-          <PostitReajusteCard className="absolute bottom-8 left-[570px] sm:left-[640px] md:left-[690px] w-[215px] rotate-[-5deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-6 hover:!-translate-y-10 z-18" />
+          <PostitReajusteCard className="absolute bottom-8 left-[570px] sm:left-[640px] md:left-[690px] w-[215px] rotate-[-5deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 md:group-hover/spread:-translate-y-10 z-18" />
 
           {/* 8. Arquivo Morto */}
-          <ArquivoMortoCard className="absolute bottom-2 left-[640px] sm:left-[720px] md:left-[770px] w-[220px] rotate-[2deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 hover:!-translate-y-12 z-16" />
+          <ArquivoMortoCard className="absolute bottom-2 left-[640px] sm:left-[720px] md:left-[770px] w-[220px] rotate-[2deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 md:group-hover/spread:-translate-y-10 z-16" />
         </div>
       </div>
     </div>
