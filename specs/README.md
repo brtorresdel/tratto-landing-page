@@ -16,8 +16,9 @@ Toda funcionalidade, tela ou componente da Landing Page começa aqui (ADR 0006).
 | # | Funcionalidade | Projeto | Status |
 |---|---|---|---|
 | [0001](0001-setup-fundacao-landing-page.md) | Setup da Fundação, Design Tokens Sage Paper e Hero do Documento Vivo | landing page | implementada |
-| 0002 | Formulário de Lista de Espera em 2 Etapas e Disparo de E-mail | landing page | pendente |
+| [0002](0002-formulario-lista-espera.md) | Formulário de Lista de Espera em 2 Etapas e Disparo de E-mail | landing page | em revisão |
 | 0003 | Seções de Conversão & Narrativa da Home (Problema com ROI, Ciclo em 4 Passos, Segurança e FAQ) | landing page | pendente |
-| 0004 | Páginas por Segmento ("Template Camaleão" para os 5 Nichos) | landing page | pendente |
-| 0005 | Caderno Editorial de Artigos & Changelog (Motor MDX Local) | landing page | pendente |
-| 0006 | OpenGraph Dinâmico (OG Image 1200x630), SEO & Conformidade LGPD | landing page | pendente |
+| 0004 | Header Global, Footer Editorial e Micro-interações do Site | landing page | pendente |
+| 0005 | Páginas por Segmento ("Template Camaleão" para os 5 Nichos) | landing page | pendente |
+| 0006 | Caderno Editorial de Artigos & Changelog (Motor MDX Local) | landing page | pendente |
+| 0007 | OpenGraph Dinâmico (OG Image 1200x630), SEO & Conformidade LGPD | landing page | pendente |
