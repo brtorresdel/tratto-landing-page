@@ -11,13 +11,13 @@ export function ProblemBanner() {
         {/* PARTE 1: CARTA DO DEV */}
         {/* ========================================================= */}
         <div className="mx-auto max-w-3xl text-left">
-          {/* Header da Carta: Título "Carta do Dev" centralizado em ambas as versões, com escala ampliada no mobile */}
-          <div className="flex flex-col items-center justify-center text-center gap-4 pb-2">
-            <h2 className="font-serif text-4xl sm:text-5xl italic font-semibold text-white leading-tight tracking-tight text-center whitespace-nowrap">
+          {/* Header da Carta: Título centralizado no mobile (< 712px) e lado a lado a partir de 712px */}
+          <div className="flex flex-col items-center justify-center text-center min-[712px]:flex-row min-[712px]:items-center min-[712px]:justify-between min-[712px]:text-left gap-4 pb-2">
+            <h2 className="font-serif text-4xl min-[712px]:text-5xl italic font-semibold text-white leading-tight tracking-tight text-center min-[712px]:text-left whitespace-nowrap">
               Carta do Dev
             </h2>
 
-            <div className="flex items-center gap-3.5 w-fit">
+            <div className="flex items-center gap-3.5 w-fit shrink-0">
               <img
                 src="/bruno-torres.webp"
                 alt="Foto de Bruno Torres"

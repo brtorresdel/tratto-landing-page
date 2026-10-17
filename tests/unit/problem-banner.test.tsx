@@ -12,13 +12,19 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(section).toHaveClass("bg-[var(--accent-primary)]");
     expect(section).toHaveClass("transition-colors");
 
-    // Título principal Carta do Dev centralizado e com escala ampliada no mobile
+    // Título principal Carta do Dev centralizado no mobile e alinhado à esquerda a partir de 712px
     const heading = screen.getByRole("heading", { level: 2, name: /Carta do Dev/i });
     expect(heading).toBeInTheDocument();
     expect(heading).toHaveClass("text-center");
+    expect(heading).toHaveClass("min-[712px]:text-left");
     expect(heading).toHaveClass("text-4xl");
-    expect(heading).toHaveClass("sm:text-5xl");
+    expect(heading).toHaveClass("min-[712px]:text-5xl");
     expect(screen.queryByText(/^Carta do Desenvolvedor$/i)).toBeNull();
+
+    // Container do cabeçalho: empilhado e centralizado abaixo de 712px, e lado a lado a partir de 712px
+    const headerContainer = heading.closest("div[class*='min-[712px]:flex-row']");
+    expect(headerContainer).not.toBeNull();
+    expect(headerContainer).toHaveClass("min-[712px]:justify-between");
 
     // Foto do autor no topo (ao lado/abaixo do título)
     const authorPhoto = screen.getByAltText(/Foto de Bruno Torres/i);
