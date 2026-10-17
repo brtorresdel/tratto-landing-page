@@ -44,6 +44,7 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     const heroSection = document.querySelector("section");
     expect(heroSection?.className).toMatch(/pt-28/);
     expect(heroSection?.className).toMatch(/md:pt-32/);
+    expect(heroSection?.className).toMatch(/min-h-\[500px\]/);
     expect(heroSection?.className).toMatch(/lg:min-h-\[740px\]/);
     expect(heroSection?.className).toMatch(/md:min-h-\[660px\]/);
     expect(heroSection?.className).toMatch(/lg:pb-12/);
@@ -98,7 +99,10 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     const spreadCluster = document.querySelector("div[class*='group/spread']");
     expect(spreadCluster).not.toBeNull();
     expect(spreadCluster?.className).toMatch(/block lg:hidden/);
+    expect(spreadCluster?.className).toMatch(/scale-\[0\.55\]/);
+    expect(spreadCluster?.className).toMatch(/h-\[250px\]/);
     expect(spreadCluster?.className).toMatch(/bottom-\[-/);
+    expect(spreadCluster?.innerHTML).toMatch(/bottom-24/);
     expect(spreadCluster?.innerHTML).toMatch(/-translate-y/);
     expect(spreadCluster?.innerHTML).not.toMatch(/hover:!-translate-y/);
 
