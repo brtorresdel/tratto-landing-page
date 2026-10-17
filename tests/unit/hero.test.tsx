@@ -79,9 +79,11 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     // Verifica que existem grupos independentes para pilha esquerda, direita e mobile
     const leftCluster = screen.getAllByText(/contrato_prestacao_v3_final/i)[0].closest("div[class*='group/left']");
     expect(leftCluster).not.toBeNull();
+    expect(leftCluster?.className).toMatch(/lg:scale-\[0\.72\]/);
 
     const rightCluster = screen.getAllByText(/termo_adesao_pendente\.pdf/i)[0].closest("div[class*='group/right']");
     expect(rightCluster).not.toBeNull();
+    expect(rightCluster?.className).toMatch(/lg:scale-\[0\.72\]/);
 
     const mobileCluster = document.querySelector("div[class*='group/mobile']");
     expect(mobileCluster).not.toBeNull();
