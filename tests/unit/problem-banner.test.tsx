@@ -52,8 +52,11 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(letterContainer).not.toBeNull();
     expect(letterContainer?.className).toMatch(/italic/);
 
-    // Gancho de transição para o mercado e largura unificada
-    expect(screen.getByText(/O custo invisível de gerenciar contratos no improviso/i)).toBeInTheDocument();
+    // Gancho de transição para o mercado (sem o chapéu empírico e com novo texto humanizado)
+    expect(screen.queryByText(/O diagnóstico empírico/i)).toBeNull();
+    expect(screen.getByText(/O custo invisível de gerenciar contratos no improviso\.\.\./i)).toBeInTheDocument();
+    expect(screen.getByText(/O que pensei ser uma dor concentrada ou de empresa específica/i)).toBeInTheDocument();
+    expect(screen.getByText(/Acredito que números aqui expressem melhor o que estou querendo te dizer:/i)).toBeInTheDocument();
 
     // Valida que a carta e o diagnóstico estão com largura padronizada (sem restrição max-w-3xl)
     const contentWrapper = heading.closest("div.text-left");
