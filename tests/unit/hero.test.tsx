@@ -40,6 +40,10 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     const sealDot = logo.querySelector("circle");
     expect(sealDot).not.toBeNull();
     expect(sealDot).toHaveAttribute("fill", "var(--accent-primary, #24523B)");
+
+    const heroSection = document.querySelector("section");
+    expect(heroSection?.className).toMatch(/lg:min-h-\[730px\]/);
+    expect(heroSection?.className).toMatch(/lg:pb-12/);
   });
 
   it("CA3: LiveDocumentCard deve iniciar em Coworking com marcadores esperados", () => {

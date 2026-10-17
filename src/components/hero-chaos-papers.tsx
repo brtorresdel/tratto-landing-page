@@ -290,7 +290,7 @@ export function HeroChaosPapers() {
         {/* ========================================================= */}
         {/* PILHA ESQUERDA (DESKTOP E TABLET - CALIBRADA PARA 1024px A 1130px) */}
         {/* ========================================================= */}
-        <div className="group/left pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-20px] xl:bottom-0 left-0 md:left-[2%] lg:-left-6 xl:left-2 2xl:left-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden md:block md:scale-[0.88] lg:scale-[0.72] xl:scale-100 origin-bottom-left transition-transform duration-300">
+        <div className="group/left pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-6px] xl:bottom-0 left-0 md:left-[2%] lg:-left-6 xl:left-2 2xl:left-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden md:block md:scale-[0.88] lg:scale-[0.72] xl:scale-100 origin-bottom-left transition-transform duration-300">
           {/* L1. DOCX em formato de Folha Vertical A4 */}
           <DocxPaperCard className="absolute bottom-2 lg:bottom-8 left-1 lg:left-4 xl:left-8 w-[260px] lg:w-[285px] min-h-[340px] lg:min-h-[370px] rotate-[-9deg] group-hover/left:rotate-[-14deg] group-hover/left:-translate-x-6 group-hover/left:-translate-y-6 group-hover/left:shadow-[0_16px_36px_rgba(14,18,16,0.1)] z-10" />
 
@@ -307,7 +307,7 @@ export function HeroChaosPapers() {
         {/* ========================================================= */}
         {/* PILHA DIREITA (DESKTOP E TABLET - CALIBRADA PARA 1024px A 1130px) */}
         {/* ========================================================= */}
-        <div className="group/right pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-20px] xl:bottom-0 right-0 md:right-[2%] lg:-right-6 xl:right-2 2xl:right-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden md:block md:scale-[0.88] lg:scale-[0.72] xl:scale-100 origin-bottom-right transition-transform duration-300">
+        <div className="group/right pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-6px] xl:bottom-0 right-0 md:right-[2%] lg:-right-6 xl:right-2 2xl:right-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden md:block md:scale-[0.88] lg:scale-[0.72] xl:scale-100 origin-bottom-right transition-transform duration-300">
           {/* R1. PDF em formato de Folha Vertical A4 */}
           <PdfPaperCard className="absolute bottom-2 lg:bottom-8 right-1 lg:right-4 xl:right-8 w-[260px] lg:w-[285px] min-h-[340px] lg:min-h-[370px] rotate-[8deg] group-hover/right:rotate-[13deg] group-hover/right:translate-x-6 group-hover/right:-translate-y-6 group-hover/right:shadow-[0_16px_36px_rgba(14,18,16,0.1)] z-10" />
 
