@@ -110,3 +110,25 @@
     transition: background-color 0.25s ease, color 0.25s ease;
   }
 }
+
+@keyframes metricProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.animate-metric-progress {
+  animation: metricProgress 10s linear forwards;
+  transform-origin: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-metric-progress {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
+

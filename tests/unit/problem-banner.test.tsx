@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import React from "react";
 import { ProblemBanner } from "@/components/problem-banner";
 
@@ -71,45 +71,77 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
   });
 
   it("CA2: Deve renderizar o painel interativo de métricas com lista à esquerda e detalhe à direita", () => {
-    render(<ProblemBanner />);
+    const { container } = render(<ProblemBanner />);
 
-    // Verifica que a lista de métricas contém os títulos principais e os itens adicionais do levantamento
-    expect(screen.getByRole("tab", { name: /Reajustes perdidos/i })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: /Tempo desperdiçado/i })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: /Vigência & multas/i })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: /Descontos sem controle/i })).toBeInTheDocument();
-    expect(screen.getByRole("tab", { name: /Insegurança jurídica/i })).toBeInTheDocument();
+    // Verifica que a lista de métricas contém os títulos sem bordas, sem fundo e sem stat na lista
+    const tab1 = screen.getByRole("tab", { name: /^Reajustes perdidos$/i });
+    const tab2 = screen.getByRole("tab", { name: /^Tempo desperdiçado$/i });
+    const tab3 = screen.getByRole("tab", { name: /^Vigência & multas$/i });
+    const tab4 = screen.getByRole("tab", { name: /^Descontos sem controle$/i });
+    const tab5 = screen.getByRole("tab", { name: /^Insegurança jurídica$/i });
 
-    // Métrica 1 inicial ativa por padrão
-    expect(screen.getAllByText("-12,4%")[0]).toBeInTheDocument();
+    expect(tab1).toBeInTheDocument();
+    expect(tab2).toBeInTheDocument();
+    expect(tab3).toBeInTheDocument();
+    expect(tab4).toBeInTheDocument();
+    expect(tab5).toBeInTheDocument();
+
+    // Valida proporção da grade (lista menor md:col-span-4 e detalhe maior md:col-span-8)
+    const listCol = tab1.closest("div[class*='md:col-span-4']");
+    expect(listCol).not.toBeNull();
+
+    const detailPanel = screen.getByRole("tabpanel");
+    expect(detailPanel).toHaveClass("md:col-span-8");
+
+    // Valida estilo minimalista da lista (sem background ou bordas de cartão)
+    expect(tab1.className).not.toMatch(/border-white/);
+    expect(tab1.className).not.toMatch(/bg-white\/(?:10|20)/);
+
+    // Métrica 1 ativa por padrão: destacada com leve negrito, deslocada à direita e com barra de progresso
+    expect(tab1).toHaveClass("font-semibold");
+    expect(tab1.className).toMatch(/translate-x-3|translate-x-2\.5/);
+
+    const progressBar = tab1.querySelector(".animate-metric-progress");
+    expect(progressBar).not.toBeNull();
+
+    // Métrica inativa (tab2): sem deslocamento e com peso normal
+    expect(tab2).toHaveClass("font-normal");
+    expect(tab2.className).not.toMatch(/translate-x-3|translate-x-2\.5/);
+
+    // Métrica 1 exibe número em destaque e texto descritivo no painel da direita
+    expect(screen.getByText("-12,4%")).toBeInTheDocument();
     expect(
       screen.getByText(/quantidade de receita líquida perdida com contratos sem reajuste anual \/ mensal/i)
     ).toBeInTheDocument();
 
-    // Alterna para Métrica 2 (Tempo desperdiçado)
-    fireEvent.click(screen.getByRole("tab", { name: /Tempo desperdiçado/i }));
-    expect(screen.getAllByText("4h")[0]).toBeInTheDocument();
+    // Alterna para Métrica 2 (Tempo desperdiçado) via clique do usuário
+    fireEvent.click(tab2);
+    expect(tab2).toHaveClass("font-semibold");
+    expect(tab2.className).toMatch(/translate-x-3|translate-x-2\.5/);
+    expect(tab1).toHaveClass("font-normal");
+
+    expect(screen.getByText("4h")).toBeInTheDocument();
     expect(
       screen.getByText(/tempo médio gasto diariamente que a operação gasta preenchendo contratos/i)
     ).toBeInTheDocument();
 
     // Alterna para Métrica 3 (Vigência & multas)
-    fireEvent.click(screen.getByRole("tab", { name: /Vigência & multas/i }));
-    expect(screen.getAllByText("21 dias")[0]).toBeInTheDocument();
+    fireEvent.click(tab3);
+    expect(screen.getByText("21 dias")).toBeInTheDocument();
     expect(
       screen.getByText(/estimativa de tempo em que a operação demora para perceber um cancelamento/i)
     ).toBeInTheDocument();
 
     // Alterna para Métrica 4 (Descontos sem controle)
-    fireEvent.click(screen.getByRole("tab", { name: /Descontos sem controle/i }));
-    expect(screen.getAllByText("-15%")[0]).toBeInTheDocument();
+    fireEvent.click(tab4);
+    expect(screen.getByText("-15%")).toBeInTheDocument();
     expect(
       screen.getByText(/perda de margem líquida com concessões informais de desconto pela equipe comercial/i)
     ).toBeInTheDocument();
 
     // Alterna para Métrica 5 (Insegurança jurídica)
-    fireEvent.click(screen.getByRole("tab", { name: /Insegurança jurídica/i }));
-    expect(screen.getAllByText("18%")[0]).toBeInTheDocument();
+    fireEvent.click(tab5);
+    expect(screen.getByText("18%")).toBeInTheDocument();
     expect(
       screen.getByText(/contratos ativos em operação sem a via final formalmente assinada/i)
     ).toBeInTheDocument();
@@ -118,5 +150,46 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(screen.getByText(/Impacto Financeiro Anual/i)).toBeInTheDocument();
     expect(screen.getByText(/No improviso \(planilhas e Word\)/i)).toBeInTheDocument();
     expect(screen.getByText(/Com a Tratto/i)).toBeInTheDocument();
+  });
+
+  it("CA3: Deve avançar automaticamente para a próxima métrica a cada 10 segundos e reiniciar no clique", () => {
+    vi.useFakeTimers();
+    render(<ProblemBanner />);
+
+    // Inicialmente na métrica 1 (-12,4%)
+    expect(screen.getByText("-12,4%")).toBeInTheDocument();
+
+    // Avança 10 segundos -> transita para métrica 2 (4h)
+    act(() => {
+      vi.advanceTimersByTime(10000);
+    });
+    expect(screen.getByText("4h")).toBeInTheDocument();
+
+    // Avança mais 10 segundos -> transita para métrica 3 (21 dias)
+    act(() => {
+      vi.advanceTimersByTime(10000);
+    });
+    expect(screen.getByText("21 dias")).toBeInTheDocument();
+
+    // Clique manual em Descontos sem controle (-15%) reinicia o ciclo
+    const tab4 = screen.getByRole("tab", { name: /^Descontos sem controle$/i });
+    act(() => {
+      fireEvent.click(tab4);
+    });
+    expect(screen.getByText("-15%")).toBeInTheDocument();
+
+    // Se avançar 5s, ainda permanece em Descontos sem controle
+    act(() => {
+      vi.advanceTimersByTime(5000);
+    });
+    expect(screen.getByText("-15%")).toBeInTheDocument();
+
+    // Ao completar os 10s restantes (mais 5s), avança para métrica 5 (18%)
+    act(() => {
+      vi.advanceTimersByTime(5000);
+    });
+    expect(screen.getByText("18%")).toBeInTheDocument();
+
+    vi.useRealTimers();
   });
 });

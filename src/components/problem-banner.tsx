@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 
 export const METRICS = [
@@ -43,7 +43,21 @@ export const METRICS = [
 
 export function ProblemBanner() {
   const [activeMetricIndex, setActiveMetricIndex] = useState(0);
+  const [resetKey, setResetKey] = useState(0);
   const activeMetric = METRICS[activeMetricIndex];
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setActiveMetricIndex((prev) => (prev + 1) % METRICS.length);
+    }, 10000);
+
+    return () => clearTimeout(timer);
+  }, [activeMetricIndex, resetKey]);
+
+  const handleSelectMetric = (index: number) => {
+    setActiveMetricIndex(index);
+    setResetKey((prev) => prev + 1);
+  };
   return (
     <section
       id="o-problema"
@@ -124,10 +138,10 @@ export function ProblemBanner() {
         {/* ========================================================= */}
         {/* PARTE 2: PAINEL DE MÉTRICAS (LISTA À ESQUERDA & DETALHE À DIREITA) */}
         {/* ========================================================= */}
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch text-left">
-          {/* Lado esquerdo: Lista de títulos/métricas (col-span-5) */}
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center text-left">
+          {/* Lado esquerdo: Lista de títulos minimalista (md:col-span-4) */}
           <div
-            className="flex flex-col gap-2.5 md:col-span-5"
+            className="flex flex-col gap-4 md:col-span-4"
             role="tablist"
             aria-label="Métricas de prejuízo na gestão de contratos"
           >
@@ -139,39 +153,36 @@ export function ProblemBanner() {
                   type="button"
                   role="tab"
                   aria-selected={isSelected}
-                  onClick={() => setActiveMetricIndex(idx)}
+                  onClick={() => handleSelectMetric(idx)}
                   className={clsx(
-                    "group relative flex items-center justify-between rounded-xl px-5 py-4 text-left transition-all duration-200 cursor-pointer border",
+                    "group relative flex flex-col items-start text-left transition-all duration-300 ease-out cursor-pointer py-1 bg-transparent border-none focus:outline-hidden",
                     isSelected
-                      ? "border-white/40 bg-white/20 text-white font-semibold shadow-xs"
-                      : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+                      ? "text-white font-semibold translate-x-3"
+                      : "text-white/60 font-normal hover:text-white/85 translate-x-0"
                   )}
                 >
-                  <div className="flex items-center gap-3">
-                    <span
-                      className={clsx(
-                        "h-2 w-2 rounded-full transition-colors",
-                        isSelected
-                          ? "bg-emerald-400 ring-4 ring-emerald-400/20"
-                          : "bg-white/30 group-hover:bg-white/60"
-                      )}
-                    />
-                    <span className="text-sm sm:text-base tracking-tight">
-                      {metric.title}
-                    </span>
-                  </div>
-                  <span className="font-mono text-xs font-semibold tabular-nums px-2.5 py-1 rounded bg-white/10 text-white/90">
-                    {metric.stat}
+                  <span className="text-base sm:text-lg tracking-tight">
+                    {metric.title}
                   </span>
+
+                  {/* Barra de progresso animada de 10 segundos abaixo da opção ativa */}
+                  {isSelected && (
+                    <div className="relative mt-2 h-0.5 w-full max-w-[200px] overflow-hidden rounded-full bg-white/20">
+                      <div
+                        key={`progress-${metric.id}-${resetKey}`}
+                        className="h-full bg-white rounded-full animate-metric-progress"
+                      />
+                    </div>
+                  )}
                 </button>
               );
             })}
           </div>
 
-          {/* Lado direito: Detalhe da métrica selecionada (col-span-7) */}
+          {/* Lado direito: Detalhe da métrica selecionada (md:col-span-8) */}
           <div
             role="tabpanel"
-            className="md:col-span-7 rounded-2xl border border-white/20 bg-white/10 p-6 sm:p-10 backdrop-blur-xs flex flex-col justify-center min-h-[220px] transition-all shadow-[0_12px_32px_rgba(0,0,0,0.08)]"
+            className="md:col-span-8 rounded-2xl border border-white/20 bg-white/10 p-6 sm:p-10 backdrop-blur-xs flex flex-col justify-center min-h-[240px] transition-all shadow-[0_12px_32px_rgba(0,0,0,0.08)]"
           >
             <div className="flex items-center justify-between pb-3 border-b border-white/15 mb-4">
               <span className="font-mono text-xs uppercase tracking-wider text-white/70">
@@ -182,11 +193,17 @@ export function ProblemBanner() {
               </span>
             </div>
 
-            <div className="font-mono text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white tabular-nums">
+            <div
+              key={activeMetric.id}
+              className="font-mono text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white tabular-nums transition-all"
+            >
               {activeMetric.stat}
             </div>
 
-            <p className="mt-4 text-base sm:text-lg text-white/90 leading-relaxed">
+            <p
+              key={`desc-${activeMetric.id}`}
+              className="mt-4 text-base sm:text-lg text-white/90 leading-relaxed transition-all"
+            >
               {activeMetric.description}
             </p>
           </div>
