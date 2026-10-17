@@ -20,7 +20,7 @@ Apresentar a narrativa completa de valor do Tratto antes da captura de leads, de
 
 **Inclui:**
 - **Faixa Editorial da Carta do Dev & O Problema Real (`#o-problema`):**
-  - Faixa em verde profundo (`var(--accent-primary)`) com tipografia de alta legibilidade editorial.
+  - Faixa com background dinâmico sincronizado à cor primária do tema ativo (`bg-[var(--accent-primary)]`), transição suave de cor (`transition-colors duration-300`) e tipografia de alta legibilidade editorial sobre contraste WCAG AAA.
   - **Bloco da Carta do Dev:**
     - Chapéu editorial (*"Carta do Desenvolvedor"* ou *"De quem viveu o problema na pele"*).
     - Narrativa pessoal humanizada baseada na vivência real do dev com contratos em advocacia e coworking.
@@ -60,13 +60,13 @@ Apresentar a narrativa completa de valor do Tratto antes da captura de leads, de
 - **R2. Responsividade Mobile First:** A narrativa e a carta devem ser legíveis e confortáveis em qualquer resolução (celulares de 360px a monitores ultrawide), com empilhamento vertical suave nos passos e colunas da grade.
 - **R3. Acessibilidade (WCAG AA/AAA):** O FAQ deve operar com atributos ARIA semânticos (`aria-expanded`, `aria-controls`), suporte total a teclado (`Space` e `Enter` para abrir/fechar itens) e foco visível.
 - **R4. Semântica HTML:** Estrutura clara com `<section id="...">`, cabeçalhos ordenados (`<h2>`, `<h3>`), tags de texto e listas semânticas.
-- **R5. Reatividade ao Tema:** Badges e destaques de acento devem sincronizar perfeitamente com os 5 temas pastéis do Tratto (`Sage Classic`, `Warm Linen`, `Soft Clay`, `Mist Blue`, `Pale Olive`).
+- **R5. Reatividade ao Tema:** O background da faixa editorial (`bg-[var(--accent-primary)]`), badges, detalhes e destaques de acento devem sincronizar perfeitamente e em tempo real com os 5 temas pastéis do Tratto (`Sage Classic`, `Manteiga`, `Pêssego`, `Coral`, `Céu`), sem nenhuma cor de fundo hardcoded.
 
 ---
 
 ## Critérios de Aceitação
 
-- **CA1.** A faixa editorial (`#o-problema`) deve renderizar a **Carta do Desenvolvedor** contendo:
+- **CA1.** A faixa editorial (`#o-problema`) deve possuir background dinâmico reativo ao tema ativo (`bg-[var(--accent-primary)]`) com `transition-colors duration-300` e renderizar a **Carta do Desenvolvedor** contendo:
   - O chapéu editorial ("Carta do Desenvolvedor" / "Nota do Fundador");
   - A narrativa da vivência em escritório de advocacia e coworking;
   - A assinatura do criador do Tratto;
