@@ -12,8 +12,12 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(section).toHaveClass("bg-[var(--accent-primary)]");
     expect(section).toHaveClass("transition-colors");
 
-    // Título principal Carta do Dev e ausência da pill antiga
-    expect(screen.getByRole("heading", { level: 2, name: /Carta do Dev/i })).toBeInTheDocument();
+    // Título principal Carta do Dev centralizado e com escala ampliada no mobile
+    const heading = screen.getByRole("heading", { level: 2, name: /Carta do Dev/i });
+    expect(heading).toBeInTheDocument();
+    expect(heading).toHaveClass("text-center");
+    expect(heading).toHaveClass("text-4xl");
+    expect(heading).toHaveClass("sm:text-5xl");
     expect(screen.queryByText(/^Carta do Desenvolvedor$/i)).toBeNull();
 
     // Foto do autor no topo (ao lado/abaixo do título)
