@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import { ProblemBanner } from "@/components/problem-banner";
 
@@ -70,31 +70,51 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(diagParagraph.className).not.toMatch(/max-w-2xl/);
   });
 
-  it("CA2: Deve renderizar a grade com as 3 métricas de prejuízo invisível e o card de impacto comparativo", () => {
+  it("CA2: Deve renderizar o painel interativo de métricas com lista à esquerda e detalhe à direita", () => {
     render(<ProblemBanner />);
 
-    // Métrica 1: Reajustes perdidos
-    const metrica1 = screen.getByText("-12,4%");
-    expect(metrica1).toBeInTheDocument();
-    expect(metrica1).toHaveClass("font-mono");
-    expect(metrica1).toHaveClass("tabular-nums");
-    expect(screen.getByText(/Reajustes Perdidos/i)).toBeInTheDocument();
+    // Verifica que a lista de métricas contém os títulos principais e os itens adicionais do levantamento
+    expect(screen.getByRole("tab", { name: /Reajustes perdidos/i })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /Tempo desperdiçado/i })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /Vigência & multas/i })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /Descontos sem controle/i })).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: /Insegurança jurídica/i })).toBeInTheDocument();
 
-    // Métrica 2: Horas desperdiçadas no Word
-    const metrica2 = screen.getByText("4h / sem");
-    expect(metrica2).toBeInTheDocument();
-    expect(metrica2).toHaveClass("font-mono");
-    expect(metrica2).toHaveClass("tabular-nums");
-    expect(screen.getByText(/Tempo Desperdiçado/i)).toBeInTheDocument();
+    // Métrica 1 inicial ativa por padrão
+    expect(screen.getAllByText("-12,4%")[0]).toBeInTheDocument();
+    expect(
+      screen.getByText(/quantidade de receita líquida perdida com contratos sem reajuste anual \/ mensal/i)
+    ).toBeInTheDocument();
 
-    // Métrica 3: Vigência & prazos atrasados
-    const metrica3 = screen.getByText("21 dias");
-    expect(metrica3).toBeInTheDocument();
-    expect(metrica3).toHaveClass("font-mono");
-    expect(metrica3).toHaveClass("tabular-nums");
-    expect(screen.getByText(/Vigência & Multas/i)).toBeInTheDocument();
+    // Alterna para Métrica 2 (Tempo desperdiçado)
+    fireEvent.click(screen.getByRole("tab", { name: /Tempo desperdiçado/i }));
+    expect(screen.getAllByText("4h")[0]).toBeInTheDocument();
+    expect(
+      screen.getByText(/tempo médio gasto diariamente que a operação gasta preenchendo contratos/i)
+    ).toBeInTheDocument();
 
-    // Card de impacto financeiro comparativo
+    // Alterna para Métrica 3 (Vigência & multas)
+    fireEvent.click(screen.getByRole("tab", { name: /Vigência & multas/i }));
+    expect(screen.getAllByText("21 dias")[0]).toBeInTheDocument();
+    expect(
+      screen.getByText(/estimativa de tempo em que a operação demora para perceber um cancelamento/i)
+    ).toBeInTheDocument();
+
+    // Alterna para Métrica 4 (Descontos sem controle)
+    fireEvent.click(screen.getByRole("tab", { name: /Descontos sem controle/i }));
+    expect(screen.getAllByText("-15%")[0]).toBeInTheDocument();
+    expect(
+      screen.getByText(/perda de margem líquida com concessões informais de desconto pela equipe comercial/i)
+    ).toBeInTheDocument();
+
+    // Alterna para Métrica 5 (Insegurança jurídica)
+    fireEvent.click(screen.getByRole("tab", { name: /Insegurança jurídica/i }));
+    expect(screen.getAllByText("18%")[0]).toBeInTheDocument();
+    expect(
+      screen.getByText(/contratos ativos em operação sem a via final formalmente assinada/i)
+    ).toBeInTheDocument();
+
+    // Card de impacto financeiro comparativo continua presente
     expect(screen.getByText(/Impacto Financeiro Anual/i)).toBeInTheDocument();
     expect(screen.getByText(/No improviso \(planilhas e Word\)/i)).toBeInTheDocument();
     expect(screen.getByText(/Com a Tratto/i)).toBeInTheDocument();

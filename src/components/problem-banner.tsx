@@ -1,6 +1,49 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
+import clsx from "clsx";
+
+export const METRICS = [
+  {
+    id: "reajustes-perdidos",
+    title: "Reajustes perdidos",
+    stat: "-12,4%",
+    description:
+      "quantidade de receita líquida perdida com contratos sem reajuste anual / mensal baseado em índices oficiais.",
+  },
+  {
+    id: "tempo-desperdicado",
+    title: "Tempo desperdiçado",
+    stat: "4h",
+    description:
+      "tempo médio gasto diariamente que a operação gasta preenchendo contratos e caçando versões específicas assinadas na caixa de e-mail.",
+  },
+  {
+    id: "vigencia-multas",
+    title: "Vigência & multas",
+    stat: "21 dias",
+    description:
+      "estimativa de tempo em que a operação demora para perceber um cancelamento sem cumprimento de aviso prévio.",
+  },
+  {
+    id: "descontos-sem-controle",
+    title: "Descontos sem controle",
+    stat: "-15%",
+    description:
+      "perda de margem líquida com concessões informais de desconto pela equipe comercial sem fluxo formal de aprovação do supervisor.",
+  },
+  {
+    id: "inseguranca-juridica",
+    title: "Insegurança jurídica",
+    stat: "18%",
+    description:
+      "contratos ativos em operação sem a via final formalmente assinada pelas partes ou com documentos perdidos em gavetas e e-mails soltos.",
+  },
+];
 
 export function ProblemBanner() {
+  const [activeMetricIndex, setActiveMetricIndex] = useState(0);
+  const activeMetric = METRICS[activeMetricIndex];
   return (
     <section
       id="o-problema"
@@ -79,45 +122,72 @@ export function ProblemBanner() {
         </div>
 
         {/* ========================================================= */}
-        {/* PARTE 2: AS 3 MÉTRICAS DO PREJUÍZO INVISÍVEL */}
+        {/* PARTE 2: PAINEL DE MÉTRICAS (LISTA À ESQUERDA & DETALHE À DIREITA) */}
         {/* ========================================================= */}
-        <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-3 text-left">
-          {/* Métrica 1: Reajustes Perdidos */}
-          <div className="rounded-xl border border-white/15 bg-white/10 p-6 backdrop-blur-xs transition hover:bg-white/15">
-            <span className="font-mono text-xs font-semibold uppercase tracking-wider text-white/70">
-              Reajustes Perdidos
-            </span>
-            <div className="mt-2 font-mono text-3xl sm:text-4xl font-bold tracking-tight text-white tabular-nums">
-              -12,4%
-            </div>
-            <p className="mt-2 text-xs sm:text-sm text-white/80 leading-snug">
-              de receita líquida perdida ao esquecer de aplicar o reajuste anual pelo IPCA ou IGP-M no mês correto.
-            </p>
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch text-left">
+          {/* Lado esquerdo: Lista de títulos/métricas (col-span-5) */}
+          <div
+            className="flex flex-col gap-2.5 md:col-span-5"
+            role="tablist"
+            aria-label="Métricas de prejuízo na gestão de contratos"
+          >
+            {METRICS.map((metric, idx) => {
+              const isSelected = activeMetricIndex === idx;
+              return (
+                <button
+                  key={metric.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={isSelected}
+                  onClick={() => setActiveMetricIndex(idx)}
+                  className={clsx(
+                    "group relative flex items-center justify-between rounded-xl px-5 py-4 text-left transition-all duration-200 cursor-pointer border",
+                    isSelected
+                      ? "border-white/40 bg-white/20 text-white font-semibold shadow-xs"
+                      : "border-white/10 bg-white/5 text-white/70 hover:bg-white/10 hover:text-white"
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <span
+                      className={clsx(
+                        "h-2 w-2 rounded-full transition-colors",
+                        isSelected
+                          ? "bg-emerald-400 ring-4 ring-emerald-400/20"
+                          : "bg-white/30 group-hover:bg-white/60"
+                      )}
+                    />
+                    <span className="text-sm sm:text-base tracking-tight">
+                      {metric.title}
+                    </span>
+                  </div>
+                  <span className="font-mono text-xs font-semibold tabular-nums px-2.5 py-1 rounded bg-white/10 text-white/90">
+                    {metric.stat}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
-          {/* Métrica 2: Tempo Desperdiçado */}
-          <div className="rounded-xl border border-white/15 bg-white/10 p-6 backdrop-blur-xs transition hover:bg-white/15">
-            <span className="font-mono text-xs font-semibold uppercase tracking-wider text-white/70">
-              Tempo Desperdiçado
-            </span>
-            <div className="mt-2 font-mono text-3xl sm:text-4xl font-bold tracking-tight text-white tabular-nums">
-              4h / sem
+          {/* Lado direito: Detalhe da métrica selecionada (col-span-7) */}
+          <div
+            role="tabpanel"
+            className="md:col-span-7 rounded-2xl border border-white/20 bg-white/10 p-6 sm:p-10 backdrop-blur-xs flex flex-col justify-center min-h-[220px] transition-all shadow-[0_12px_32px_rgba(0,0,0,0.08)]"
+          >
+            <div className="flex items-center justify-between pb-3 border-b border-white/15 mb-4">
+              <span className="font-mono text-xs uppercase tracking-wider text-white/70">
+                {activeMetric.title}
+              </span>
+              <span className="font-mono text-[11px] text-emerald-300 bg-emerald-950/40 border border-emerald-400/30 px-2 py-0.5 rounded">
+                Impacto Operacional
+              </span>
             </div>
-            <p className="mt-2 text-xs sm:text-sm text-white/80 leading-snug">
-              gastas preenchendo contratos no Word e caçando em caixas de e-mail qual era a versão final assinada.
-            </p>
-          </div>
 
-          {/* Métrica 3: Vigência & Multas */}
-          <div className="rounded-xl border border-white/15 bg-white/10 p-6 backdrop-blur-xs transition hover:bg-white/15">
-            <span className="font-mono text-xs font-semibold uppercase tracking-wider text-white/70">
-              Vigência & Multas
-            </span>
-            <div className="mt-2 font-mono text-3xl sm:text-4xl font-bold tracking-tight text-white tabular-nums">
-              21 dias
+            <div className="font-mono text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white tabular-nums">
+              {activeMetric.stat}
             </div>
-            <p className="mt-2 text-xs sm:text-sm text-white/80 leading-snug">
-              de atraso médio para perceber que um cliente cancelou sem cumprir o aviso prévio contratual.
+
+            <p className="mt-4 text-base sm:text-lg text-white/90 leading-relaxed">
+              {activeMetric.description}
             </p>
           </div>
         </div>
