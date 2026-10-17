@@ -92,5 +92,16 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     expect(firstCard?.className).toMatch(/var\(--accent-surface\)/);
     expect(firstCard?.className).not.toMatch(/backdrop-blur/);
     expect(firstCard?.className).toMatch(/group-hover\/left:/);
+
+    // Verifica que o card XLSX reage dinamicamente ao tema (sem verde emerald hardcoded e sem bg-white fixo)
+    const xlsxHeader = screen.getAllByText(/vencimentos_2024\.xlsx/i)[0].closest("div[class*='justify-between']");
+    expect(xlsxHeader).not.toBeNull();
+    expect(xlsxHeader?.className).toMatch(/var\(--accent-primary\)/);
+    expect(xlsxHeader?.className).not.toMatch(/bg-emerald/);
+
+    const xlsxTable = screen.getAllByText(/Alpha Logística/i)[0].closest("table");
+    expect(xlsxTable).not.toBeNull();
+    expect(xlsxTable?.className).toMatch(/var\(--accent-surface\)/);
+    expect(xlsxTable?.className).not.toMatch(/\bbg-white\b/);
   });
 });

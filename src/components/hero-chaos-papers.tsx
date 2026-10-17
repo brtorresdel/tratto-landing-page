@@ -62,46 +62,48 @@ export function XlsxPaperCard({ className = "" }: { className?: string }) {
     <div
       className={`rounded-lg border border-[var(--border-subtle)] bg-[var(--accent-surface)] shadow-[0_10px_28px_rgba(14,18,16,0.07)] transition-all duration-500 ease-out overflow-hidden ${className}`}
     >
-      {/* Barra de título Excel */}
-      <div className="flex items-center justify-between bg-emerald-800 px-3 py-1.5 text-white">
+      {/* Barra de título da planilha reativa ao tema */}
+      <div className="flex items-center justify-between bg-[var(--accent-primary)] px-3 py-1.5 text-white transition-colors duration-300">
         <div className="flex items-center gap-1.5 font-mono text-[11px]">
           <span className="font-bold bg-white/20 px-1 rounded text-[10px]">XLS</span>
           <span className="font-medium">vencimentos_2024.xlsx</span>
         </div>
-        <span className="text-[9px] text-emerald-100 font-mono">14:22</span>
+        <span className="text-[9px] text-white/80 font-mono">14:22</span>
       </div>
 
-      {/* Tabela de Planilha */}
-      <table className="w-full border-collapse text-left font-mono text-[10px] bg-white">
+      {/* Tabela de Planilha reativa ao tema com fundo de superfície */}
+      <table className="w-full border-collapse text-left font-mono text-[10px] bg-[var(--accent-surface)] transition-colors duration-300">
         <thead>
-          <tr className="bg-black/5 text-neutral-700 border-b border-black/5 text-[9px]">
-            <th className="py-1 px-2 border-r border-black/5 font-semibold">Cliente</th>
-            <th className="py-1 px-2 border-r border-black/5 font-semibold">Vencimento</th>
+          <tr className="bg-black/5 text-neutral-700 border-b border-[var(--border-subtle)] text-[9px]">
+            <th className="py-1 px-2 border-r border-[var(--border-subtle)] font-semibold">Cliente</th>
+            <th className="py-1 px-2 border-r border-[var(--border-subtle)] font-semibold">Vencimento</th>
             <th className="py-1 px-2 font-semibold">Status</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-black/5">
+        <tbody className="divide-y divide-[var(--border-subtle)]">
           <tr>
-            <td className="py-1 px-2 border-r border-black/5 font-medium text-neutral-800 truncate">Alpha Logística</td>
-            <td className="py-1 px-2 border-r border-black/5 text-neutral-600 tabular-nums">15/10/24</td>
-            <td className="py-1 px-2 text-rose-700 font-bold bg-rose-50">Venceu ontem</td>
+            <td className="py-1 px-2 border-r border-[var(--border-subtle)] font-medium text-[var(--text-main)] truncate">Alpha Logística</td>
+            <td className="py-1 px-2 border-r border-[var(--border-subtle)] text-[var(--text-muted)] tabular-nums">15/10/24</td>
+            <td className="py-1 px-2 text-[var(--badge-alert-text)] font-bold bg-[var(--badge-alert-bg)]">Venceu ontem</td>
           </tr>
           <tr>
-            <td className="py-1 px-2 border-r border-black/5 font-medium text-neutral-800 truncate">Prisma Consultoria</td>
-            <td className="py-1 px-2 border-r border-black/5 text-neutral-600 tabular-nums">01/08/23</td>
-            <td className="py-1 px-2 text-amber-800 font-bold bg-amber-50">Sem reajuste 2a</td>
+            <td className="py-1 px-2 border-r border-[var(--border-subtle)] font-medium text-[var(--text-main)] truncate">Prisma Consultoria</td>
+            <td className="py-1 px-2 border-r border-[var(--border-subtle)] text-[var(--text-muted)] tabular-nums">01/08/23</td>
+            <td className="py-1 px-2 text-[var(--badge-pending-text)] font-bold bg-[var(--badge-pending-bg)]">Sem reajuste 2a</td>
           </tr>
           <tr>
-            <td className="py-1 px-2 border-r border-black/5 font-medium text-neutral-800 truncate">Apex Engenharia</td>
-            <td className="py-1 px-2 border-r border-black/5 text-neutral-600 tabular-nums">30/11/24</td>
-            <td className="py-1 px-2 text-neutral-600">Cadê via assinada?</td>
+            <td className="py-1 px-2 border-r border-[var(--border-subtle)] font-medium text-[var(--text-main)] truncate">Apex Engenharia</td>
+            <td className="py-1 px-2 border-r border-[var(--border-subtle)] text-[var(--text-muted)] tabular-nums">30/11/24</td>
+            <td className="py-1 px-2 text-[var(--text-muted)]">Cadê via assinada?</td>
           </tr>
         </tbody>
       </table>
 
-      {/* Abas inferiores */}
-      <div className="flex items-center gap-1 bg-black/5 px-2 py-1 border-t border-black/5 text-[9px] font-mono text-neutral-600">
-        <span className="bg-white px-2 py-0.5 rounded-t border border-black/5 font-semibold text-emerald-800">Contratos_Ativos</span>
+      {/* Abas inferiores reativas ao tema */}
+      <div className="flex items-center gap-1 bg-black/5 px-2 py-1 border-t border-[var(--border-subtle)] text-[9px] font-mono text-[var(--text-muted)]">
+        <span className="bg-[var(--accent-surface)] px-2 py-0.5 rounded-t border-t border-x border-[var(--border-subtle)] font-semibold text-[var(--accent-primary)] shadow-2xs">
+          Contratos_Ativos
+        </span>
         <span className="px-1.5 py-0.5 text-neutral-500">Pendentes</span>
       </div>
     </div>
