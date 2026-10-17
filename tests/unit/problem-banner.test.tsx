@@ -4,7 +4,7 @@ import React from "react";
 import { ProblemBanner } from "@/components/problem-banner";
 
 describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prejuízo)", () => {
-  it("CA1: Deve renderizar a Carta do Desenvolvedor com tema dinâmico, vivência, assinatura e gancho", () => {
+  it("CA1: Deve renderizar a Carta do Dev com título, foto do autor, texto em Newsreader itálico e gancho", () => {
     const { container } = render(<ProblemBanner />);
     const section = container.querySelector("section");
     expect(section).not.toBeNull();
@@ -12,18 +12,29 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(section).toHaveClass("bg-[var(--accent-primary)]");
     expect(section).toHaveClass("transition-colors");
 
-    // Chapéu editorial
-    expect(screen.getByText(/Carta do Desenvolvedor|De quem viveu o problema na pele/i)).toBeInTheDocument();
+    // Título principal Carta do Dev e ausência da pill antiga
+    expect(screen.getByRole("heading", { level: 2, name: /Carta do Dev/i })).toBeInTheDocument();
+    expect(screen.queryByText(/^Carta do Desenvolvedor$/i)).toBeNull();
 
-    // Narrativa do relato real do desenvolvedor
-    expect(screen.getByText(/momentos que beiravam o desespero/i)).toBeInTheDocument();
+    // Foto do autor no topo (ao lado/abaixo do título)
+    const authorPhoto = screen.getByAltText(/Foto de Bruno Torres/i);
+    expect(authorPhoto).toBeInTheDocument();
+    expect(authorPhoto).toHaveAttribute("src", "/bruno-torres.webp");
+
+    // Citação do autor no topo
+    expect(screen.getByText(/Bruno Torres/i)).toBeInTheDocument();
+    expect(screen.getByText(/Criador do Tratto/i)).toBeInTheDocument();
+
+    // Narrativa do relato real do desenvolvedor com tipografia Newsreader itálico
+    const firstPara = screen.getByText(/momentos que beiravam o desespero/i);
+    expect(firstPara).toBeInTheDocument();
     expect(screen.getByText(/gerados 100% na mão/i)).toBeInTheDocument();
     expect(screen.getByText(/planilha cheia de macros/i)).toBeInTheDocument();
     expect(screen.getByText(/abraço naquele Bruno do passado/i)).toBeInTheDocument();
 
-    // Assinatura do autor
-    expect(screen.getByText(/Bruno Torres/i)).toBeInTheDocument();
-    expect(screen.getByText(/Criador do Tratto/i)).toBeInTheDocument();
+    const letterContainer = firstPara.closest("div[class*='font-serif']");
+    expect(letterContainer).not.toBeNull();
+    expect(letterContainer?.className).toMatch(/italic/);
 
     // Gancho de transição para o mercado
     expect(screen.getByText(/O custo invisível de gerenciar contratos no improviso/i)).toBeInTheDocument();

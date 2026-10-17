@@ -8,24 +8,39 @@ export function ProblemBanner() {
     >
       <div className="mx-auto max-w-5xl px-4 sm:px-8">
         {/* ========================================================= */}
-        {/* PARTE 1: CARTA DO DESENVOLVEDOR (MANIFESTO PESSOAL) */}
+        {/* PARTE 1: CARTA DO DEV */}
         {/* ========================================================= */}
         <div className="mx-auto max-w-3xl text-left">
-          {/* Eyebrow / Chapéu Editorial */}
-          <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 font-mono text-xs uppercase tracking-widest text-white/90 backdrop-blur-xs border border-white/20">
-            <span>●</span>
-            <span>Carta do Desenvolvedor</span>
+          {/* Header da Carta: Título "Carta do Dev" com a foto e identificação do autor no topo */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+            <div>
+              <h2 className="font-serif text-3xl sm:text-5xl italic font-semibold text-white leading-tight tracking-tight">
+                Carta do Dev
+              </h2>
+            </div>
+
+            <div className="flex items-center gap-3.5 bg-white/10 border border-white/15 px-4 py-2.5 rounded-full backdrop-blur-xs w-fit">
+              <img
+                src="/bruno-torres.webp"
+                alt="Foto de Bruno Torres"
+                className="h-11 w-11 rounded-full object-cover border-2 border-white/40 shadow-sm shrink-0"
+              />
+              <div>
+                <div className="font-semibold text-white text-sm sm:text-base tracking-tight leading-snug">
+                  Bruno Torres
+                </div>
+                <div className="text-[11px] sm:text-xs text-white/75 font-mono">
+                  Desenvolvedor & Criador do Tratto
+                </div>
+              </div>
+            </div>
           </div>
 
-          <h2 className="mt-5 font-serif text-3xl sm:text-5xl italic font-semibold text-white leading-tight">
-            Por que decidi criar o Tratto nas minhas horas livres
-          </h2>
-
-          {/* Card com a carta em formato editorial acolhedor */}
-          <div className="mt-8 rounded-2xl border border-white/15 bg-white/10 p-6 sm:p-9 backdrop-blur-xs text-white/90 shadow-[0_12px_32px_rgba(0,0,0,0.08)]">
-            <div className="space-y-5 font-sans text-base sm:text-lg leading-relaxed text-white/90">
+          {/* Card com a carta em formato editorial envolta em aspas e tipografia Newsreader completa */}
+          <div className="mt-6 rounded-2xl border border-white/15 bg-white/10 p-6 sm:p-9 backdrop-blur-xs text-white/95 shadow-[0_12px_32px_rgba(0,0,0,0.08)]">
+            <div className="space-y-5 font-serif italic text-base sm:text-lg leading-relaxed text-white/95">
               <p>
-                Em duas das minhas maiores experiências profissionais antigas antes de me tornar oficialmente desenvolvedor, vivi momentos que beiravam o desespero quando o assunto era contrato. Não minto que, em algum momento, já cheguei até a chorar quando ouvia essa palavra.
+                &ldquo;Em duas das minhas maiores experiências profissionais antigas antes de me tornar oficialmente desenvolvedor, vivi momentos que beiravam o desespero quando o assunto era contrato. Não minto que, em algum momento, já cheguei até a chorar quando ouvia essa palavra.
               </p>
 
               <p>
@@ -45,29 +60,12 @@ export function ProblemBanner() {
               </p>
 
               <p>
-                Para preencher essa lacuna, decidi criar a <strong className="text-white font-semibold">Tratto</strong>: uma plataforma onde você sobe seus próprios modelos de contrato em .docx com marcadores simples, gera documentos de forma rápida e sem erro de preenchimento e acompanha todo o ciclo de vigência e reajustes sem depender de planilhas.
+                Para preencher essa lacuna, decidi criar a <strong className="text-white font-semibold not-italic">Tratto</strong>: uma plataforma onde você sobe seus próprios modelos de contrato em .docx com marcadores simples, gera documentos de forma rápida e sem erro de preenchimento e acompanha todo o ciclo de vigência e reajustes sem depender de planilhas.
               </p>
 
-              <p className="font-serif italic text-white/95 text-lg sm:text-xl pt-2 border-t border-white/10">
-                &ldquo;Essa ideia ainda está saindo do papel, mas já posso adiantar que, só de planejar a arquitetura e a identidade desse projeto, sinto que dei um abraço naquele Bruno do passado que passou por poucas e boas mexendo com esse tipo de documento...&rdquo;
+              <p>
+                Essa ideia ainda está saindo do papel, mas já posso adiantar que, só de planejar a arquitetura e a identidade desse projeto, sinto que dei um abraço naquele Bruno do passado que passou por poucas e boas mexendo com esse tipo de documento...&rdquo;
               </p>
-            </div>
-
-            {/* Assinatura do Desenvolvedor */}
-            <div className="mt-8 pt-6 border-t border-white/15 flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-3.5">
-                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-[var(--accent-primary)] font-serif font-bold text-lg shadow-sm">
-                  BT
-                </div>
-                <div>
-                  <div className="font-semibold text-white tracking-tight">Bruno Torres</div>
-                  <div className="text-xs text-white/70 font-mono">Desenvolvedor & Criador do Tratto</div>
-                </div>
-              </div>
-
-              <div className="text-xs font-mono text-white/60 bg-black/15 px-3 py-1.5 rounded-full border border-white/10">
-                Construído em código aberto & transparência
-              </div>
             </div>
           </div>
 
