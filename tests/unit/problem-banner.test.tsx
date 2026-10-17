@@ -86,11 +86,13 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(tab4).toBeInTheDocument();
     expect(tab5).toBeInTheDocument();
 
-    // Valida proporção da grade (lista menor md:col-span-4 e detalhe maior md:col-span-8)
+    // Valida proporção da grade (lado a lado a partir de 640px: sm:col-span-5 e sm:col-span-7; md:col-span-4 e md:col-span-8)
     const listCol = tab1.closest("div[class*='md:col-span-4']");
     expect(listCol).not.toBeNull();
+    expect(listCol).toHaveClass("sm:col-span-5");
 
     const detailPanel = screen.getByRole("tabpanel");
+    expect(detailPanel).toHaveClass("sm:col-span-7");
     expect(detailPanel).toHaveClass("md:col-span-8");
     expect(detailPanel).toHaveClass("min-h-[260px]");
     expect(detailPanel).toHaveClass("h-[260px]");

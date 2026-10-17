@@ -138,10 +138,10 @@ export function ProblemBanner() {
         {/* ========================================================= */}
         {/* PARTE 2: PAINEL DE MÉTRICAS (LISTA À ESQUERDA & DETALHE À DIREITA) */}
         {/* ========================================================= */}
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-12 gap-8 items-center text-left">
-          {/* Lado esquerdo: Lista de títulos minimalista (md:col-span-4) */}
+        <div className="mt-10 grid grid-cols-1 sm:grid-cols-12 gap-5 md:gap-6 items-center text-left">
+          {/* Lado esquerdo: Lista de títulos minimalista (sm:col-span-5 md:col-span-4) */}
           <div
-            className="flex flex-col gap-4 md:col-span-4"
+            className="flex flex-col gap-4 sm:col-span-5 md:col-span-4"
             role="tablist"
             aria-label="Métricas de prejuízo na gestão de contratos"
           >
@@ -179,10 +179,10 @@ export function ProblemBanner() {
             })}
           </div>
 
-          {/* Lado direito: Detalhe da métrica selecionada (md:col-span-8) com altura padronizada */}
+          {/* Lado direito: Detalhe da métrica selecionada (sm:col-span-7 md:col-span-8) com altura padronizada */}
           <div
             role="tabpanel"
-            className="md:col-span-8 rounded-2xl border border-white/20 bg-white/10 px-6 py-6 sm:px-8 md:px-10 backdrop-blur-xs flex flex-col justify-center min-h-[260px] h-[260px] sm:min-h-[250px] sm:h-[250px] shadow-[0_12px_32px_rgba(0,0,0,0.08)] overflow-hidden"
+            className="sm:col-span-7 md:col-span-8 rounded-2xl border border-white/20 bg-white/10 px-6 py-6 sm:px-8 md:px-10 backdrop-blur-xs flex flex-col justify-center min-h-[260px] h-[260px] sm:min-h-[250px] sm:h-[250px] shadow-[0_12px_32px_rgba(0,0,0,0.08)] overflow-hidden"
           >
             <div
               key={activeMetric.id}
