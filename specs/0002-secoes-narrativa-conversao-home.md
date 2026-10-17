@@ -1,6 +1,6 @@
 # 0002. Seções de Conversão & Narrativa da Home (Carta do Dev, Problema com ROI, Ciclo em 4 Passos, Segurança e FAQ)
 
-- **Status:** em revisão
+- **Status:** implementada
 - **Projeto:** landing page
 - **Docs relacionados:** `docs/01-visao-do-produto.md`, `docs/18-landing-page.md`, `docs/21-diretrizes-de-design-ui-ux.md`, `specs/0001-setup-fundacao-landing-page.md`
 
