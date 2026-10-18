@@ -13,10 +13,10 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     // Valida remoção do pill 'O Ciclo em 4 Passos'
     expect(screen.queryByText(/O Ciclo em 4 Passos/i)).toBeNull();
 
-    // Valida presença da logo Tratto com escala ampliada (>= h-20)
+    // Valida presença da logo Tratto com escala equilibrada (h-16 a h-28)
     const logos = screen.getAllByRole("img", { name: "Tratto" });
     expect(logos.length).toBeGreaterThan(0);
-    expect(logos[0].getAttribute("class")).toMatch(/h-20|h-24|h-28|h-32|h-36/);
+    expect(logos[0].getAttribute("class")).toMatch(/h-16|h-20|h-24|h-28/);
 
     // Valida o texto introdutório da plataforma e largura total da área de texto
     const introParagraph = screen.getByText(/Pensando nessas dores e na minha própria experiência/i);
