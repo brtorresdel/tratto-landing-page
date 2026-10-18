@@ -94,8 +94,7 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     const detailPanel = screen.getByRole("tabpanel");
     expect(detailPanel).toHaveClass("sm:col-span-7");
     expect(detailPanel).toHaveClass("md:col-span-8");
-    expect(detailPanel).toHaveClass("min-h-[260px]");
-    expect(detailPanel).toHaveClass("h-[260px]");
+    expect(detailPanel).toHaveClass("min-h-[280px]");
     expect(detailPanel).toHaveClass("sm:min-h-[250px]");
     expect(detailPanel).toHaveClass("sm:h-[250px]");
 
@@ -204,5 +203,37 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(screen.getByText("18%")).toBeInTheDocument();
 
     vi.useRealTimers();
+  });
+
+  it("CA4: Deve suportar navegação mobile estilo Stories com barras segmentadas e botões anterior/próximo", () => {
+    render(<ProblemBanner />);
+
+    // Valida presença dos 5 botões de indicadores segmentados mobile
+    const segButtons = screen.getAllByRole("button", { name: /^Métrica \d:/i });
+    expect(segButtons).toHaveLength(5);
+
+    // Métrica 1 ativa inicialmente: exibe indicador 1 de 5
+    expect(screen.getByText("1 de 5")).toBeInTheDocument();
+
+    // Botões de navegação anterior e próximo
+    const prevBtn = screen.getByRole("button", { name: /Métrica anterior/i });
+    const nextBtn = screen.getByRole("button", { name: /Próxima métrica/i });
+    expect(prevBtn).toBeInTheDocument();
+    expect(nextBtn).toBeInTheDocument();
+
+    // Clica no botão 'Próxima métrica' -> vai para métrica 2 (4h)
+    fireEvent.click(nextBtn);
+    expect(screen.getByText("2 de 5")).toBeInTheDocument();
+    expect(screen.getByText("4h")).toBeInTheDocument();
+
+    // Clica na barra da métrica 4 diretamente
+    fireEvent.click(segButtons[3]);
+    expect(screen.getByText("4 de 5")).toBeInTheDocument();
+    expect(screen.getByText("-15%")).toBeInTheDocument();
+
+    // Clica no botão 'Métrica anterior' -> volta para métrica 3 (21 dias)
+    fireEvent.click(prevBtn);
+    expect(screen.getByText("3 de 5")).toBeInTheDocument();
+    expect(screen.getByText("21 dias")).toBeInTheDocument();
   });
 });

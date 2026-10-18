@@ -58,6 +58,16 @@ export function ProblemBanner() {
     setActiveMetricIndex(index);
     setResetKey((prev) => prev + 1);
   };
+
+  const handlePrevMetric = () => {
+    setActiveMetricIndex((prev) => (prev - 1 + METRICS.length) % METRICS.length);
+    setResetKey((prev) => prev + 1);
+  };
+
+  const handleNextMetric = () => {
+    setActiveMetricIndex((prev) => (prev + 1) % METRICS.length);
+    setResetKey((prev) => prev + 1);
+  };
   return (
     <section
       id="o-problema"
@@ -139,9 +149,9 @@ export function ProblemBanner() {
         {/* PARTE 2: PAINEL DE MÉTRICAS (LISTA À ESQUERDA & DETALHE À DIREITA) */}
         {/* ========================================================= */}
         <div className="mt-10 grid grid-cols-1 sm:grid-cols-12 gap-5 md:gap-6 items-center text-left">
-          {/* Lado esquerdo: Lista de títulos minimalista (sm:col-span-5 md:col-span-4) */}
+          {/* Lado esquerdo: Lista de títulos minimalista no tablet/desktop (hidden sm:flex sm:col-span-5 md:col-span-4) */}
           <div
-            className="flex flex-col gap-4 sm:col-span-5 md:col-span-4"
+            className="hidden sm:flex flex-col gap-4 sm:col-span-5 md:col-span-4"
             role="tablist"
             aria-label="Métricas de prejuízo na gestão de contratos"
           >
@@ -179,22 +189,83 @@ export function ProblemBanner() {
             })}
           </div>
 
-          {/* Lado direito: Detalhe da métrica selecionada (sm:col-span-7 md:col-span-8) com altura padronizada */}
+          {/* Lado direito: Detalhe da métrica selecionada (com navegação Story no mobile e painel no tablet/desktop) */}
           <div
             role="tabpanel"
-            className="sm:col-span-7 md:col-span-8 rounded-2xl border border-white/20 bg-white/10 px-6 py-6 sm:px-8 md:px-10 backdrop-blur-xs flex flex-col justify-center min-h-[260px] h-[260px] sm:min-h-[250px] sm:h-[250px] shadow-[0_12px_32px_rgba(0,0,0,0.08)] overflow-hidden"
+            className="col-span-12 sm:col-span-7 md:col-span-8 rounded-2xl border border-white/20 bg-white/10 px-5 py-5 sm:px-8 md:px-10 backdrop-blur-xs flex flex-col justify-between sm:justify-center min-h-[280px] sm:min-h-[250px] sm:h-[250px] shadow-[0_12px_32px_rgba(0,0,0,0.08)] overflow-hidden"
           >
+            {/* Topo Mobile: 5 Barras Segmentadas (estilo Stories) */}
+            <div
+              className="sm:hidden grid grid-cols-5 gap-1.5"
+              role="group"
+              aria-label="Indicadores das métricas mobile"
+            >
+              {METRICS.map((metric, idx) => {
+                const isSelected = activeMetricIndex === idx;
+                const isPast = idx < activeMetricIndex;
+                return (
+                  <button
+                    key={`story-seg-${metric.id}`}
+                    type="button"
+                    onClick={() => handleSelectMetric(idx)}
+                    aria-label={`Métrica ${idx + 1}: ${metric.title}`}
+                    className="relative h-1.5 w-full overflow-hidden rounded-full bg-white/20 focus:outline-hidden cursor-pointer"
+                  >
+                    {isPast && <div className="h-full w-full bg-white rounded-full" />}
+                    {isSelected && (
+                      <div
+                        key={`mobile-progress-${metric.id}-${resetKey}`}
+                        className="h-full bg-white rounded-full animate-metric-progress"
+                      />
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Cabeçalho Mobile: Título da Métrica + Navegação ‹ › */}
+            <div className="sm:hidden mt-3 flex items-center justify-between">
+              <span className="font-mono text-xs uppercase tracking-wider text-white/80 font-semibold">
+                {activeMetric.title}
+              </span>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={handlePrevMetric}
+                  aria-label="Métrica anterior"
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-white transition-all cursor-pointer text-base leading-none"
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNextMetric}
+                  aria-label="Próxima métrica"
+                  className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-white transition-all cursor-pointer text-base leading-none"
+                >
+                  ›
+                </button>
+              </div>
+            </div>
+
+            {/* Conteúdo com Fade-in: Número em destaque e texto descritivo */}
             <div
               key={activeMetric.id}
-              className="animate-metric-fade-in flex flex-col justify-center"
+              className="animate-metric-fade-in flex flex-col justify-center my-auto py-2 sm:py-0"
             >
               <div className="font-mono text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight text-white tabular-nums">
                 {activeMetric.stat}
               </div>
 
-              <p className="mt-4 text-base sm:text-lg text-white/90 leading-relaxed">
+              <p className="mt-3 sm:mt-4 text-sm sm:text-lg text-white/90 leading-relaxed">
                 {activeMetric.description}
               </p>
+            </div>
+
+            {/* Rodapé Mobile: Indicador de métrica atual */}
+            <div className="sm:hidden pt-2.5 mt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
+              <span>{activeMetricIndex + 1} de {METRICS.length}</span>
+              <span>10s por métrica</span>
             </div>
           </div>
         </div>
