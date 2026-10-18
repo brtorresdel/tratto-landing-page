@@ -270,64 +270,105 @@ export function ProblemBanner() {
         </div>
 
         {/* ========================================================= */}
-        {/* PARTE 3: CARD COMPARATIVO DE IMPACTO FINANCEIRO */}
+        {/* PARTE 3: CARD DE IMPACTO FINANCEIRO NO IMPROVISO */}
         {/* ========================================================= */}
         <div className="mt-10 rounded-2xl border border-white/20 bg-black/20 p-6 sm:p-8 text-left">
-          <div className="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-white/15">
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-white/15">
             <div>
-              <span className="font-mono text-xs uppercase tracking-wider text-white/70">Simulação Real</span>
-              <h4 className="text-lg sm:text-xl font-serif italic font-semibold text-white">
-                Impacto Financeiro Anual
+              <span className="font-mono text-xs uppercase tracking-wider text-rose-300 font-semibold">
+                Simulação Real do Improviso
+              </span>
+              <h4 className="text-xl sm:text-2xl font-serif italic font-semibold text-white mt-0.5">
+                O custo invisível de gerenciar em planilhas e Word
               </h4>
             </div>
-            <span className="font-mono text-xs bg-white/15 px-2.5 py-1 rounded text-white/90">
-              Base: Carteira com R$ 30.000,00 / mês
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-xs bg-white/15 px-3 py-1 rounded-full text-white/90">
+                Base: Carteira com R$ 12.000,00 / mês
+              </span>
+            </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Coluna 1: No improviso */}
-            <div className="rounded-xl border border-rose-400/30 bg-rose-950/20 p-5">
-              <div className="flex items-center justify-between text-rose-300 font-semibold text-sm">
-                <span>No improviso (planilhas e Word)</span>
-                <span className="font-mono text-xs bg-rose-900/50 px-2 py-0.5 rounded">Risco Alto</span>
+          {/* Destaque do prejuízo total consolidado */}
+          <div className="mt-6 rounded-xl border border-rose-400/30 bg-rose-950/30 p-5 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-rose-400/20">
+              <div>
+                <span className="font-mono text-xs uppercase tracking-wider text-rose-300 font-medium">
+                  Prejuízo direto estimado
+                </span>
+                <div className="font-mono text-3xl sm:text-4xl font-bold text-rose-200 mt-1">
+                  -R$ 17.280,00 <span className="text-lg font-normal text-rose-300/80">/ ano</span>
+                </div>
               </div>
-              <ul className="mt-4 space-y-2.5 text-xs sm:text-sm text-white/80">
-                <li className="flex items-start gap-2">
-                  <span className="text-rose-400 font-bold">✕</span>
-                  <span><strong>-R$ 16.200,00 / ano</strong> em reajustes de inflação não cobrados.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-rose-400 font-bold">✕</span>
-                  <span><strong>~200 horas anuais</strong> gastas gerando e reenviando minutas manualmente.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-rose-400 font-bold">✕</span>
-                  <span>Incerteza jurídica: vias perdidas em gavetas e clientes sem assinatura válida.</span>
-                </li>
-              </ul>
+              <div className="sm:text-right">
+                <span className="font-mono text-xs uppercase tracking-wider text-rose-300 font-medium">
+                  Tempo desperdiçado
+                </span>
+                <div className="font-mono text-3xl sm:text-4xl font-bold text-rose-200 mt-1">
+                  ~200 horas <span className="text-lg font-normal text-rose-300/80">/ ano</span>
+                </div>
+              </div>
             </div>
 
-            {/* Coluna 2: Com a Tratto */}
-            <div className="rounded-xl border border-emerald-400/30 bg-emerald-950/20 p-5">
-              <div className="flex items-center justify-between text-emerald-300 font-semibold text-sm">
-                <span>Com a Tratto</span>
-                <span className="font-mono text-xs bg-emerald-900/50 px-2 py-0.5 rounded">Previsibilidade</span>
+            <p className="mt-3 text-xs sm:text-sm text-white/80 font-serif italic">
+              * Para uma empresa com essa carteira, isso equivale a perder{" "}
+              <strong className="text-white font-semibold not-italic">
+                mais de 1 mês inteiro de faturamento anual
+              </strong>{" "}
+              apenas com falhas operacionais e desatenção de prazos.
+            </p>
+          </div>
+
+          {/* Grid com o detalhamento das 5 perdas */}
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+              <span className="text-rose-400 font-bold shrink-0 mt-0.5">✕</span>
+              <div>
+                <strong className="text-white text-sm block">Reajustes de inflação não cobrados</strong>
+                <span className="text-xs sm:text-sm text-white/80 leading-relaxed">
+                  <strong>-R$ 6.480,00 / ano</strong> esquecidos ao não aplicar IPCA/IGP-M na data base de aniversário.
+                </span>
               </div>
-              <ul className="mt-4 space-y-2.5 text-xs sm:text-sm text-white/80">
-                <li className="flex items-start gap-2">
-                  <span className="text-emerald-400 font-bold">✓</span>
-                  <span><strong>100% dos reajustes</strong> calculados e aplicados na data certa pelo Bacen.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-emerald-400 font-bold">✓</span>
-                  <span><strong>Minutas geradas em &lt; 2 minutos</strong> diretamente dos seus templates .docx.</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-emerald-400 font-bold">✓</span>
-                  <span>Linha do tempo auditável, assinatura integrada e controle em tempo real.</span>
-                </li>
-              </ul>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+              <span className="text-rose-400 font-bold shrink-0 mt-0.5">✕</span>
+              <div>
+                <strong className="text-white text-sm block">Descontos informais sem aprovação</strong>
+                <span className="text-xs sm:text-sm text-white/80 leading-relaxed">
+                  <strong>-R$ 7.200,00 / ano</strong> em concessões concedidas pela equipe comercial sem fluxo formal de aprovação.
+                </span>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+              <span className="text-rose-400 font-bold shrink-0 mt-0.5">✕</span>
+              <div>
+                <strong className="text-white text-sm block">Cancelamentos sem aviso prévio</strong>
+                <span className="text-xs sm:text-sm text-white/80 leading-relaxed">
+                  <strong>-R$ 3.600,00 / ano</strong> perdidos por demorar a perceber rescisões sem retenção da última mensalidade.
+                </span>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+              <span className="text-rose-400 font-bold shrink-0 mt-0.5">✕</span>
+              <div>
+                <strong className="text-white text-sm block">Horas do sócio/equipe no braço</strong>
+                <span className="text-xs sm:text-sm text-white/80 leading-relaxed">
+                  <strong>~200 horas anuais</strong> gastas gerando, corrigindo e reenviando minutas manualmente.
+                </span>
+              </div>
+            </div>
+
+            <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3 md:col-span-2">
+              <span className="text-rose-400 font-bold shrink-0 mt-0.5">✕</span>
+              <div>
+                <strong className="text-white text-sm block">Insegurança jurídica e passivo oculto</strong>
+                <span className="text-xs sm:text-sm text-white/80 leading-relaxed">
+                  Vias perdidas em pastas locais, sem assinatura válida ou com dados trocados de clientes anteriores, inviabilizando cobrança executiva em caso de inadimplência.
+                </span>
+              </div>
             </div>
           </div>
         </div>
