@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { render, screen, fireEvent, act } from "@testing-library/react";
 import React from "react";
 import { HowItWorksSection } from "@/components/how-it-works-section";
 
@@ -35,27 +35,98 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     ).toBeInTheDocument();
   });
 
-  it("deve renderizar os 4 passos sequenciais com numeração em Geist Mono e resumos objetivos", () => {
+  it("deve renderizar o player interativo estilo Stories com as 4 etapas da vida do contrato", () => {
+    vi.useFakeTimers();
     render(<HowItWorksSection />);
 
-    // Passo 01
-    expect(screen.getByText("01")).toHaveClass("font-mono");
-    expect(screen.getByText(/Traga seus modelos em \.docx/i)).toBeInTheDocument();
-    expect(screen.getByText(/marcadores simples como/i)).toBeInTheDocument();
+    // Valida os 4 indicadores segmentados estilo Stories
+    const storyIndicators = screen.getAllByRole("button", { name: /^Etapa \d:/i });
+    expect(storyIndicators).toHaveLength(4);
 
-    // Passo 02
-    expect(screen.getByText("02")).toHaveClass("font-mono");
-    expect(screen.getByText(/Gere minutas e aprove descontos/i)).toBeInTheDocument();
-    expect(screen.getByText(/aprovação formal pelo supervisor/i)).toBeInTheDocument();
+    // Valida botões de navegação anterior e próximo
+    expect(screen.getByRole("button", { name: /Etapa anterior/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Próxima etapa/i })).toBeInTheDocument();
 
-    // Passo 03
-    expect(screen.getByText("03")).toHaveClass("font-mono");
-    expect(screen.getByText(/Assine com validade jurídica/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/ZapSign.*Clicksign.*modo manual/i)[0]).toBeInTheDocument();
+    // Etapa 1 ativa inicialmente: Modelo & Marcadores
+    expect(screen.getByText(/1 de 4/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
 
-    // Passo 04
-    expect(screen.getByText("04")).toHaveClass("font-mono");
-    expect(screen.getByText(/Vigência, reajustes e parcelas/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/Banco Central/i)[0]).toBeInTheDocument();
+    // Avança animação para preencher o primeiro marcador
+    act(() => {
+      vi.advanceTimersByTime(2500);
+    });
+    expect(screen.getByText(/\{\{cliente_nome\}\}/i)).toBeInTheDocument();
+
+    vi.useRealTimers();
+  });
+
+  it("deve permitir navegar entre as 4 etapas da história pelos botões e pelas barras segmentadas", () => {
+    vi.useFakeTimers();
+    render(<HowItWorksSection />);
+
+    const nextBtn = screen.getByRole("button", { name: /Próxima etapa/i });
+    const prevBtn = screen.getByRole("button", { name: /Etapa anterior/i });
+    const storyIndicators = screen.getAllByRole("button", { name: /^Etapa \d:/i });
+
+    // Avança para Etapa 2: Preenchimento & Criação Oficial
+    act(() => {
+      fireEvent.click(nextBtn);
+    });
+    expect(screen.getByText(/2 de 4/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Preenchimento & Criação/i })).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(3500);
+    });
+    expect(screen.getAllByText(/João da Silva/i).length).toBeGreaterThan(0);
+
+    // Avança para Etapa 3: Envio & Assinatura
+    act(() => {
+      fireEvent.click(nextBtn);
+    });
+    expect(screen.getByText(/3 de 4/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Envio & Assinatura/i })).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(3800);
+    });
+    expect(screen.getAllByText(/ASSINADO/i).length).toBeGreaterThan(0);
+
+    // Avança para Etapa 4: Vigência & Reajuste Automático
+    act(() => {
+      fireEvent.click(nextBtn);
+    });
+    expect(screen.getByText(/4 de 4/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Vigência & Reajuste/i })).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(2000);
+    });
+    expect(screen.getAllByText(/Valor atualizado/i).length).toBeGreaterThan(0);
+
+    // Clica diretamente no indicador da Etapa 1
+    act(() => {
+      fireEvent.click(storyIndicators[0]);
+    });
+    expect(screen.getByText(/1 de 4/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(2500);
+    });
+    expect(screen.getByText(/\{\{cliente_nome\}\}/i)).toBeInTheDocument();
+
+    // Clica no botão anterior -> faz o ciclo para Etapa 4
+    act(() => {
+      fireEvent.click(prevBtn);
+    });
+    expect(screen.getByText(/4 de 4/i)).toBeInTheDocument();
+
+    act(() => {
+      vi.advanceTimersByTime(2000);
+    });
+    expect(screen.getAllByText(/Valor atualizado/i).length).toBeGreaterThan(0);
+
+    vi.useRealTimers();
   });
 });
