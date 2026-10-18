@@ -41,9 +41,9 @@ export function HowItWorksSection() {
   return (
     <section id="como-funciona" className="py-20 sm:py-28 bg-[var(--bg-canvas)] transition-colors duration-300">
       <div className="mx-auto max-w-5xl px-4 sm:px-8 text-center">
-        {/* Apresentação Oficial da Tratto: Logo com escala calibrada e ponto dinâmico */}
+        {/* Apresentação Oficial da Tratto: Logo com escala calibrada, ponto dinâmico e efeito flutuante leve */}
         <div className="flex justify-center">
-          <h2 aria-label="Tratto">
+          <h2 aria-label="Tratto" className="animate-float-gentle">
             <TrattoWordmark className="inline-block h-16 w-auto sm:h-20 md:h-24 lg:h-28" />
           </h2>
         </div>

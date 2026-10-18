@@ -152,5 +152,24 @@
     opacity: 1;
     transform: none;
   }
+
+  .animate-float-gentle {
+    animation: none;
+    transform: none;
+  }
+}
+
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+.animate-float-gentle {
+  animation: floatGentle 4s ease-in-out infinite;
+  will-change: transform;
 }
 
