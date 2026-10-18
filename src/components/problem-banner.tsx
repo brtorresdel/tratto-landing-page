@@ -270,27 +270,17 @@ export function ProblemBanner() {
         </div>
 
         {/* ========================================================= */}
-        {/* PARTE 3: CARD DE IMPACTO FINANCEIRO NO IMPROVISO */}
+        {/* PARTE 3: CARD DE IMPACTO FINANCEIRO NO IMPROVISO (ALERTA VERMELHO) */}
         {/* ========================================================= */}
-        <div className="mt-10 rounded-2xl border border-white/20 bg-black/20 p-6 sm:p-8 text-left">
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-white/15">
-            <div>
-              <span className="font-mono text-xs uppercase tracking-wider text-rose-300 font-semibold">
-                Simulação Real do Improviso
-              </span>
-              <h4 className="text-xl sm:text-2xl font-serif italic font-semibold text-white mt-0.5">
-                O custo invisível de gerenciar em planilhas e Word
-              </h4>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="font-mono text-xs bg-white/15 px-3 py-1 rounded-full text-white/90">
-                Base: Carteira com R$ 12.000,00 / mês
-              </span>
-            </div>
+        <div className="mt-10 rounded-2xl border border-rose-400/35 bg-rose-950/30 p-6 sm:p-8 text-left shadow-[0_12px_32px_rgba(0,0,0,0.12)]">
+          <div className="pb-5 border-b border-rose-400/20">
+            <h4 className="text-xl sm:text-2xl font-serif italic font-semibold text-rose-100 leading-snug">
+              Considerando uma empresa com um faturamento médio de R$ 12.000,00 / mês, o custo é considerável...
+            </h4>
           </div>
 
           {/* Destaque do prejuízo total consolidado */}
-          <div className="mt-6 rounded-xl border border-rose-400/30 bg-rose-950/30 p-5 sm:p-6">
+          <div className="mt-6 rounded-xl border border-rose-400/30 bg-rose-900/30 p-5 sm:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-rose-400/20">
               <div>
                 <span className="font-mono text-xs uppercase tracking-wider text-rose-300 font-medium">
@@ -319,9 +309,9 @@ export function ProblemBanner() {
             </p>
           </div>
 
-          {/* Grid com o detalhamento das 5 perdas */}
+          {/* Grid com o detalhamento das 5 perdas em tom de alerta */}
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+            <div className="rounded-xl border border-rose-400/20 bg-rose-950/40 p-4 flex items-start gap-3">
               <span className="text-rose-400 font-bold shrink-0 mt-0.5">✕</span>
               <div>
                 <strong className="text-white text-sm block">Reajustes de inflação não cobrados</strong>
@@ -331,7 +321,7 @@ export function ProblemBanner() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+            <div className="rounded-xl border border-rose-400/20 bg-rose-950/40 p-4 flex items-start gap-3">
               <span className="text-rose-400 font-bold shrink-0 mt-0.5">✕</span>
               <div>
                 <strong className="text-white text-sm block">Descontos informais sem aprovação</strong>
@@ -341,7 +331,7 @@ export function ProblemBanner() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+            <div className="rounded-xl border border-rose-400/20 bg-rose-950/40 p-4 flex items-start gap-3">
               <span className="text-rose-400 font-bold shrink-0 mt-0.5">✕</span>
               <div>
                 <strong className="text-white text-sm block">Cancelamentos sem aviso prévio</strong>
@@ -351,7 +341,7 @@ export function ProblemBanner() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3">
+            <div className="rounded-xl border border-rose-400/20 bg-rose-950/40 p-4 flex items-start gap-3">
               <span className="text-rose-400 font-bold shrink-0 mt-0.5">✕</span>
               <div>
                 <strong className="text-white text-sm block">Horas do sócio/equipe no braço</strong>
@@ -361,7 +351,7 @@ export function ProblemBanner() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-white/10 bg-white/5 p-4 flex items-start gap-3 md:col-span-2">
+            <div className="rounded-xl border border-rose-400/20 bg-rose-950/40 p-4 flex items-start gap-3 md:col-span-2">
               <span className="text-rose-400 font-bold shrink-0 mt-0.5">✕</span>
               <div>
                 <strong className="text-white text-sm block">Insegurança jurídica e passivo oculto</strong>

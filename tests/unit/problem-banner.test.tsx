@@ -158,9 +158,12 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
       screen.getByText(/contratos ativos em operação sem a via final formalmente assinada/i)
     ).toBeInTheDocument();
 
-    // Card de impacto financeiro no improviso (sem solução prematura da Tratto e com base de 12k/mês)
-    expect(screen.getByText(/Simulação Real do Improviso/i)).toBeInTheDocument();
-    expect(screen.getByText(/Base: Carteira com R\$ 12\.000,00 \/ mês/i)).toBeInTheDocument();
+    // Card de impacto financeiro no improviso em alerta vermelho com título explícito e sem pill redundante
+    expect(
+      screen.getByText(/Considerando uma empresa com um faturamento médio de R\$ 12\.000,00 \/ mês, o custo é considerável\.\.\./i)
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/Simulação Real do Improviso/i)).toBeNull();
+    expect(screen.queryByText(/^Base: Carteira/i)).toBeNull();
     expect(screen.queryByText(/Com a Tratto/i)).toBeNull();
 
     // Detalhamento das 5 perdas reais no improviso
