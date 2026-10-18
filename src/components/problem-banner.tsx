@@ -340,19 +340,16 @@ export function ProblemBanner() {
                 <strong>Insegurança jurídica e passivo oculto:</strong> Vias perdidas em pastas locais, sem assinatura válida ou com dados trocados de clientes anteriores, inviabilizando cobrança executiva em caso de inadimplência.
               </span>
             </li>
-
-            {/* Observação incorporada como último item da lista */}
-            <li className="flex items-start gap-3 pt-1 text-rose-200/90 font-serif italic text-sm sm:text-base">
-              <span className="text-rose-400 font-bold shrink-0 mt-0.5">✕</span>
-              <span>
-                Para uma empresa com essa carteira, isso equivale a perder{" "}
-                <strong className="text-white font-semibold not-italic">
-                  mais de 1 mês inteiro de faturamento anual
-                </strong>{" "}
-                apenas com falhas operacionais e desatenção de prazos.
-              </span>
-            </li>
           </ul>
+
+          {/* Observação final como texto simples em branco */}
+          <p className="mt-6 text-sm sm:text-base text-white/90 font-serif italic leading-relaxed">
+            Para uma empresa com essa carteira, isso equivale a perder{" "}
+            <strong className="text-white font-semibold not-italic">
+              mais de 1 mês inteiro de faturamento anual
+            </strong>{" "}
+            apenas com falhas operacionais e desatenção de prazos.
+          </p>
         </div>
       </div>
     </section>
