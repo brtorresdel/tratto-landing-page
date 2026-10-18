@@ -158,21 +158,22 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
       screen.getByText(/contratos ativos em operação sem a via final formalmente assinada/i)
     ).toBeInTheDocument();
 
-    // Card de impacto financeiro no improviso em alerta vermelho com título explícito e sem pill redundante
+    // Card de impacto financeiro no improviso em alerta vermelho com título sem repetição e formato de lista
     expect(
-      screen.getByText(/Considerando uma empresa com um faturamento médio de R\$ 12\.000,00 \/ mês, o custo é considerável\.\.\./i)
+      screen.getByText(/Considerando uma empresa com um faturamento médio de R\$ 12\.000,00 \/ mês\.\.\./i)
     ).toBeInTheDocument();
     expect(screen.queryByText(/Simulação Real do Improviso/i)).toBeNull();
     expect(screen.queryByText(/^Base: Carteira/i)).toBeNull();
     expect(screen.queryByText(/Com a Tratto/i)).toBeNull();
 
-    // Detalhamento das 5 perdas reais no improviso
+    // Detalhamento dos valores e das perdas reais no improviso
     expect(screen.getByText(/-R\$ 17\.280,00/i)).toBeInTheDocument();
     expect(screen.getByText(/-R\$ 6\.480,00 \/ ano/i)).toBeInTheDocument();
     expect(screen.getByText(/-R\$ 7\.200,00 \/ ano/i)).toBeInTheDocument();
     expect(screen.getByText(/-R\$ 3\.600,00 \/ ano/i)).toBeInTheDocument();
     expect(screen.getByText(/~200 horas anuais/i)).toBeInTheDocument();
     expect(screen.getByText(/Insegurança jurídica e passivo oculto/i)).toBeInTheDocument();
+    expect(screen.getByText(/mais de 1 mês inteiro de faturamento anual/i)).toBeInTheDocument();
   });
 
   it("CA3: Deve avançar automaticamente para a próxima métrica a cada 10 segundos e reiniciar no clique", () => {
