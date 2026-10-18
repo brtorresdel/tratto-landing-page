@@ -3,15 +3,30 @@ import { render, screen } from "@testing-library/react";
 import React from "react";
 import { HowItWorksSection } from "@/components/how-it-works-section";
 
-describe("HowItWorksSection (Spec 0002 - CA3: O Ciclo em 4 Passos)", () => {
-  it("deve renderizar a seção #como-funciona com o chapéu editorial e título em Newsreader", () => {
+describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Funciona)", () => {
+  it("deve renderizar a seção #como-funciona com a logo Tratto e o texto de introdução oficial", () => {
     const { container } = render(<HowItWorksSection />);
     const section = container.querySelector("section");
     expect(section).not.toBeNull();
     expect(section?.id).toBe("como-funciona");
 
-    expect(screen.getByText(/Como Funciona a Tratto|O Ciclo em 4 Passos/i)).toBeInTheDocument();
-    expect(screen.getByText(/Do modelo no Word ao reajuste anual automático/i)).toBeInTheDocument();
+    // Valida remoção do pill 'O Ciclo em 4 Passos'
+    expect(screen.queryByText(/O Ciclo em 4 Passos/i)).toBeNull();
+
+    // Valida presença da logo Tratto no topo da seção
+    const logos = screen.getAllByRole("img", { name: "Tratto" });
+    expect(logos.length).toBeGreaterThan(0);
+
+    // Valida o texto introdutório da plataforma
+    expect(
+      screen.getByText(/Pensando nessas dores e na minha própria experiência, planejei um projeto que pudesse simplificar esse processo\./i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/E esse projeto se tornou a/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/A ideia aqui é bem simples:/i)
+    ).toBeInTheDocument();
   });
 
   it("deve renderizar os 4 passos sequenciais com numeração em Geist Mono e resumos objetivos", () => {

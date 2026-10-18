@@ -1,5 +1,6 @@
 import React from "react";
 import { FileText, CheckCircle2, PenTool, TrendingUp } from "lucide-react";
+import { TrattoWordmark } from "./tratto-wordmark";
 
 export function HowItWorksSection() {
   const steps = [
@@ -40,20 +41,17 @@ export function HowItWorksSection() {
   return (
     <section id="como-funciona" className="py-20 sm:py-28 bg-[var(--bg-canvas)] transition-colors duration-300">
       <div className="mx-auto max-w-5xl px-4 sm:px-8 text-center">
-        {/* Eyebrow / Chapéu Editorial */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3.5 py-1 text-xs font-mono uppercase tracking-widest text-[var(--accent-primary)] shadow-2xs">
-          <span>●</span>
-          <span>O Ciclo em 4 Passos</span>
+        {/* Apresentação Oficial da Tratto: Logo com ponto dinâmico */}
+        <div className="flex justify-center">
+          <h2 aria-label="Tratto">
+            <TrattoWordmark className="inline-block h-10 w-auto sm:h-14 lg:h-16" />
+          </h2>
         </div>
 
-        {/* Título Principal */}
-        <h2 className="mt-5 font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">
-          Do modelo no Word ao reajuste anual automático
-        </h2>
-
-        {/* Subtítulo */}
-        <p className="mt-4 mx-auto max-w-2xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-          Como a Tratto transforma a rotina contratual da sua empresa em um fluxo contínuo e previsível, sem exigir migrações dolorosas ou treinamentos longos.
+        {/* Texto Introdutório */}
+        <p className="mt-6 mx-auto max-w-3xl text-base sm:text-lg lg:text-xl text-[var(--text-main)] leading-relaxed">
+          Pensando nessas dores e na minha própria experiência, planejei um projeto que pudesse simplificar esse processo. E esse projeto se tornou a{" "}
+          <strong className="font-semibold text-[var(--text-main)]">Tratto</strong>, uma plataforma para criação e gerenciamento de contratos baseado em templates, que permite agilizar e otimizar ao máximo esse processo! A ideia aqui é bem simples:
         </p>
 
         {/* Grade dos 4 Passos */}
