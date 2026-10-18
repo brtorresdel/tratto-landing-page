@@ -212,8 +212,9 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     const segButtons = screen.getAllByRole("button", { name: /^Métrica \d:/i });
     expect(segButtons).toHaveLength(5);
 
-    // Métrica 1 ativa inicialmente: exibe indicador 1 de 5
+    // Métrica 1 ativa inicialmente: exibe indicador 1 de 5 centralizado e sem texto '10s por métrica'
     expect(screen.getByText("1 de 5")).toBeInTheDocument();
+    expect(screen.queryByText(/10s por métrica/i)).toBeNull();
 
     // Botões de navegação anterior e próximo
     const prevBtn = screen.getByRole("button", { name: /Métrica anterior/i });

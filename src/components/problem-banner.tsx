@@ -263,9 +263,8 @@ export function ProblemBanner() {
             </div>
 
             {/* Rodapé Mobile: Indicador de métrica atual */}
-            <div className="sm:hidden pt-2.5 mt-2 border-t border-white/10 flex items-center justify-between text-[11px] font-mono text-white/60">
+            <div className="sm:hidden pt-2.5 mt-2 border-t border-white/10 flex items-center justify-center text-[11px] font-mono text-white/60">
               <span>{activeMetricIndex + 1} de {METRICS.length}</span>
-              <span>10s por métrica</span>
             </div>
           </div>
         </div>
