@@ -173,7 +173,13 @@ describe("ProblemBanner (Spec 0002 - CA1 e CA2: Carta do Dev e Métricas de Prej
     expect(screen.getByText(/-R\$ 3\.600,00 \/ ano/i)).toBeInTheDocument();
     expect(screen.getByText(/~200 horas anuais/i)).toBeInTheDocument();
     expect(screen.getByText(/Insegurança jurídica e passivo oculto/i)).toBeInTheDocument();
-    expect(screen.getByText(/mais de 1 mês inteiro de faturamento anual/i)).toBeInTheDocument();
+
+    const obsParagraph = screen.getByText(/mais de 1 mês inteiro de faturamento anual/i).closest("p");
+    expect(obsParagraph).not.toBeNull();
+    expect(obsParagraph).toHaveClass("text-base");
+    expect(obsParagraph).toHaveClass("sm:text-lg");
+    expect(obsParagraph?.className).not.toMatch(/font-serif/);
+    expect(obsParagraph?.className).not.toMatch(/italic/);
   });
 
   it("CA3: Deve avançar automaticamente para a próxima métrica a cada 10 segundos e reiniciar no clique", () => {

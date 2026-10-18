@@ -342,10 +342,10 @@ export function ProblemBanner() {
             </li>
           </ul>
 
-          {/* Observação final como texto simples em branco */}
-          <p className="mt-6 text-sm sm:text-base text-white/90 font-serif italic leading-relaxed">
+          {/* Observação final como texto simples em branco na fonte padrão */}
+          <p className="mt-6 text-base sm:text-lg text-white/90 leading-relaxed">
             Para uma empresa com essa carteira, isso equivale a perder{" "}
-            <strong className="text-white font-semibold not-italic">
+            <strong className="text-white font-semibold">
               mais de 1 mês inteiro de faturamento anual
             </strong>{" "}
             apenas com falhas operacionais e desatenção de prazos.
