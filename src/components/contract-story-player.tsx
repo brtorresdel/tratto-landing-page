@@ -114,9 +114,9 @@ export function ContractStoryPlayer() {
         })}
       </div>
 
-      {/* 2. Cabeçalho da Etapa: Título e Descrição com largura total e altura estável */}
-      <div className="mt-6 pb-5 border-b border-[var(--border-subtle)] min-h-[84px] sm:min-h-[88px] flex flex-col justify-center">
-        <h3 className="font-serif text-2xl sm:text-3xl italic font-semibold text-[var(--text-main)]">
+      {/* 2. Cabeçalho da Etapa: Título e Descrição com altura fixa padronizada para eliminar qualquer deslocamento de layout */}
+      <div className="mt-6 pb-4 sm:pb-5 border-b border-[var(--border-subtle)] h-[175px] sm:h-[140px] lg:h-[120px] flex flex-col justify-start overflow-hidden">
+        <h3 className="font-serif text-2xl sm:text-3xl italic font-semibold text-[var(--text-main)] shrink-0">
           {activeStep.title}
         </h3>
         <p className="mt-2 text-sm sm:text-base text-[var(--text-muted)] w-full leading-relaxed">
