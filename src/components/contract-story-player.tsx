@@ -150,97 +150,182 @@ export function ContractStoryPlayer() {
 }
 
 // =========================================================================
-// ETAPA 1: O MODELO EM BRANCO SENDO PREENCHIDO COM MARCADORES EM DESTAQUE
+// ETAPA 1: O MODELO EM BRANCO SENDO PREENCHIDO COM EFEITO TYPING E MARCADORES EM DESTAQUE
 // =========================================================================
+const STEP1_TITLE = "Contrato de Prestação de Serviços";
+
+interface DocParagraph {
+  segments: {
+    text: string;
+    isMarker?: boolean;
+  }[];
+}
+
+const STEP1_PARAGRAPHS: DocParagraph[] = [
+  {
+    segments: [
+      { text: "Pelo presente instrumento particular, de um lado a CONTRATADA, e de outro lado como CONTRATANTE " },
+      { text: "{{cliente_nome}}", isMarker: true },
+      { text: ", inscrito sob o documento oficial " },
+      { text: "{{cliente_documento}}", isMarker: true },
+      { text: "." },
+    ],
+  },
+  {
+    segments: [
+      { text: "Cláusula 1ª: O objeto deste contrato é a prestação do serviço correspondente ao " },
+      { text: "{{plano_nome}}", isMarker: true },
+      { text: ", com a vigência estipulada de " },
+      { text: "{{vigencia_meses}}", isMarker: true },
+      { text: "." },
+    ],
+  },
+  {
+    segments: [
+      { text: "Cláusula 2ª: Pela execução dos serviços, o CONTRATANTE pagará o valor mensal de " },
+      { text: "{{valor_mensal}}", isMarker: true },
+      { text: ", reajustado anualmente pelo índice oficial." },
+    ],
+  },
+];
+
+const TOTAL_DOC_CHARS =
+  STEP1_TITLE.length +
+  STEP1_PARAGRAPHS.reduce(
+    (acc, block) => acc + block.segments.reduce((sAcc, s) => sAcc + s.text.length, 0),
+    0
+  );
+
 function Step1ModelMarkers() {
-  const [phase, setPhase] = useState(0);
+  const [typedChars, setTypedChars] = useState(0);
+  const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
-    const cycle = setInterval(() => {
-      setPhase((p) => (p + 1) % 3);
-    }, 2500);
-    return () => clearInterval(cycle);
-  }, []);
+    let interval: NodeJS.Timeout | null = null;
+    let timeout: NodeJS.Timeout | null = null;
+
+    if (typedChars < TOTAL_DOC_CHARS) {
+      interval = setInterval(() => {
+        setTypedChars((prev) => Math.min(prev + 1, TOTAL_DOC_CHARS));
+      }, 16);
+    } else {
+      // Quando termina de digitar tudo, aguarda 5s para leitura, depois reseta com fade suave para branco
+      timeout = setTimeout(() => {
+        setIsFading(true);
+        setTimeout(() => {
+          setTypedChars(0);
+          setIsFading(false);
+        }, 500);
+      }, 5000);
+    }
+
+    return () => {
+      if (interval) clearInterval(interval);
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [typedChars]);
+
+  // Calcula fatias de texto digitadas para cada segmento
+  let charBudget = typedChars;
+
+  let renderedTitle = "";
+  let cursorAtTitle = false;
+
+  if (charBudget > 0) {
+    if (charBudget >= STEP1_TITLE.length) {
+      renderedTitle = STEP1_TITLE;
+      charBudget -= STEP1_TITLE.length;
+    } else {
+      renderedTitle = STEP1_TITLE.slice(0, charBudget);
+      charBudget = 0;
+      cursorAtTitle = true;
+    }
+  }
+
+  const renderedParagraphs = STEP1_PARAGRAPHS.map((block, pIdx) => {
+    return block.segments.map((seg, sIdx) => {
+      if (charBudget <= 0) {
+        return null;
+      }
+
+      let textSlice = "";
+      let isCurrentTyping = false;
+
+      if (charBudget >= seg.text.length) {
+        textSlice = seg.text;
+        charBudget -= seg.text.length;
+      } else {
+        textSlice = seg.text.slice(0, charBudget);
+        charBudget = 0;
+        isCurrentTyping = true;
+      }
+
+      const isMarker = seg.isMarker;
+
+      return (
+        <React.Fragment key={`seg-${pIdx}-${sIdx}`}>
+          {isMarker ? (
+            <span
+              className={clsx(
+                "font-mono px-1.5 py-0.5 rounded font-semibold transition-all duration-200 inline-block align-baseline",
+                "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)]",
+                textSlice.length === seg.text.length && "shadow-xs"
+              )}
+            >
+              {textSlice}
+            </span>
+          ) : (
+            <span>{textSlice}</span>
+          )}
+          {isCurrentTyping && (
+            <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5 align-middle" />
+          )}
+        </React.Fragment>
+      );
+    });
+  });
 
   return (
-    <div className="w-full max-w-lg mx-auto flex flex-col items-center">
-      {/* Documento simulado A4 */}
-      <div className="w-full rounded-lg border border-[var(--border-subtle)] bg-white p-5 sm:p-7 shadow-md transition-all duration-700 text-left">
-        {/* Cabeçalho do documento */}
-        <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
+    <div className="w-full max-w-[380px] sm:max-w-[410px] mx-auto flex flex-col items-center">
+      {/* Documento simulado A4 com largura calibrada e acabamento de folha de papel */}
+      <div
+        className={clsx(
+          "w-full rounded-md border border-gray-200 bg-white p-5 sm:p-6 shadow-xl shadow-black/8 ring-1 ring-black/5 transition-opacity duration-500 text-left min-h-[440px] flex flex-col justify-start relative",
+          isFading ? "opacity-0" : "opacity-100"
+        )}
+      >
+        {/* Cabeçalho do documento Word / DOCX */}
+        <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4 select-none">
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-full bg-blue-500/80" />
-            <span className="font-mono text-[11px] uppercase tracking-wider text-gray-500 font-semibold">
-              template_prestacao_servicos.docx
+            <div className="h-2.5 w-2.5 rounded-full bg-blue-600" />
+            <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-gray-500 font-semibold truncate max-w-[200px]">
+              modelo_prestacao_servicos.docx
             </span>
           </div>
-          <span className="text-[10px] font-mono bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
-            Word Original
+          <span className="text-[9px] font-mono uppercase font-bold tracking-wider bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">
+            Word DOCX
           </span>
         </div>
 
-        <div className="space-y-3.5 text-xs sm:text-sm text-gray-700 leading-relaxed font-sans">
-          <div className="text-center font-bold uppercase tracking-wide text-gray-900 pb-1 text-xs sm:text-sm">
-            Contrato de Prestação de Serviços
+        {/* Corpo do documento com digitação progressiva */}
+        <div className="space-y-3.5 text-xs sm:text-[13px] text-gray-700 leading-relaxed font-sans">
+          <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-100 min-h-[32px] flex items-center justify-center">
+            {renderedTitle && (
+              <span>
+                {renderedTitle}
+                {cursorAtTitle && (
+                  <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5 align-middle" />
+                )}
+              </span>
+            )}
           </div>
 
-          <p className="transition-opacity duration-500">
-            Pelo presente instrumento particular, de um lado a CONTRATADA, e de outro lado como CONTRATANTE{" "}
-            {phase >= 1 ? (
-              <span className="font-mono px-2 py-0.5 rounded bg-[var(--accent-surface)] text-[var(--accent-primary)] font-semibold border border-[var(--border-strong)] transition-all animate-pulse">
-                {"{{cliente_nome}}"}
-              </span>
-            ) : (
-              <span className="inline-block w-28 h-4 bg-gray-100 rounded align-middle animate-pulse" />
-            )}
-            , inscrito sob o documento oficial{" "}
-            {phase >= 1 ? (
-              <span className="font-mono px-1.5 py-0.5 rounded bg-[var(--accent-surface)] text-[var(--accent-primary)] font-medium border border-[var(--border-strong)]">
-                {"{{cliente_documento}}"}
-              </span>
-            ) : (
-              <span className="inline-block w-20 h-4 bg-gray-100 rounded align-middle animate-pulse" />
-            )}
-            .
-          </p>
-
-          <p className="transition-opacity duration-500">
-            <strong>Cláusula 1ª:</strong> O objeto deste contrato é a prestação do serviço correspondente ao{" "}
-            {phase >= 2 ? (
-              <span className="font-mono px-2 py-0.5 rounded bg-[var(--accent-surface)] text-[var(--accent-primary)] font-semibold border border-[var(--border-strong)] transition-all animate-pulse">
-                {"{{plano_nome}}"}
-              </span>
-            ) : (
-              <span className="inline-block w-24 h-4 bg-gray-100 rounded align-middle" />
-            )}
-            , com a vigência estipulada de{" "}
-            {phase >= 2 ? (
-              <span className="font-mono px-1.5 py-0.5 rounded bg-[var(--accent-surface)] text-[var(--accent-primary)] font-medium border border-[var(--border-strong)]">
-                {"{{vigencia_meses}}"}
-              </span>
-            ) : (
-              <span className="inline-block w-16 h-4 bg-gray-100 rounded align-middle" />
-            )}
-            .
-          </p>
-
-          <p className="transition-opacity duration-500">
-            <strong>Cláusula 2ª:</strong> Pela execução dos serviços, o CONTRATANTE pagará o valor mensal de{" "}
-            {phase >= 2 ? (
-              <span className="font-mono px-2 py-0.5 rounded bg-[var(--accent-surface)] text-[var(--accent-primary)] font-semibold border border-[var(--border-strong)] transition-all animate-pulse">
-                {"{{valor_mensal}}"}
-              </span>
-            ) : (
-              <span className="inline-block w-20 h-4 bg-gray-100 rounded align-middle" />
-            )}
-            , reajustado anualmente pelo índice oficial.
-          </p>
+          {renderedParagraphs.map((para, idx) => (
+            <p key={`p-${idx}`} className="min-h-[20px] transition-all">
+              {para}
+            </p>
+          ))}
         </div>
-      </div>
-
-      <div className="mt-4 flex items-center gap-2 text-xs font-mono text-[var(--text-muted)]">
-        <Sparkles className="h-3.5 w-3.5 text-[var(--accent-primary)]" />
-        <span>Marcadores em chaves duplas identificados automaticamente</span>
       </div>
     </div>
   );

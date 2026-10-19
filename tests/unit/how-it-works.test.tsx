@@ -50,17 +50,25 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     expect(nextBtn).toBeInTheDocument();
     expect(prevBtn.parentElement).toHaveClass("justify-center");
 
-    // Valida remoção do texto 'Etapa * - * de 4' acima do título
-    expect(screen.queryByText(/\d de 4/i)).toBeNull();
+    // Valida remoção do texto antigo de rodapé
+    expect(
+      screen.queryByText(/Marcadores em chaves duplas identificados automaticamente/i)
+    ).toBeNull();
 
     // Etapa 1 ativa inicialmente: Modelo & Marcadores
     expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
 
-    // Avança animação para preencher o primeiro marcador
+    // No início imediato (t=0), o corpo com marcadores ainda não foi digitado
+    expect(screen.queryByText(/\{\{cliente_nome\}\}/i)).toBeNull();
+
+    // Avança a digitação gradual até o primeiro marcador ser concluído
     act(() => {
       vi.advanceTimersByTime(2500);
     });
-    expect(screen.getByText(/\{\{cliente_nome\}\}/i)).toBeInTheDocument();
+    const marker = screen.getByText(/\{\{cliente_nome\}\}/i);
+    expect(marker).toBeInTheDocument();
+    expect(marker).toHaveClass("text-[var(--accent-primary)]");
+    expect(marker).toHaveClass("bg-[var(--accent-surface)]");
 
     vi.useRealTimers();
   });
