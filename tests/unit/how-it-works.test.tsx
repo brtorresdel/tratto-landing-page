@@ -362,6 +362,12 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
       fireEvent.click(nextBtn);
     });
     expect(screen.getByRole("heading", { name: /Envio & Assinatura/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/você poderá baixá-lo para enviar aos seus clientes ou solicitar a assinatura presencialmente/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/como a ZapSign ou Clicksign, por exemplo/i)
+    ).toBeInTheDocument();
 
     // 1. Contrato reutiliza o formato oficial do final da Etapa 2 (sem .docx e com as 3 cláusulas)
     expect(screen.getByText(/contrato_123456/i)).toBeInTheDocument();

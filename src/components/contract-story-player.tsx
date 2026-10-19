@@ -24,7 +24,7 @@ export const STORY_STEPS = [
     number: "03",
     title: "Envio & Assinatura",
     description:
-      "O contrato se move até o cliente e retorna autenticado com carimbo diagonal de validade jurídica via integração nativa ou modo manual.",
+      "Com o contrato elaborado, você poderá baixá-lo para enviar aos seus clientes ou solicitar a assinatura presencialmente, ou melhor: poderá integrar sua plataforma de assinatura eletrônica favorita (como a ZapSign ou Clicksign, por exemplo) para enviá-los automaticamente!",
   },
   {
     id: "vigencia-reajuste",
