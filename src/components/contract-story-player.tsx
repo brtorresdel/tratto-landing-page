@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check } from "lucide-react";
+import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2 } from "lucide-react";
 
 export const STORY_STEPS = [
   {
@@ -402,13 +402,16 @@ const STEP2_TIMELINE = {
   plano: { openMs: 2350, highlightMs: 2700, selectMs: 3050, target: TARGET_PLANO },
   vigencia: { openMs: 3250, highlightMs: 3600, selectMs: 3950, target: TARGET_VIGENCIA },
   mensalidade: { startMs: 4150, endMs: 4750, target: "R$ 1.200,00" },
-  allFilledMs: 5000,
+  fieldsDoneMs: 4750,
+  clickMs: 6250,  // 1.5s após término dos campos (4750 + 1500)
+  savingMs: 6450, // início do spinner de salvamento
+  savedMs: 8450,  // 2s após início do salvamento (6450 + 2000)
   readingPauseMs: 6000,
   fadeMs: 600,
 };
 
 const STEP2_TOTAL_CYCLE =
-  STEP2_TIMELINE.allFilledMs +
+  STEP2_TIMELINE.savedMs +
   STEP2_TIMELINE.readingPauseMs +
   STEP2_TIMELINE.fadeMs;
 
@@ -424,10 +427,12 @@ function Step2FillingCreation() {
     return () => clearInterval(interval);
   }, []);
 
-  const allFilled =
-    elapsedMs >= STEP2_TIMELINE.allFilledMs &&
-    elapsedMs < (STEP2_TIMELINE.allFilledMs + STEP2_TIMELINE.readingPauseMs);
-  const isFading = elapsedMs >= (STEP2_TIMELINE.allFilledMs + STEP2_TIMELINE.readingPauseMs);
+  const isClicking = elapsedMs >= STEP2_TIMELINE.clickMs && elapsedMs < STEP2_TIMELINE.savingMs;
+  const isSaving = elapsedMs >= STEP2_TIMELINE.savingMs && elapsedMs < STEP2_TIMELINE.savedMs;
+  const isSaved =
+    elapsedMs >= STEP2_TIMELINE.savedMs &&
+    elapsedMs < (STEP2_TIMELINE.savedMs + STEP2_TIMELINE.readingPauseMs);
+  const isFading = elapsedMs >= (STEP2_TIMELINE.savedMs + STEP2_TIMELINE.readingPauseMs);
 
   // Helper para campos de texto digitado (Cliente, Documento e Mensalidade)
   const getTypedFieldState = (config: { startMs: number; endMs: number; target: string }) => {
@@ -468,7 +473,7 @@ function Step2FillingCreation() {
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
-      {/* Painel Esquerdo: Formulário com campos de texto e selects configuráveis */}
+      {/* Painel Esquerdo: Formulário com campos de texto, selects configuráveis e botão Salvar */}
       <div className="lg:col-span-5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:p-5 shadow-xs text-left space-y-3">
         {/* Campo 1: Cliente */}
         <div>
@@ -668,6 +673,36 @@ function Step2FillingCreation() {
             </div>
           </div>
         </div>
+
+        {/* Botão Salvar & Gerar com feedback animado de clique, salvando e salvo */}
+        <div className="pt-1.5">
+          <button
+            type="button"
+            className={clsx(
+              "w-full py-2.5 px-4 rounded-lg font-medium text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-200 cursor-default shadow-xs",
+              isClicking && "scale-[0.97] ring-2 ring-[var(--accent-primary)]/40 brightness-90",
+              isSaved
+                ? "bg-emerald-600 text-white font-semibold"
+                : isSaving
+                  ? "bg-[var(--accent-primary)] text-white opacity-90"
+                  : "bg-[var(--accent-primary)] text-white hover:opacity-95"
+            )}
+          >
+            {isSaved ? (
+              <>
+                <Check className="h-4 w-4 stroke-[2.5]" />
+                <span>Salvo</span>
+              </>
+            ) : isSaving ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" />
+                <span>Salvando...</span>
+              </>
+            ) : (
+              <span>Salvar &amp; Gerar</span>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Painel Direito: Contrato idêntico à Etapa 1 com marcadores atualizados em tempo real */}
@@ -679,27 +714,17 @@ function Step2FillingCreation() {
               <div
                 className={clsx(
                   "h-2.5 w-2.5 rounded-full transition-colors duration-500",
-                  allFilled ? "bg-emerald-600" : "bg-blue-600"
+                  isSaved ? "bg-emerald-600" : "bg-blue-600"
                 )}
               />
               <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate max-w-[210px] transition-all duration-500">
-                {allFilled ? (
+                {isSaved ? (
                   <span className="text-emerald-800 font-bold">contrato_123456.docx</span>
                 ) : (
                   <span className="text-gray-500">modelo_prestacao_servicos.docx</span>
                 )}
               </span>
             </div>
-            <span
-              className={clsx(
-                "text-[9px] font-mono uppercase font-bold tracking-wider px-2 py-0.5 rounded border transition-colors duration-500",
-                allFilled
-                  ? "bg-emerald-50 text-emerald-800 border-emerald-200"
-                  : "bg-blue-50 text-blue-700 border-blue-100"
-              )}
-            >
-              {allFilled ? "Snapshot Oficial" : "Word DOCX"}
-            </span>
           </div>
 
           {/* Título do contrato idêntico à Etapa 1 */}
@@ -707,16 +732,17 @@ function Step2FillingCreation() {
             Contrato de Prestação de Serviços
           </div>
 
-          {/* Parágrafos com marcadores atualizados suavemente */}
+          {/* Parágrafos: durante digitação/seleção mantêm a cor do tema, e viram verde somente quando Salvo */}
           <div className="space-y-3.5 text-xs sm:text-[13px] text-gray-700 leading-relaxed font-sans">
             <p>
               Pelo presente instrumento particular, de um lado a CONTRATADA, e de outro lado como CONTRATANTE{" "}
               <span
                 className={clsx(
                   "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  clienteState.isFinished
+                  isSaved
                     ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
+                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
+                  !clienteState.isFinished && !clienteState.isTyping && "font-mono"
                 )}
               >
                 {clienteState.isFinished
@@ -729,9 +755,10 @@ function Step2FillingCreation() {
               <span
                 className={clsx(
                   "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  documentoState.isFinished
+                  isSaved
                     ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
+                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
+                  !documentoState.isFinished && !documentoState.isTyping && "font-mono"
                 )}
               >
                 {documentoState.isFinished
@@ -748,9 +775,10 @@ function Step2FillingCreation() {
               <span
                 className={clsx(
                   "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  planoIsFinished
+                  isSaved
                     ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
+                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
+                  !planoIsFinished && "font-mono"
                 )}
               >
                 {planoIsFinished ? planoValue : "{{plano_nome}}"}
@@ -759,9 +787,10 @@ function Step2FillingCreation() {
               <span
                 className={clsx(
                   "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  vigenciaIsFinished
+                  isSaved
                     ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
+                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
+                  !vigenciaIsFinished && "font-mono"
                 )}
               >
                 {vigenciaIsFinished ? vigenciaValue : "{{vigencia_meses}}"}
@@ -774,9 +803,10 @@ function Step2FillingCreation() {
               <span
                 className={clsx(
                   "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  mensalidadeState.isFinished
+                  isSaved
                     ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
+                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
+                  !mensalidadeState.isFinished && !mensalidadeState.isTyping && "font-mono"
                 )}
               >
                 {mensalidadeState.isFinished
@@ -788,19 +818,6 @@ function Step2FillingCreation() {
               , reajustado anualmente pelo índice oficial.
             </p>
           </div>
-
-          {/* Rodapé do documento indicando oficialização do contrato após preenchimento */}
-          {allFilled && (
-            <div className="mt-auto pt-3 border-t border-emerald-100 flex items-center justify-between text-[11px] font-mono text-emerald-800 animate-metric-fade-in">
-              <span className="font-semibold flex items-center gap-1.5">
-                <CheckCircle className="h-3.5 w-3.5 text-emerald-600" />
-                Snapshot Oficial Gerado
-              </span>
-              <span className="text-[10px] bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded font-mono font-bold">
-                Zero erros de digitação ✓
-              </span>
-            </div>
-          )}
         </div>
       </div>
     </div>

@@ -212,7 +212,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     vi.useRealTimers();
   });
 
-  it("deve simular o preenchimento campo a campo na Etapa 2, com dropdowns interativos de Plano e Vigência, atualizando marcadores e o título", () => {
+  it("deve simular o preenchimento na Etapa 2, fluxo do botão Salvar & Gerar, atualização para verde após salvar e sem badges de snapshot", () => {
     vi.useFakeTimers();
     render(<HowItWorksSection />);
 
@@ -227,6 +227,13 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
 
     // No início da Etapa 2, o contrato mostra o template original modelo_prestacao_servicos.docx
     expect(screen.getByText(/modelo_prestacao_servicos\.docx/i)).toBeInTheDocument();
+
+    // Valida presença do botão Salvar & Gerar
+    expect(screen.getByRole("button", { name: /Salvar & Gerar/i })).toBeInTheDocument();
+
+    // Valida que 'Snapshot Oficial' e 'Zero erros de digitação' foram removidos
+    expect(screen.queryByText(/Snapshot Oficial/i)).toBeNull();
+    expect(screen.queryByText(/Zero erros de digitação/i)).toBeNull();
 
     // Avança o tempo para digitar os campos de texto Cliente e Documento
     act(() => {
@@ -264,9 +271,27 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     expect(screen.getAllByText(/Plano XYZ/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/12 meses/i).length).toBeGreaterThan(0);
 
-    // Quando todos os dados são alterados, o título do arquivo muda para contrato_123456.docx
+    // Antes de salvar: o botão ainda é Salvar & Gerar e o título do documento ainda é modelo_prestacao_servicos.docx
+    expect(screen.getByRole("button", { name: /Salvar & Gerar/i })).toBeInTheDocument();
+    expect(screen.getByText(/modelo_prestacao_servicos\.docx/i)).toBeInTheDocument();
+    expect(screen.queryByText(/contrato_123456\.docx/i)).toBeNull();
+
+    // Avança 1.5s após término dos campos para acionar o clique e spinner de salvando (t = 7000ms)
+    act(() => {
+      vi.advanceTimersByTime(1500); // 7000ms
+    });
+    expect(screen.getByText(/Salvando\.\.\./i)).toBeInTheDocument();
+
+    // Avança 2s de salvando até o contrato ser oficializado (t = 9000ms)
+    act(() => {
+      vi.advanceTimersByTime(2000); // 9000ms
+    });
+
+    // O texto no botão muda para Salvo com ícone
+    expect(screen.getByText(/^Salvo$/i)).toBeInTheDocument();
+
+    // Quando o contrato é salvo, o título do arquivo muda para contrato_123456.docx
     expect(screen.getByText(/contrato_123456\.docx/i)).toBeInTheDocument();
-    expect(screen.getAllByText(/Snapshot Oficial/i).length).toBeGreaterThan(0);
 
     vi.useRealTimers();
   });
