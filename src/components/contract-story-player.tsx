@@ -1139,8 +1139,8 @@ function Step3SendingSigning() {
       : 0;
 
   // Coordenadas calculadas no plano do viewBox (1000 x 420):
-  // X vai de 195 (saída Ponto 1) até 630 (centro Signatário)
-  const twoX = 195 + travelTwoProgress * (630 - 195);
+  // X vai de 195 (saída Ponto 1) até 615 (centro exato do Signatário)
+  const twoX = 195 + travelTwoProgress * (615 - 195);
 
   // Y Superior: 210 -> sobe para 110 (Download PDF) -> mantém em 110 -> desce para 210 (Signatário)
   let twoYSup = 210;
@@ -1164,6 +1164,26 @@ function Step3SendingSigning() {
   } else {
     const p = (travelTwoProgress - 0.68) / 0.32;
     twoYInf = 310 - ((1 - Math.cos(p * Math.PI)) / 2) * 100;
+  }
+
+  // Efeito de Diminuição / Fade Out e Aumento / Fade In nos 2 Envelopes:
+  // - Saída do Ponto 1 (0 -> 0.15): Aumento (0.35 -> 1.0) e Fade In (0 -> 1)
+  // - Nos Ícones de Plataforma (0.35 -> 0.65, centro em 0.50): Diminui e Fade Out ao passar, Aumenta e Fade In ao sair
+  // - Chegada no Signatário (0.80 -> 1.0): Diminui (1.0 -> 0.2) e Fade Out (1 -> 0) para entrar suavemente no avatar sem vazar à direita
+  let twoScale = 1;
+  let twoOpacity = 1;
+  if (travelTwoProgress < 0.15) {
+    const p = travelTwoProgress / 0.15;
+    twoScale = 0.35 + 0.65 * p;
+    twoOpacity = p;
+  } else if (travelTwoProgress >= 0.35 && travelTwoProgress <= 0.65) {
+    const distFromCenter = Math.abs(travelTwoProgress - 0.5) / 0.15;
+    twoScale = 0.6 + 0.4 * distFromCenter;
+    twoOpacity = 0.35 + 0.65 * distFromCenter;
+  } else if (travelTwoProgress > 0.8) {
+    const p = Math.max(0, (1 - travelTwoProgress) / 0.2);
+    twoScale = 0.2 + 0.8 * p;
+    twoOpacity = p;
   }
 
   // Destaque quando os envelopes passam por trás dos blocos de caminhos
@@ -1194,21 +1214,34 @@ function Step3SendingSigning() {
       ? 1
       : 0;
 
-  // X do Envelope Único: vai de 630 (Signatário) até 800 (entrada Ponto 4)
-  const singleX = 630 + Math.min(1, singleProgress) * (800 - 630);
+  // X do Envelope Único: vai de 615 (Signatário) até 800 (entrada Ponto 4)
+  const singleX = 615 + Math.min(1, singleProgress) * (800 - 615);
   const singleY = 210;
+
+  // Efeito de Aumento / Fade In (ao sair do Signatário) e Diminuição / Fade Out (ao chegar no Ponto 4):
+  let singleScale = 1;
+  let singleOpacity = 1;
+  if (singleProgress < 0.25) {
+    const p = singleProgress / 0.25;
+    singleScale = 0.35 + 0.65 * p;
+    singleOpacity = p;
+  } else if (singleProgress > 0.75) {
+    const p = Math.max(0, (1 - singleProgress) / 0.25);
+    singleScale = 0.35 + 0.65 * p;
+    singleOpacity = p;
+  }
 
   // No Ponto 4, o envelope abre e dissolve (5600ms -> 5800ms)
   const singleIsOpen = elapsedMs >= STEP3_TIMELINE.arriveFinalMs;
-  const singleDissolveOpacity =
-    elapsedMs >= STEP3_TIMELINE.arriveFinalMs
-      ? Math.max(
-          0,
-          1 -
-            (elapsedMs - STEP3_TIMELINE.arriveFinalMs) /
-              (STEP3_TIMELINE.envelopeDissolveMs - STEP3_TIMELINE.arriveFinalMs)
-        )
-      : 1;
+  if (elapsedMs >= STEP3_TIMELINE.arriveFinalMs) {
+    const dissolveP = Math.max(
+      0,
+      1 -
+        (elapsedMs - STEP3_TIMELINE.arriveFinalMs) /
+          (STEP3_TIMELINE.envelopeDissolveMs - STEP3_TIMELINE.arriveFinalMs)
+    );
+    singleOpacity = Math.min(singleOpacity, dissolveP);
+  }
 
   // Contrato Assinado final no Ponto 4
   const isSigned =
@@ -1236,7 +1269,7 @@ function Step3SendingSigning() {
         >
           {/* Rota Superior: Ponto 1 -> Download PDF -> Signatário */}
           <path
-            d="M 195 210 C 245 210, 260 110, 320 110 L 490 110 C 545 110, 580 210, 630 210"
+            d="M 195 210 C 245 210, 260 110, 320 110 L 490 110 C 545 110, 575 210, 615 210"
             fill="none"
             stroke="var(--border-strong)"
             strokeWidth="2.2"
@@ -1249,7 +1282,7 @@ function Step3SendingSigning() {
 
           {/* Rota Inferior: Ponto 1 -> ZapSign / Clicksign -> Signatário */}
           <path
-            d="M 195 210 C 245 210, 260 310, 320 310 L 490 310 C 545 310, 580 210, 630 210"
+            d="M 195 210 C 245 210, 260 310, 320 310 L 490 310 C 545 310, 575 210, 615 210"
             fill="none"
             stroke="var(--border-strong)"
             strokeWidth="2.2"
@@ -1262,7 +1295,7 @@ function Step3SendingSigning() {
 
           {/* Rota Final: Signatário -> Ponto 4 (Contrato Assinado) */}
           <path
-            d="M 630 210 L 800 210"
+            d="M 615 210 L 800 210"
             fill="none"
             stroke="var(--border-strong)"
             strokeWidth="2.2"
@@ -1283,7 +1316,8 @@ function Step3SendingSigning() {
             style={{
               left: `${(twoX / 1000) * 100}%`,
               top: `${(twoYSup / 420) * 100}%`,
-              transform: "translate(-50%, -50%)",
+              transform: `translate(-50%, -50%) scale(${twoScale})`,
+              opacity: twoOpacity,
             }}
             className="absolute z-10 pointer-events-none transition-transform duration-75"
           >
@@ -1306,7 +1340,8 @@ function Step3SendingSigning() {
             style={{
               left: `${(twoX / 1000) * 100}%`,
               top: `${(twoYInf / 420) * 100}%`,
-              transform: "translate(-50%, -50%)",
+              transform: `translate(-50%, -50%) scale(${twoScale})`,
+              opacity: twoOpacity,
             }}
             className="absolute z-10 pointer-events-none transition-transform duration-75"
           >
@@ -1329,8 +1364,8 @@ function Step3SendingSigning() {
             style={{
               left: `${(singleX / 1000) * 100}%`,
               top: `${(singleY / 420) * 100}%`,
-              transform: "translate(-50%, -50%)",
-              opacity: singleDissolveOpacity,
+              transform: `translate(-50%, -50%) scale(${singleScale})`,
+              opacity: singleOpacity,
             }}
             className="absolute z-10 pointer-events-none transition-all duration-75"
           >
@@ -1354,8 +1389,8 @@ function Step3SendingSigning() {
         {/* PONTO 1 (z-20): CONTRATO INICIAL -> DESLIZA PRA BAIXO E SOME -> FICA PONTILHADO */}
         {/* =================================================================== */}
         <div className="relative z-20 w-[205px] sm:w-[215px] h-[315px] sm:h-[325px] flex items-center justify-center">
-          {/* Base com contorno pontilhado idêntico ao do Ponto 4 */}
-          <div className="absolute inset-0 w-full h-full rounded-md border-2 border-dashed border-[var(--border-subtle)] bg-[var(--bg-canvas)]/20 select-none flex items-center justify-center">
+          {/* Base com contorno pontilhado e fundo clarinho no tom do tema (sem opacidade) */}
+          <div className="absolute inset-0 w-full h-full rounded-md border-2 border-dashed border-[var(--accent-primary)]/40 bg-[var(--accent-surface)] select-none flex items-center justify-center shadow-xs">
             <span className="sr-only">
               {elapsedMs < STEP3_TIMELINE.contractDepartMs
                 ? "Contrato gerado"
@@ -1471,7 +1506,7 @@ function Step3SendingSigning() {
         </div>
 
         {/* =================================================================== */}
-        {/* PONTO 3 (z-20): O SIGNATÁRIO (Borda dashed lenta, check ✓ antes de o envelope sair) */}
+        {/* PONTO 3 (z-20): O SIGNATÁRIO (Borda dashed lenta, check ✓ na cor do tema antes de o envelope sair) */}
         {/* =================================================================== */}
         <div className="relative z-20 flex items-center justify-center select-none w-16 sm:w-20">
           <div className="relative flex items-center justify-center">
@@ -1488,7 +1523,7 @@ function Step3SendingSigning() {
               className={clsx(
                 "flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full border-2 bg-white transition-all duration-300 shadow-sm relative",
                 isSignatarioSigned
-                  ? "text-emerald-700 border-emerald-300 ring-4 ring-emerald-400/20"
+                  ? "text-[var(--accent-primary)] border-[var(--accent-primary)] ring-4 ring-[var(--accent-primary)]/20 shadow-md"
                   : isSigning
                     ? "text-[var(--accent-primary)] border-[var(--accent-primary)] scale-105"
                     : "text-[var(--accent-primary)] border-[var(--border-strong)]"
@@ -1496,7 +1531,7 @@ function Step3SendingSigning() {
             >
               <User className="h-7 w-7 sm:h-8 sm:w-8" />
               {isSignatarioSigned && (
-                <span className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] shadow-xs">
+                <span className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-[var(--accent-primary)] text-white flex items-center justify-center text-[10px] shadow-xs">
                   ✓
                 </span>
               )}
@@ -1512,11 +1547,11 @@ function Step3SendingSigning() {
         </div>
 
         {/* =================================================================== */}
-        {/* PONTO 4 (z-20): CAIXA VAZIA SÓ COM PONTILHADO -> CONTRATO SURGE ASSINADO */}
+        {/* PONTO 4 (z-20): CAIXA COM FUNDO CLARINHO DO TEMA E PONTILHADO -> CONTRATO SURGE ASSINADO */}
         {/* =================================================================== */}
         <div className="relative z-20 w-[205px] sm:w-[215px] h-[315px] sm:h-[325px] flex items-center justify-center">
           {!isSigned ? (
-            <div className="w-full h-full rounded-md border-2 border-dashed border-[var(--border-subtle)] bg-[var(--bg-canvas)]/20 select-none transition-all flex items-center justify-center">
+            <div className="w-full h-full rounded-md border-2 border-dashed border-[var(--accent-primary)]/40 bg-[var(--accent-surface)] select-none transition-all flex items-center justify-center shadow-xs">
               <span className="sr-only">Aguardando Assinatura</span>
             </div>
           ) : (
