@@ -1,35 +1,43 @@
 import React from "react";
-import { Building2, Briefcase, Dumbbell, Calculator, Sparkles } from "lucide-react";
+import { Building2, Scale, Dumbbell, Calculator, Users, Sparkles } from "lucide-react";
 
 export function AudienceSection() {
   const segments = [
     {
       icon: Building2,
-      name: "Coworkings & Espaços",
-      badge: "Planos & Estações",
+      name: "Coworkings",
       description:
-        "Contratos de estações de trabalho, salas privativas e endereços fiscais com alta rotatividade de membros, aditivos rápidos e controle de ocupação.",
+        "acordos de utilização do endereço fiscal, estações de trabalho, salas de reunião, e outros serviços adicionais;",
     },
     {
-      icon: Briefcase,
-      name: "Empresas de Serviços & Consultorias",
-      badge: "Honorários & Escopo",
+      icon: Scale,
+      name: "Escritórios de advocacia",
       description:
-        "Formalização ágil de propostas comerciais, cláusulas de escopo técnico, horas adicionais e aprovação supervisionada de descontos.",
+        "atuação em processos em andamento, abertura de novos processos, consultorias, etc.;",
     },
     {
       icon: Dumbbell,
       name: "Academias, Estúdios & Escolas",
-      badge: "Matrículas & Planos",
       description:
-        "Termos de adesão semestrais e anuais, controle rigoroso de vigência, regras claras de cancelamento e cobrança justa de multas rescisórias.",
+        "Termos de adesão semestrais e anuais, controle rigoroso de vigência, regras claras de cancelamento e cobrança justa de multas rescisórias;",
     },
     {
       icon: Calculator,
       name: "Contabilidade & BPO",
-      badge: "Reajustes & Carteira",
       description:
-        "Gestão centralizada de dezenas ou centenas de contratos de clientes, com aplicação obrigatória do reajuste anual de inflação (IPCA/IGP-M) sem esquecimentos.",
+        "Gestão centralizada de dezenas ou centenas de contratos de clientes, com aplicação obrigatória do reajuste anual de inflação (IPCA/IGP-M) sem esquecimentos;",
+    },
+    {
+      icon: Users,
+      name: "RH & Compliance",
+      description:
+        "gestão de contratos dos funcionários, controle de cláusulas adicionais, e acompanhamento para controle completo de validades",
+    },
+    {
+      icon: Sparkles,
+      name: "Outros segmentos",
+      description:
+        "independente do que você faça na sua empresa, se precisa gerar contratos, a Tratto é o lugar certo!",
     },
   ];
 
@@ -56,18 +64,13 @@ export function AudienceSection() {
                 className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-6 sm:p-7 shadow-xs transition duration-300 hover:shadow-md hover:border-[var(--accent-primary)]/40 flex flex-col justify-between"
               >
                 <div>
-                  <div className="flex items-center justify-between pb-3.5 border-b border-[var(--border-subtle)]">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-surface)] text-[var(--accent-primary)]">
-                        <Icon className="h-4.5 w-4.5" />
-                      </div>
-                      <h3 className="font-sans text-base sm:text-lg font-semibold text-[var(--text-main)] tracking-tight">
-                        {seg.name}
-                      </h3>
+                  <div className="flex items-center gap-3 pb-3.5 border-b border-[var(--border-subtle)]">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--accent-surface)] text-[var(--accent-primary)] shrink-0">
+                      <Icon className="h-4.5 w-4.5" />
                     </div>
-                    <span className="font-mono text-[10px] uppercase font-semibold text-[var(--text-muted)] bg-black/5 px-2 py-0.5 rounded">
-                      {seg.badge}
-                    </span>
+                    <h3 className="font-sans text-base sm:text-lg font-semibold text-[var(--text-main)] tracking-tight">
+                      {seg.name}
+                    </h3>
                   </div>
 
                   <p className="mt-3.5 text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
