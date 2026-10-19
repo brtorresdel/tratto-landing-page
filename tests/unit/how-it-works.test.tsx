@@ -80,29 +80,29 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     // No início imediato (t=0), o corpo com marcadores ainda não foi digitado
     expect(screen.queryByText(/\{\{cliente_nome\}\}/i)).toBeNull();
 
-    // Durante a digitação do marcador (t=3800ms), o texto incompleto é preto normal (sem cor do tema)
+    // Durante a digitação cadenciada do marcador (t=5500ms), o texto incompleto é preto normal (sem cor do tema)
     act(() => {
-      vi.advanceTimersByTime(3800);
+      vi.advanceTimersByTime(5500);
     });
     expect(screen.queryByText(/\{\{cliente_nome\}\}/i)).toBeNull();
 
-    // Ao digitar o último dígito '}' (t=4300ms), o marcador é concluído e se converte na cor do tema
+    // Ao digitar o último dígito '}' (t=6600ms), o marcador é concluído e se converte na cor do tema
     act(() => {
-      vi.advanceTimersByTime(500);
+      vi.advanceTimersByTime(1100);
     });
     const marker = screen.getByText(/\{\{cliente_nome\}\}/i);
     expect(marker).toBeInTheDocument();
     expect(marker).toHaveClass("text-[var(--accent-primary)]");
     expect(marker).toHaveClass("bg-[var(--accent-surface)]");
 
-    // Valida exibição sequencial contínua (Modelo 4 já subiu e Modelo 1 já foi salvo)
-    expect(screen.getByText(/Modelo 4/i)).toBeInTheDocument();
+    // Valida exibição sequencial contínua (ex: Modelo 6 já subiu)
+    expect(screen.getByText(/Modelo 6/i)).toBeInTheDocument();
 
-    // Ao avançar o tempo (t=7800ms), novos modelos sobem sequencialmente (ex: Modelo 7) e Cláusula 1ª está em negrito
+    // Ao avançar o tempo (t=10100ms), novos modelos sobem sequencialmente (ex: Modelo 8) e Cláusula 1ª está em negrito
     act(() => {
       vi.advanceTimersByTime(3500);
     });
-    expect(screen.getByText(/Modelo 7/i)).toBeInTheDocument();
+    expect(screen.getByText(/Modelo 8/i)).toBeInTheDocument();
     const clausula1 = screen.getByText(/Cláusula 1ª:/i);
     expect(clausula1.tagName.toLowerCase()).toBe("strong");
     expect(clausula1).toHaveClass("font-bold");
@@ -158,7 +158,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     expect(screen.getByRole("heading", { name: /Modelos? & Marcadores/i })).toBeInTheDocument();
 
     act(() => {
-      vi.advanceTimersByTime(4500);
+      vi.advanceTimersByTime(6600);
     });
     expect(screen.getByText(/\{\{cliente_nome\}\}/i)).toBeInTheDocument();
 

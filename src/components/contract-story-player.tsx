@@ -223,23 +223,23 @@ const FULL_DOC_TEXT =
 const TOTAL_DOC_CHARS = FULL_DOC_TEXT.length;
 
 function getCharTypingDelay(index: number): number {
-  if (index >= FULL_DOC_TEXT.length) return 25;
+  if (index >= FULL_DOC_TEXT.length) return 35;
   const char = FULL_DOC_TEXT[index];
 
   // Pausa após o título do documento
-  if (index === STEP1_TITLE.length - 1) return 100;
+  if (index === STEP1_TITLE.length - 1) return 250;
 
   // Pausas naturais de respiração e pontuação
-  if (char === "." || char === ":") return 80;
-  if (char === ",") return 55;
-  if (char === " ") return 32;
+  if (char === "." || char === ":") return 180;
+  if (char === ",") return 110;
+  if (char === " ") return 45;
 
   // Pausa sutil ao finalizar um marcador completo
-  if (char === "}" && index > 0 && FULL_DOC_TEXT[index - 1] === "}") return 75;
+  if (char === "}" && index > 0 && FULL_DOC_TEXT[index - 1] === "}") return 160;
 
-  // Variação orgânica entre teclas normais (20ms a 32ms)
+  // Variação orgânica entre teclas normais (35ms a 47ms) para estender a digitação de forma cadenciada
   const rhythm = (index * 7) % 13;
-  return 20 + rhythm;
+  return 35 + rhythm;
 }
 
 // Pré-computa tempos acumulados para cada caractere para garantir timing preciso e natural
@@ -250,13 +250,13 @@ for (let i = 0; i < FULL_DOC_TEXT.length; i++) {
   CUMULATIVE_CHAR_TIMES.push(accDocTime);
 }
 
-const DOC_TYPING_DURATION = accDocTime;
-const DOC_READING_PAUSE = 5000;
+const DOC_TYPING_DURATION = accDocTime; // ~22.075ms
+const DOC_READING_PAUSE = 2300; // ~2.3s de pausa final para visualização antes de reiniciar
 const DOC_FADE_DURATION = 600;
-const TOTAL_CYCLE_MS = DOC_TYPING_DURATION + DOC_READING_PAUSE + DOC_FADE_DURATION;
+const TOTAL_CYCLE_MS = DOC_TYPING_DURATION + DOC_READING_PAUSE + DOC_FADE_DURATION; // ~24.975ms (25s)
 
-// 16 modelos sequenciais para exibição contínua sem repetição durante a animação
-const SEQUENTIAL_MODELS = Array.from({ length: 16 }, (_, i) => ({
+// 18 modelos sequenciais para exibição contínua sem repetição durante os 25s da animação
+const SEQUENTIAL_MODELS = Array.from({ length: 18 }, (_, i) => ({
   name: `Modelo ${i + 1}`,
   startOffset: (i - 2) * 1500,
 }));
@@ -439,8 +439,8 @@ function Step1ModelMarkers() {
           </div>
         </div>
 
-        {/* Seta apontando para cima com animação float e traço pontilhado (mais próxima dos documentos) */}
-        <div className="mt-1 -mb-1 flex items-center justify-center animate-float-gentle text-[var(--accent-primary)] z-15" aria-hidden="true">
+        {/* Seta apontando para cima com animação float e traço pontilhado (separada da logo e mais próxima dos documentos) */}
+        <div className="mt-3.5 sm:mt-4 -mb-2.5 sm:-mb-3 flex items-center justify-center animate-float-gentle text-[var(--accent-primary)] z-15" aria-hidden="true">
           <svg
             viewBox="0 0 24 32"
             className="w-5 h-7 sm:w-6 sm:h-8 stroke-current fill-none"
@@ -463,8 +463,8 @@ function Step1ModelMarkers() {
           </svg>
         </div>
 
-        {/* Câmara de fluxo ascendente: Modelos subindo em exibição sequencial contínua */}
-        <div className="relative w-full max-w-[260px] h-[190px] flex justify-center items-center overflow-hidden z-10">
+        {/* Câmara de fluxo ascendente: Modelos subindo em exibição sequencial contínua bem próximos da seta */}
+        <div className="relative w-full max-w-[260px] h-[190px] -mt-1 sm:-mt-1.5 flex justify-center items-center overflow-hidden z-10">
           {SEQUENTIAL_MODELS.map((model) => {
             const cardAge = elapsedMs - model.startOffset;
             if (cardAge < 0 || cardAge > CARD_TRAVEL_DURATION) {
@@ -472,7 +472,7 @@ function Step1ModelMarkers() {
             }
 
             const p = cardAge / CARD_TRAVEL_DURATION;
-            let translateY = 95 - p * 155;
+            let translateY = 85 - p * 160;
             let opacity = 1;
             let scale = 1;
 
