@@ -1265,7 +1265,7 @@ function Step3SendingSigning() {
         </svg>
 
         {/* =================================================================== */}
-        {/* CAMADA 10 (z-10): ENVELOPES MÓVEIS (Passam literalmente POR TRÁS dos blocos) */}
+        {/* CAMADA 10 (z-10): ENVELOPES MÓVEIS (Sem pontinho, cor do tema) */}
         {/* =================================================================== */}
         {/* 1. Envelope Superior (Caminho Download PDF): ativo de 2500ms até 4800ms */}
         {isTravelingTwo && (
@@ -1284,11 +1284,8 @@ function Step3SendingSigning() {
                   <path d="M 0 36 L 20 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M 56 36 L 36 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <div className="relative z-10 h-2.5 w-2.5 rounded-full bg-blue-600 flex items-center justify-center shadow-2xs">
-                  <div className="h-0.8 w-0.8 rounded-full bg-white" />
-                </div>
               </div>
-              <span className="mt-0.5 px-1.5 py-0.2 rounded font-mono text-[8px] font-bold uppercase tracking-wider bg-blue-600 text-white shadow-2xs">
+              <span className="mt-0.5 px-1.5 py-0.2 rounded font-mono text-[8px] font-bold uppercase tracking-wider bg-[var(--accent-primary)] text-white shadow-2xs">
                 Via 1: PDF
               </span>
             </div>
@@ -1312,9 +1309,6 @@ function Step3SendingSigning() {
                   <path d="M 0 36 L 20 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M 56 36 L 36 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                <div className="relative z-10 h-2.5 w-2.5 rounded-full bg-[var(--accent-primary)] flex items-center justify-center shadow-2xs">
-                  <div className="h-0.8 w-0.8 rounded-full bg-white" />
-                </div>
               </div>
               <span className="mt-0.5 px-1.5 py-0.2 rounded font-mono text-[8px] font-bold uppercase tracking-wider bg-[var(--accent-primary)] text-white shadow-2xs">
                 Via 2: Digital
@@ -1345,13 +1339,8 @@ function Step3SendingSigning() {
                   <path d="M 0 36 L 20 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                   <path d="M 56 36 L 36 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-                {!singleIsOpen && (
-                  <div className="relative z-10 h-3 w-3 rounded-full bg-emerald-600 flex items-center justify-center shadow-2xs">
-                    <Check className="h-2 w-2 text-white stroke-[3]" />
-                  </div>
-                )}
               </div>
-              <span className="mt-0.5 px-1.5 py-0.2 rounded font-mono text-[8px] font-bold uppercase tracking-wider bg-emerald-700 text-white shadow-2xs">
+              <span className="mt-0.5 px-1.5 py-0.2 rounded font-mono text-[8px] font-bold uppercase tracking-wider bg-[var(--accent-primary)] text-white shadow-2xs">
                 {singleIsOpen ? "Abrindo..." : "Via Oficial"}
               </span>
             </div>
@@ -1432,7 +1421,7 @@ function Step3SendingSigning() {
               </div>
             </div>
 
-            {/* O Envelope que surge aberto e fecha com o contrato dentro */}
+            {/* O Envelope que surge aberto e fecha com o contrato dentro (sem pontinho) */}
             {isEnteringEnvelope && !isDuplicated && (
               <div className="absolute inset-x-0 bottom-7 flex flex-col items-center justify-center z-20 animate-in fade-in duration-200 pointer-events-none">
                 <div className="relative w-14 h-9 bg-amber-50/95 border border-amber-300 rounded shadow-md overflow-hidden flex items-center justify-center">
@@ -1445,22 +1434,17 @@ function Step3SendingSigning() {
                     <path d="M 0 36 L 20 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                     <path d="M 56 36 L 36 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
-                  {isEnvelopeClosed && (
-                    <div className="relative z-10 h-3 w-3 rounded-full bg-[var(--accent-primary)] text-white flex items-center justify-center shadow-xs animate-in zoom-in-50">
-                      <Check className="h-2 w-2 stroke-[3]" />
-                    </div>
-                  )}
                 </div>
               </div>
             )}
 
-            {/* Momento em que se multiplica em 2 no Ponto 1 (1900ms -> 2500ms) */}
+            {/* Momento em que se multiplica em 2 no Ponto 1 (na cor do tema) */}
             {isDuplicated && !isTravelingTwo && elapsedMs < STEP3_TIMELINE.travelCaminhosStartMs && (
               <div className="absolute inset-x-0 bottom-6 flex items-center justify-center gap-2 z-20 animate-in zoom-in-95 duration-150">
-                <div className="px-1.5 py-0.5 rounded bg-blue-50 border border-blue-300 text-blue-700 font-mono text-[8px] font-bold shadow-2xs">
+                <div className="px-1.5 py-0.5 rounded bg-[var(--accent-primary)] text-white font-mono text-[8px] font-bold shadow-2xs">
                   Via 1: PDF
                 </div>
-                <div className="px-1.5 py-0.5 rounded bg-emerald-50 border border-emerald-300 text-emerald-700 font-mono text-[8px] font-bold shadow-2xs">
+                <div className="px-1.5 py-0.5 rounded bg-[var(--accent-primary)] text-white font-mono text-[8px] font-bold shadow-2xs">
                   Via 2: Digital
                 </div>
               </div>
@@ -1478,15 +1462,15 @@ function Step3SendingSigning() {
         </div>
 
         {/* =================================================================== */}
-        {/* PONTO 2 (z-20): AS DUAS PLATAFORMAS (Apenas ícones maiores, centralizados no traço) */}
+        {/* PONTO 2 (z-20): AS DUAS PLATAFORMAS (Ícones na cor do tema, centralizados no traço) */}
         {/* =================================================================== */}
         <div className="relative z-20 h-full flex flex-col items-center justify-center select-none w-16 sm:w-20">
-          {/* PLATAFORMA SUPERIOR: Download (Centralizado rigorosamente em Y = 110px do traço) */}
+          {/* PLATAFORMA SUPERIOR: Download (Cor do tema, centralizado em Y = 110px do traço) */}
           <div
             style={{ top: "110px", transform: "translateY(-50%)" }}
             className={clsx(
-              "absolute h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-white border shadow-xs flex items-center justify-center text-blue-600 transition-all duration-300 cursor-default",
-              isBehindDownload ? "border-blue-300 ring-3 ring-blue-400/30 scale-[1.06]" : "border-[var(--border-subtle)]"
+              "absolute h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-white border shadow-xs flex items-center justify-center text-[var(--accent-primary)] transition-all duration-300 cursor-default",
+              isBehindDownload ? "border-[var(--accent-primary)] ring-3 ring-[var(--accent-primary)]/20 scale-[1.06]" : "border-[var(--border-subtle)]"
             )}
             title="Download PDF"
           >
@@ -1494,12 +1478,12 @@ function Step3SendingSigning() {
             <span className="sr-only">Download PDF</span>
           </div>
 
-          {/* PLATAFORMA INFERIOR: ZapSign / Clicksign (Centralizado rigorosamente em Y = 310px do traço) */}
+          {/* PLATAFORMA INFERIOR: ZapSign / Clicksign (Cor do tema, centralizado em Y = 310px do traço) */}
           <div
             style={{ top: "310px", transform: "translateY(-50%)" }}
             className={clsx(
-              "absolute h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-white border shadow-xs flex items-center justify-center text-emerald-700 transition-all duration-300 cursor-default",
-              isBehindZapSign ? "border-emerald-300 ring-3 ring-emerald-400/30 scale-[1.06]" : "border-[var(--border-subtle)]"
+              "absolute h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-white border shadow-xs flex items-center justify-center text-[var(--accent-primary)] transition-all duration-300 cursor-default",
+              isBehindZapSign ? "border-[var(--accent-primary)] ring-3 ring-[var(--accent-primary)]/20 scale-[1.06]" : "border-[var(--border-subtle)]"
             )}
             title="ZapSign / Clicksign"
           >
@@ -1509,10 +1493,15 @@ function Step3SendingSigning() {
         </div>
 
         {/* =================================================================== */}
-        {/* PONTO 3 (z-20): O SIGNATÁRIO (Círculo alinhado exatamente ao centro do traçado em Y = 210px) */}
+        {/* PONTO 3 (z-20): O SIGNATÁRIO (Borda dashed giratória ao assinar, sem status texto) */}
         {/* =================================================================== */}
         <div className="relative z-20 flex items-center justify-center select-none w-16 sm:w-20">
           <div className="relative flex items-center justify-center">
+            {/* Borda tracejada (dashed) girando em volta do ícone enquanto os contratos chegam e são assinados */}
+            {isSigning && (
+              <div className="absolute -inset-2 rounded-full border-2 border-dashed border-[var(--accent-primary)] animate-spin pointer-events-none" />
+            )}
+
             {/* O Círculo do Avatar exatamente no centro geométrico */}
             <div
               className={clsx(
@@ -1520,7 +1509,7 @@ function Step3SendingSigning() {
                 isSigned
                   ? "text-emerald-700 border-emerald-300 ring-4 ring-emerald-400/20"
                   : isSigning
-                    ? "text-[var(--accent-primary)] border-[var(--accent-primary)] ring-4 ring-[var(--accent-primary)]/30 scale-105"
+                    ? "text-[var(--accent-primary)] border-[var(--accent-primary)] scale-105"
                     : "text-[var(--accent-primary)] border-[var(--border-strong)]"
               )}
             >
@@ -1532,44 +1521,22 @@ function Step3SendingSigning() {
               )}
             </div>
 
-            {/* Textos posicionados abaixo com absolute para NÃO deslocar o centro do círculo para cima */}
+            {/* Somente a palavra Signatário abaixo do ícone (sem nenhum status) */}
             <div className="absolute top-full mt-2 flex flex-col items-center whitespace-nowrap pointer-events-none">
               <span className="font-mono text-xs font-semibold text-[var(--text-main)]">
                 Signatário
-              </span>
-              <span
-                className={clsx(
-                  "text-[10px] font-mono px-2 py-0.5 rounded-full mt-0.5 transition-colors",
-                  isSigned
-                    ? "bg-emerald-100 text-emerald-800 font-bold"
-                    : isSigning
-                      ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] font-bold animate-pulse"
-                      : "bg-gray-100 text-gray-600"
-                )}
-              >
-                {isSigned ? "Concluído" : isSigning ? "Assinando..." : "Aguardando"}
               </span>
             </div>
           </div>
         </div>
 
         {/* =================================================================== */}
-        {/* PONTO 4 (z-20): O ENVELOPE ABRE E SOME -> CONTRATO SURGE ASSINADO */}
+        {/* PONTO 4 (z-20): CAIXA VAZIA SÓ COM PONTILHADO -> CONTRATO SURGE ASSINADO */}
         {/* =================================================================== */}
         <div className="relative z-20 w-[205px] sm:w-[215px] h-[315px] sm:h-[325px] flex items-center justify-center">
           {!isSigned ? (
-            <div className="w-full h-full rounded-md border-2 border-dashed border-[var(--border-subtle)] bg-[var(--bg-canvas)]/40 p-4 text-center flex flex-col items-center justify-center gap-2 select-none transition-all">
-              <div className="h-10 w-10 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400">
-                <ShieldCheck className="h-5 w-5 stroke-[1.8]" />
-              </div>
-              <div className="space-y-1">
-                <p className="font-semibold text-xs text-gray-700">
-                  Aguardando Assinatura
-                </p>
-                <p className="text-[10px] text-[var(--text-muted)] max-w-[160px] mx-auto leading-relaxed">
-                  O contrato oficializado surge assinado após a passagem pelo signatário.
-                </p>
-              </div>
+            <div className="w-full h-full rounded-md border-2 border-dashed border-[var(--border-subtle)] bg-[var(--bg-canvas)]/20 select-none transition-all flex items-center justify-center">
+              <span className="sr-only">Aguardando Assinatura</span>
             </div>
           ) : (
             <div className="w-full h-full rounded-md border border-emerald-400 ring-2 ring-emerald-400/20 bg-white p-3 shadow-xl text-left select-none relative flex flex-col justify-between animate-metric-fade-in">
