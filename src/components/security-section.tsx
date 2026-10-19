@@ -36,20 +36,14 @@ export function SecuritySection() {
   return (
     <section id="seguranca" className="py-20 sm:py-28 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300">
       <div className="mx-auto max-w-5xl px-4 sm:px-8 text-center">
-        {/* Eyebrow / Chapéu Editorial */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3.5 py-1 text-xs font-mono uppercase tracking-widest text-[var(--accent-primary)] shadow-2xs">
-          <span>●</span>
-          <span>Privacidade & Governança</span>
-        </div>
-
         {/* Título Principal */}
-        <h2 className="mt-5 font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">
-          Construído com o rigor que documentos jurídicos exigem
+        <h2 className="font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">
+          Mas com tudo isso, é realmente seguro?
         </h2>
 
         {/* Subtítulo */}
-        <p className="mt-4 mx-auto max-w-2xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-          Contratos contêm valores de faturamento, dados pessoais de partes e tokens de assinatura. Segurança técnica e rastreabilidade não são itens opcionais: são o núcleo da Tratto.
+        <p className="mt-4 mx-auto max-w-3xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
+          Tendo tanta funcionalidade e controle dos contratos, é natural se preocupar com a segurança deles, e a Tratto também pensa seriamente nisso. E essa parte é tratada de forma especial aqui:
         </p>
 
         {/* Grade dos 4 Pilares */}

@@ -10,9 +10,11 @@ describe("SecuritySection (Spec 0002 - CA5: Segurança e Rastreabilidade)", () =
     expect(section).not.toBeNull();
     expect(section?.id).toBe("seguranca");
 
-    expect(screen.getByText(/Segurança & Rastreabilidade|Privacidade & Governança/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/Construído com o rigor que documentos jurídicos exigem/i)
+      screen.getByText(/Mas com tudo isso, é realmente seguro\?/i)
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Tendo tanta funcionalidade e controle dos contratos, é natural se preocupar com a segurança deles/i)
     ).toBeInTheDocument();
   });
 
