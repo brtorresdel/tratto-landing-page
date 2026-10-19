@@ -36,20 +36,14 @@ export function AudienceSection() {
   return (
     <section id="para-quem-e" className="py-20 sm:py-28 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300">
       <div className="mx-auto max-w-5xl px-4 sm:px-8 text-center">
-        {/* Eyebrow / Chapéu Editorial */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3.5 py-1 text-xs font-mono uppercase tracking-widest text-[var(--accent-primary)] shadow-2xs">
-          <span>●</span>
-          <span>Versatilidade & Aderência</span>
-        </div>
-
         {/* Título Principal */}
-        <h2 className="mt-5 font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">
-          Desenhado para quem vive de contratos, não importa o segmento
+        <h2 className="font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">
+          Afinal, pra que é a Tratto?
         </h2>
 
         {/* Subtítulo */}
-        <p className="mt-4 mx-auto max-w-2xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-          A Tratto é uma plataforma genérica e flexível. Se a sua empresa presta serviços e formaliza relações em contrato, ela foi desenhada para eliminar o caos da sua rotina.
+        <p className="mt-4 mx-auto max-w-3xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
+          Quando pensamos em contrato, imaginamos uma infinidade de segmentos e empresas que se encaixam nessa ideia. E a Tratto segue perfeitamente esse caminho, pois é uma plataforma dinâmica que se adapta todos os modelos e termos. Aqui alguns exemplos:
         </p>
 
         {/* Grade de Segmentos */}

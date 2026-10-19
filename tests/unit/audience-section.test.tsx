@@ -10,9 +10,9 @@ describe("AudienceSection (Spec 0002 - CA4: Para quem é a Tratto)", () => {
     expect(section).not.toBeNull();
     expect(section?.id).toBe("para-quem-e");
 
-    expect(screen.getByText(/Para quem é a Tratto|Versatilidade & Aderência/i)).toBeInTheDocument();
+    expect(screen.getByText(/Afinal, pra que é a Tratto\?/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/Desenhado para quem vive de contratos, não importa o segmento/i)
+      screen.getByText(/Quando pensamos em contrato, imaginamos uma infinidade de segmentos/i)
     ).toBeInTheDocument();
   });
 
@@ -24,10 +24,5 @@ describe("AudienceSection (Spec 0002 - CA4: Para quem é a Tratto)", () => {
     expect(screen.getByText(/Empresas de Serviços & Consultorias/i)).toBeInTheDocument();
     expect(screen.getByText(/Academias, Estúdios & Escolas/i)).toBeInTheDocument();
     expect(screen.getByText(/Contabilidade & BPO/i)).toBeInTheDocument();
-
-    // Verifica a frase de compromisso genérico
-    expect(
-      screen.getByText(/Se a sua empresa presta serviços e formaliza relações em contrato/i)
-    ).toBeInTheDocument();
   });
 });
