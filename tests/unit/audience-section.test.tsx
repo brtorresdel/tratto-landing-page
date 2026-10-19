@@ -27,4 +27,17 @@ describe("AudienceSection (Spec 0002 - CA4: Para quem é a Tratto)", () => {
     expect(screen.getByText(/RH & Compliance/i)).toBeInTheDocument();
     expect(screen.getByText(/Outros segmentos/i)).toBeInTheDocument();
   });
+
+  it("deve renderizar o bloco de profissionais individuais com os exemplos de autônomos", () => {
+    render(<AudienceSection />);
+
+    expect(
+      screen.getByText(/profissionais individuais também t[eê]m um espaço na Tratto, incluindo:/i)
+    ).toBeInTheDocument();
+
+    expect(screen.getByText(/DJs/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tatuadores/i)).toBeInTheDocument();
+    expect(screen.getByText(/Desenvolvedores/i)).toBeInTheDocument();
+  });
 });
+

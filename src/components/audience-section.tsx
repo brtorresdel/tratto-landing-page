@@ -1,5 +1,21 @@
 import React from "react";
-import { Building2, Scale, Dumbbell, Calculator, Users, Sparkles } from "lucide-react";
+import {
+  Building2,
+  Scale,
+  Dumbbell,
+  Calculator,
+  Users,
+  Sparkles,
+  Headphones,
+  PenTool,
+  Code2,
+  Camera,
+  Palette,
+  Compass,
+  Briefcase,
+  Activity,
+  Languages,
+} from "lucide-react";
 
 export function AudienceSection() {
   const segments = [
@@ -41,6 +57,19 @@ export function AudienceSection() {
     },
   ];
 
+  const individualProfessionals = [
+    { name: "DJs", icon: Headphones },
+    { name: "Tatuadores", icon: PenTool },
+    { name: "Desenvolvedores", icon: Code2 },
+    { name: "Fotógrafos & Videomakers", icon: Camera },
+    { name: "Designers & Ilustradores", icon: Palette },
+    { name: "Arquitetos & Engenheiros", icon: Compass },
+    { name: "Consultores & Mentores", icon: Briefcase },
+    { name: "Personal Trainers", icon: Activity },
+    { name: "Tradutores & Redatores", icon: Languages },
+    { name: "Prestadores de serviços em geral", icon: Sparkles },
+  ];
+
   return (
     <section id="para-quem-e" className="py-20 sm:py-28 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300">
       <div className="mx-auto max-w-5xl px-4 sm:px-8 text-center">
@@ -80,6 +109,32 @@ export function AudienceSection() {
               </div>
             );
           })}
+        </div>
+
+        {/* Bloco de Profissionais Individuais */}
+        <div className="mt-16 sm:mt-20 pt-12 sm:pt-14 border-t border-[var(--border-subtle)] text-center">
+          <p className="mx-auto max-w-2xl text-sm sm:text-base font-medium text-[var(--text-main)] leading-relaxed">
+            E aqui nós não nos resumimos a empresas, profissionais individuais também têm um espaço na Tratto, incluindo:
+          </p>
+
+          <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 text-left">
+            {individualProfessionals.map((pro) => {
+              const Icon = pro.icon;
+              return (
+                <div
+                  key={pro.name}
+                  className="flex items-center gap-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3 py-2.5 shadow-2xs transition duration-200 hover:border-[var(--accent-primary)]/40 hover:bg-[var(--accent-surface)]/50"
+                >
+                  <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--accent-surface)] text-[var(--accent-primary)] shrink-0">
+                    <Icon className="h-3.5 w-3.5" />
+                  </div>
+                  <span className="font-sans text-xs sm:text-sm font-medium text-[var(--text-main)] leading-tight">
+                    {pro.name}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
