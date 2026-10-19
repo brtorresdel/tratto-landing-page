@@ -1625,20 +1625,14 @@ function Step3SendingSigning() {
                 </div>
               </div>
 
-              {/* Carimbo ASSINADO sobreposto com rotação diagonal e check verde */}
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-                <div className="rotate-[-12deg] rounded-lg border-2 border-dotted border-emerald-600 bg-emerald-50/95 backdrop-blur-xs px-3 py-1 flex items-center gap-1.5 shadow-md animate-metric-fade-in select-none">
+              {/* Carimbo ASSINADO na parte em branco inferior, mantendo a inclinação diagonal */}
+              <div className="mt-auto my-auto flex items-center justify-center select-none py-1">
+                <div className="rotate-[-12deg] rounded-lg border-2 border-dotted border-emerald-600 bg-emerald-50/95 backdrop-blur-xs px-3.5 py-1.5 flex items-center gap-1.5 shadow-md animate-metric-fade-in">
                   <CheckCircle className="h-4 w-4 text-emerald-600 shrink-0" />
                   <span className="font-mono text-sm font-black tracking-wider text-emerald-700 uppercase">
                     Assinado
                   </span>
                 </div>
-              </div>
-
-              {/* Rodapé oficial */}
-              <div className="mt-auto pt-1.5 border-t border-emerald-100 flex items-center justify-between text-[9px] font-mono text-emerald-800">
-                <span>Validade Jurídica</span>
-                <span className="font-bold">100% Concluído</span>
               </div>
             </div>
           )}
