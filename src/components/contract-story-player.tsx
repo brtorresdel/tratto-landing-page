@@ -827,18 +827,11 @@ function Step2FillingCreation() {
             )}
           </div>
 
-          {/* Campo 3B: Mensalidade (Preenchida com base no plano escolhido, personalizável) */}
+          {/* Campo 3B: Mensalidade (Preenchida com base no plano escolhido) */}
           <div>
-            <div className="flex items-center justify-between mb-1">
-              <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block">
-                Mensalidade
-              </label>
-              {planoIsFinished && (
-                <span className="text-[10px] font-mono text-[var(--text-muted)]">
-                  Personalizável
-                </span>
-              )}
-            </div>
+            <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
+              Mensalidade
+            </label>
             <div
               className={clsx(
                 "w-full px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-200 flex items-center justify-between min-h-[38px] select-none",
