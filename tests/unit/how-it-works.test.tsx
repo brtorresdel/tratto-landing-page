@@ -295,4 +295,46 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
 
     vi.useRealTimers();
   });
+
+  it("deve simular o fluxo de Envio & Assinatura na Etapa 3 com contrato preenchido, signatário em destaque e carimbo limpo", () => {
+    vi.useFakeTimers();
+    render(<HowItWorksSection />);
+
+    const nextBtn = screen.getByRole("button", { name: /Próxima etapa/i });
+    // Navega para Etapa 2
+    act(() => {
+      fireEvent.click(nextBtn);
+    });
+    // Navega para Etapa 3: Envio & Assinatura
+    act(() => {
+      fireEvent.click(nextBtn);
+    });
+    expect(screen.getByRole("heading", { name: /Envio & Assinatura/i })).toBeInTheDocument();
+
+    // 1. Contrato reutiliza o formato oficial do final da Etapa 2
+    expect(screen.getByText(/contrato_123456\.docx/i)).toBeInTheDocument();
+    expect(screen.getByText(/João da Silva/i)).toBeInTheDocument();
+    expect(screen.getByText(/12\.345\.678\/0001-90/i)).toBeInTheDocument();
+    expect(screen.getByText(/Plano XYZ/i)).toBeInTheDocument();
+    expect(screen.getByText(/12 meses/i)).toBeInTheDocument();
+    expect(screen.getByText(/R\$ 1\.200,00/i)).toBeInTheDocument();
+
+    // 2. Signatário presente
+    expect(screen.getByText(/Signatário/i)).toBeInTheDocument();
+
+    // 3. Valida remoção do texto da parte de baixo e de 'Validade jurídica · ZapSign / Clicksign'
+    expect(screen.queryByText(/Contrato pronto para despacho/i)).toBeNull();
+    expect(screen.queryByText(/Documento assinado com hash e validade jurídica!/i)).toBeNull();
+    expect(screen.queryByText(/Validade Jurídica · ZapSign \/ Clicksign/i)).toBeNull();
+
+    // 4. Avança o tempo até o contrato retornar assinado (t = 3800ms)
+    act(() => {
+      vi.advanceTimersByTime(3800);
+    });
+
+    // O carimbo contém apenas o ícone e 'Assinado'
+    expect(screen.getByText(/^Assinado$/i)).toBeInTheDocument();
+
+    vi.useRealTimers();
+  });
 });
