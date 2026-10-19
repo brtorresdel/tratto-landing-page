@@ -75,7 +75,7 @@ export function AudienceSection() {
       <div className="mx-auto max-w-5xl px-4 sm:px-8 text-center">
         {/* Título Principal */}
         <h2 className="font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">
-          Afinal, pra que é a Tratto?
+          Afinal, pra quem é a Tratto?
         </h2>
 
         {/* Subtítulo */}

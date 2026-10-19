@@ -10,7 +10,7 @@ describe("AudienceSection (Spec 0002 - CA4: Para quem é a Tratto)", () => {
     expect(section).not.toBeNull();
     expect(section?.id).toBe("para-quem-e");
 
-    expect(screen.getByText(/Afinal, pra que é a Tratto\?/i)).toBeInTheDocument();
+    expect(screen.getByText(/Afinal, pra quem é a Tratto\?/i)).toBeInTheDocument();
     expect(
       screen.getByText(/Quando pensamos em contrato, imaginamos uma infinidade de segmentos/i)
     ).toBeInTheDocument();
