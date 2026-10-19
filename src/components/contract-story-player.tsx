@@ -2,15 +2,15 @@
 
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2 } from "lucide-react";
+import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2, FileText } from "lucide-react";
 
 export const STORY_STEPS = [
   {
     id: "modelo-marcadores",
     number: "01",
-    title: "Modelo & Marcadores",
+    title: "Modelos & Marcadores",
     description:
-      "O seu arquivo .docx original com marcadores {{ }} que indicam exatamente onde cada informação deve entrar, preservando 100% do seu layout e tabelas.",
+      "Você manda os seus modelos de contrato para a Tratto, utilizando seus layouts e logos, e utilizando os marcadores disponíveis na plataforma. Você pode redigir os contratos diretamente no nosso editor, ou pode mandar os seus modelos prontos, no formado .doc!",
   },
   {
     id: "preenchimento-criacao",
@@ -252,6 +252,12 @@ const DOC_READING_PAUSE = 5000;
 const DOC_FADE_DURATION = 600;
 const TOTAL_CYCLE_MS = DOC_TYPING_DURATION + DOC_READING_PAUSE + DOC_FADE_DURATION;
 
+const UPLOAD_MODELS = [
+  { name: "Modelo 1" },
+  { name: "Modelo 2" },
+  { name: "Modelo 3" },
+];
+
 function Step1ModelMarkers() {
   const [elapsedMs, setElapsedMs] = useState(0);
 
@@ -342,45 +348,135 @@ function Step1ModelMarkers() {
   });
 
   return (
-    <div className="w-full max-w-[380px] sm:max-w-[410px] mx-auto flex flex-col items-center">
-      {/* Documento simulado A4 com largura calibrada e acabamento de folha de papel */}
-      <div
-        className={clsx(
-          "w-full rounded-md border border-gray-200 bg-white p-5 sm:p-6 shadow-xl shadow-black/8 ring-1 ring-black/5 transition-opacity duration-500 text-left min-h-[440px] flex flex-col justify-start relative",
-          isFading ? "opacity-0" : "opacity-100"
-        )}
-      >
-        {/* Cabeçalho do documento Word / DOCX */}
-        <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4 select-none">
-          <div className="flex items-center gap-2">
-            <div className="h-2.5 w-2.5 rounded-full bg-blue-600" />
-            <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider text-gray-500 font-semibold truncate max-w-[200px]">
-              modelo_prestacao_servicos.docx
+    <div
+      className={clsx(
+        "w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center transition-opacity duration-500 py-2",
+        isFading ? "opacity-0" : "opacity-100"
+      )}
+    >
+      {/* Lado Esquerdo (lg:col-span-7): Computador redigindo o contrato dentro do editor Tratto */}
+      <div className="lg:col-span-7 flex flex-col items-center justify-center">
+        {/* Mockup do Computador (Tela / Monitor do Laptop) */}
+        <div className="w-full max-w-[370px] sm:max-w-[430px] rounded-t-xl bg-slate-900 p-2 sm:p-2.5 shadow-2xl border border-slate-700/80 text-left">
+          {/* Câmera central */}
+          <div className="h-1 w-1 rounded-full bg-slate-700 mx-auto mb-1.5 ring-1 ring-slate-800" />
+
+          {/* Barra superior da janela do editor */}
+          <div className="flex items-center justify-between px-2.5 py-1.5 bg-slate-800/90 rounded-t border-b border-slate-700/60 text-[10px] font-mono text-slate-300 select-none">
+            <div className="flex items-center gap-1.5">
+              <span className="h-2 w-2 rounded-full bg-red-400/80" />
+              <span className="h-2 w-2 rounded-full bg-amber-400/80" />
+              <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
+            </div>
+            <span className="text-[10px] text-slate-400 flex items-center gap-1 font-mono">
+              <FileText className="h-3 w-3 text-slate-400" />
+              editor.tratto.app
+            </span>
+            <span className="text-[9px] bg-slate-700/80 text-emerald-400 px-1.5 py-0.5 rounded font-mono font-bold">
+              ● Redigindo
             </span>
           </div>
-          <span className="text-[9px] font-mono uppercase font-bold tracking-wider bg-blue-50 text-blue-700 px-2 py-0.5 rounded border border-blue-100">
-            Word DOCX
+
+          {/* Tela interna com o texto sendo redigido progressivamente */}
+          <div className="bg-[#FAF9F6] p-4 sm:p-5 rounded-b text-left min-h-[300px] sm:min-h-[330px] font-sans text-xs sm:text-[13px] text-gray-800 leading-relaxed overflow-hidden">
+            <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-200 mb-3 min-h-[28px] flex items-center justify-center">
+              {renderedTitle && (
+                <span>
+                  {renderedTitle}
+                  {cursorAtTitle && (
+                    <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5 align-middle" />
+                  )}
+                </span>
+              )}
+            </div>
+
+            <div className="space-y-3 font-sans">
+              {renderedParagraphs.map((para, idx) => (
+                <p key={`p-${idx}`} className="min-h-[18px]">
+                  {para}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Base do Laptop */}
+        <div className="w-full max-w-[400px] sm:max-w-[460px] h-3 sm:h-3.5 bg-gradient-to-b from-slate-700 to-slate-800 rounded-b-xl border-t border-slate-600/50 shadow-md flex items-center justify-center relative -mt-0.5">
+          <div className="w-14 sm:w-16 h-1 bg-slate-500/60 rounded-full" />
+        </div>
+      </div>
+
+      {/* Lado Direito (lg:col-span-5): Tratto Rubrica e os 3 modelos subindo e sendo salvos */}
+      <div className="lg:col-span-5 flex flex-col items-center justify-center relative min-h-[360px]">
+        {/* Logo Rubrica da Tratto com ponto de selo reativo */}
+        <div className="relative flex flex-col items-center select-none z-20">
+          <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl border-2 border-[var(--border-strong)] bg-white shadow-md p-2.5 transition-transform">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 50 50"
+              className="w-10 h-10 sm:w-12 sm:h-12 text-[var(--text-main)] stroke-current fill-none"
+              role="img"
+              aria-label="Rubrica Tratto"
+            >
+              <g strokeLinecap="round" strokeLinejoin="round">
+                <path d="M 6 22 C 14 20, 26 17, 40 19 C 45 20, 48 21, 48 21" strokeWidth="3.8" />
+                <path d="M 31 11 C 30 19, 24 31, 18 36 C 14 40, 15 44, 18 44 C 23 44, 28 37, 33 27 C 34 23, 35 17, 35 13" strokeWidth="3.2" />
+              </g>
+            </svg>
+            <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-[var(--accent-primary)] ring-2 ring-white animate-pulse" />
+          </div>
+          <span className="mt-2 font-mono text-[10px] sm:text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+            Plataforma Tratto
           </span>
         </div>
 
-        {/* Corpo do documento com digitação progressiva */}
-        <div className="space-y-3.5 text-xs sm:text-[13px] text-gray-700 leading-relaxed font-sans">
-          <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-100 min-h-[32px] flex items-center justify-center">
-            {renderedTitle && (
-              <span>
-                {renderedTitle}
-                {cursorAtTitle && (
-                  <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5 align-middle" />
-                )}
-              </span>
-            )}
-          </div>
+        {/* Câmara de fluxo ascendente: Modelos 1, 2 e 3 subindo em direção à logo */}
+        <div className="relative w-full max-w-[260px] h-[220px] flex justify-center items-center overflow-hidden z-10 mt-1">
+          {UPLOAD_MODELS.map((model, i) => {
+            const cardOffset = i * 1500;
+            const cardTime = (elapsedMs + cardOffset) % 4500;
+            const p = cardTime / 4500;
 
-          {renderedParagraphs.map((para, idx) => (
-            <p key={`p-${idx}`} className="min-h-[20px] transition-all">
-              {para}
-            </p>
-          ))}
+            let translateY = 105 - p * 165;
+            let opacity = 1;
+            let scale = 1;
+
+            if (p < 0.15) {
+              opacity = p / 0.15;
+            } else if (p >= 0.75) {
+              const exitProgress = (p - 0.75) / 0.25;
+              opacity = 1 - exitProgress;
+              scale = 1 - exitProgress * 0.35;
+            }
+
+            return (
+              <div
+                key={model.name}
+                style={{
+                  transform: `translateY(${translateY}px) scale(${scale})`,
+                  opacity,
+                }}
+                className="absolute w-48 sm:w-52 rounded-lg border border-[var(--border-subtle)] bg-white px-3.5 py-2 shadow-md flex items-center justify-between text-left select-none pointer-events-none transition-transform duration-75"
+              >
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-7 w-7 items-center justify-center rounded bg-blue-50 text-blue-600 border border-blue-100 shrink-0">
+                    <FileText className="h-4 w-4" />
+                  </div>
+                  <div className="truncate">
+                    <div className="font-sans font-semibold text-xs text-gray-900 leading-tight">
+                      {model.name}
+                    </div>
+                    <div className="font-mono text-[9px] text-gray-400">
+                      formato .doc
+                    </div>
+                  </div>
+                </div>
+                <span className="text-[9px] font-mono font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 shrink-0">
+                  Salvo
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

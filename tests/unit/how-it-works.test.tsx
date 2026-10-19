@@ -55,8 +55,17 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
       screen.queryByText(/Marcadores em chaves duplas identificados automaticamente/i)
     ).toBeNull();
 
-    // Etapa 1 ativa inicialmente: Modelo & Marcadores
-    expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
+    // Etapa 1 ativa inicialmente: Modelos & Marcadores
+    expect(screen.getByRole("heading", { name: /Modelos? & Marcadores/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/Você manda os seus modelos de contrato para a Tratto/i)
+    ).toBeInTheDocument();
+
+    // Valida o editor de texto no computador à esquerda e os 3 modelos à direita
+    expect(screen.getByText(/editor\.tratto\.app/i)).toBeInTheDocument();
+    expect(screen.getByText(/Modelo 1/i)).toBeInTheDocument();
+    expect(screen.getByText(/Modelo 2/i)).toBeInTheDocument();
+    expect(screen.getByText(/Modelo 3/i)).toBeInTheDocument();
 
     // No início imediato (t=0), o corpo com marcadores ainda não foi digitado
     expect(screen.queryByText(/\{\{cliente_nome\}\}/i)).toBeNull();
@@ -124,7 +133,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     act(() => {
       fireEvent.click(storyIndicators[0]);
     });
-    expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Modelos? & Marcadores/i })).toBeInTheDocument();
 
     act(() => {
       vi.advanceTimersByTime(4500);
@@ -150,13 +159,13 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     render(<HowItWorksSection />);
 
     // Inicia na Etapa 1: Modelo & Marcadores
-    expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Modelos? & Marcadores/i })).toBeInTheDocument();
 
     // Com 20 segundos ainda permanece na Etapa 1
     act(() => {
       vi.advanceTimersByTime(20000);
     });
-    expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Modelos? & Marcadores/i })).toBeInTheDocument();
 
     // Ao completar os 25 segundos (mais 5s), transita para a Etapa 2: Preenchimento & Criação
     act(() => {
@@ -192,7 +201,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     });
 
     // Deve permanecer na Etapa 1 sem avançar automaticamente
-    expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Modelos? & Marcadores/i })).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: /Preenchimento & Criação/i })).toBeNull();
 
     // Clica para retomar a reprodução automática
