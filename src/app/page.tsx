@@ -11,7 +11,7 @@ import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function HomePage() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-[var(--bg-canvas)] transition-colors duration-300">
       <Navbar />
       <main className="flex-1">
         <Hero />

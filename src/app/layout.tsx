@@ -37,7 +37,7 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} scroll-smooth`}
     >
-      <body className="min-h-screen bg-[#EBF2ED] text-[#0E1210] antialiased">
+      <body className="min-h-screen bg-[var(--bg-canvas)] text-[var(--text-main)] antialiased transition-colors duration-300">
         {children}
       </body>
     </html>
