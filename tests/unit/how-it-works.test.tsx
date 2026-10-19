@@ -67,11 +67,15 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     expect(screen.queryByText(/editor\.tratto\.app/i)).toBeNull();
     expect(screen.queryByText(/● Redigindo/i)).toBeNull();
 
-    // Valida presença dos 3 modelos e remoção de 'Plataforma Tratto' e badges
+    // Valida presença dos modelos iniciais e remoção de 'Plataforma Tratto' e badges
     expect(screen.getByText(/Modelo 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Modelo 2/i)).toBeInTheDocument();
     expect(screen.getByText(/Modelo 3/i)).toBeInTheDocument();
     expect(screen.queryByText(/Plataforma Tratto/i)).toBeNull();
+
+    // Valida que a logo no canto superior esquerdo da tela do computador é fixa em preto
+    const rubrics = screen.getAllByRole("img", { name: "Rubrica Tratto" });
+    expect(rubrics[0]).toHaveClass("text-gray-900");
 
     // No início imediato (t=0), o corpo com marcadores ainda não foi digitado
     expect(screen.queryByText(/\{\{cliente_nome\}\}/i)).toBeNull();
@@ -90,6 +94,18 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     expect(marker).toBeInTheDocument();
     expect(marker).toHaveClass("text-[var(--accent-primary)]");
     expect(marker).toHaveClass("bg-[var(--accent-surface)]");
+
+    // Valida exibição sequencial contínua (Modelo 4 já subiu e Modelo 1 já foi salvo)
+    expect(screen.getByText(/Modelo 4/i)).toBeInTheDocument();
+
+    // Ao avançar o tempo (t=7800ms), novos modelos sobem sequencialmente (ex: Modelo 7) e Cláusula 1ª está em negrito
+    act(() => {
+      vi.advanceTimersByTime(3500);
+    });
+    expect(screen.getByText(/Modelo 7/i)).toBeInTheDocument();
+    const clausula1 = screen.getByText(/Cláusula 1ª:/i);
+    expect(clausula1.tagName.toLowerCase()).toBe("strong");
+    expect(clausula1).toHaveClass("font-bold");
 
     vi.useRealTimers();
   });

@@ -179,6 +179,7 @@ interface DocParagraph {
   segments: {
     text: string;
     isMarker?: boolean;
+    isBold?: boolean;
   }[];
 }
 
@@ -194,7 +195,8 @@ const STEP1_PARAGRAPHS: DocParagraph[] = [
   },
   {
     segments: [
-      { text: "Cláusula 1ª: O objeto deste contrato é a prestação do serviço correspondente ao " },
+      { text: "Cláusula 1ª: ", isBold: true },
+      { text: "O objeto deste contrato é a prestação do serviço correspondente ao " },
       { text: "{{plano_nome}}", isMarker: true },
       { text: ", com a vigência estipulada de " },
       { text: "{{vigencia_meses}}", isMarker: true },
@@ -203,7 +205,8 @@ const STEP1_PARAGRAPHS: DocParagraph[] = [
   },
   {
     segments: [
-      { text: "Cláusula 2ª: Pela execução dos serviços, o CONTRATANTE pagará o valor mensal de " },
+      { text: "Cláusula 2ª: ", isBold: true },
+      { text: "Pela execução dos serviços, o CONTRATANTE pagará o valor mensal de " },
       { text: "{{valor_mensal}}", isMarker: true },
       { text: ", reajustado anualmente pelo índice oficial." },
     ],
@@ -252,11 +255,12 @@ const DOC_READING_PAUSE = 5000;
 const DOC_FADE_DURATION = 600;
 const TOTAL_CYCLE_MS = DOC_TYPING_DURATION + DOC_READING_PAUSE + DOC_FADE_DURATION;
 
-const UPLOAD_MODELS = [
-  { name: "Modelo 1" },
-  { name: "Modelo 2" },
-  { name: "Modelo 3" },
-];
+// 16 modelos sequenciais para exibição contínua sem repetição durante a animação
+const SEQUENTIAL_MODELS = Array.from({ length: 16 }, (_, i) => ({
+  name: `Modelo ${i + 1}`,
+  startOffset: (i - 2) * 1500,
+}));
+const CARD_TRAVEL_DURATION = 4500;
 
 function Step1ModelMarkers() {
   const [elapsedMs, setElapsedMs] = useState(0);
@@ -322,6 +326,7 @@ function Step1ModelMarkers() {
 
       const isMarker = seg.isMarker;
       const isCompleteMarker = isMarker && textSlice.length === seg.text.length;
+      const isBold = seg.isBold;
 
       return (
         <React.Fragment key={`seg-${pIdx}-${sIdx}`}>
@@ -336,6 +341,8 @@ function Step1ModelMarkers() {
             </span>
           ) : isMarker ? (
             <span className="font-mono text-gray-900">{textSlice}</span>
+          ) : isBold ? (
+            <strong className="font-bold text-gray-900">{textSlice}</strong>
           ) : (
             <span>{textSlice}</span>
           )}
@@ -354,22 +361,22 @@ function Step1ModelMarkers() {
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
-      {/* Lado Esquerdo (lg:col-span-7): Computador redigindo o contrato dentro do editor Tratto */}
-      <div className="lg:col-span-7 flex flex-col items-center justify-center">
+      {/* Lado Esquerdo (lg:col-span-7): Computador redigindo o contrato dentro do editor Tratto com linha divisória */}
+      <div className="lg:col-span-7 flex flex-col items-center justify-center border-b border-[var(--accent-primary)]/20 pb-6 lg:pb-0 lg:border-b-0 lg:border-r lg:border-[var(--accent-primary)]/30 lg:pr-8">
         {/* Mockup do Computador (Tela / Monitor do Laptop com a cor do tema) */}
         <div className="w-full max-w-[370px] sm:max-w-[430px] rounded-t-xl bg-[var(--accent-primary)] p-2 sm:p-2.5 shadow-xl border-2 border-[var(--border-strong)] text-left">
           {/* Câmera central */}
           <div className="h-1 w-1 rounded-full bg-white/40 mx-auto mb-1.5 ring-1 ring-black/10" />
 
-          {/* Tela interna com proporção compacta e rubrica no canto superior esquerdo */}
-          <div className="bg-[#FAF9F6] p-3 sm:p-3.5 rounded-b text-left min-h-[220px] sm:min-h-[235px] max-h-[250px] font-sans text-xs sm:text-[13px] text-gray-800 leading-relaxed overflow-hidden">
-            {/* Topo da tela: Rubrica da Tratto no canto superior esquerdo e Título do documento */}
+          {/* Tela interna com altura fixa e rubrica fixa em preto no canto superior esquerdo */}
+          <div className="bg-[#FAF9F6] p-3 sm:p-3.5 rounded-b text-left h-[235px] sm:h-[240px] font-sans text-xs sm:text-[13px] text-gray-800 leading-relaxed overflow-hidden">
+            {/* Topo da tela: Rubrica da Tratto no canto superior esquerdo (fixa em preto) e Título do documento */}
             <div className="relative mb-2 pb-1.5 border-b border-gray-200 flex items-center justify-between">
               <div className="flex items-center gap-1.5 shrink-0" title="Plataforma Tratto">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 50 50"
-                  className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--accent-primary)] stroke-current fill-none"
+                  className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 stroke-current fill-none"
                   role="img"
                   aria-label="Rubrica Tratto"
                 >
@@ -411,8 +418,8 @@ function Step1ModelMarkers() {
         </div>
       </div>
 
-      {/* Lado Direito (lg:col-span-5): Tratto Rubrica e os 3 modelos subindo e sendo salvos */}
-      <div className="lg:col-span-5 flex flex-col items-center justify-center relative min-h-[360px]">
+      {/* Lado Direito (lg:col-span-5): Tratto Rubrica e os modelos subindo sequencialmente */}
+      <div className="lg:col-span-5 flex flex-col items-center justify-center relative min-h-[350px] lg:pl-4">
         {/* Logo Rubrica da Tratto maior e sem texto 'Plataforma Tratto' */}
         <div className="relative flex flex-col items-center select-none z-20">
           <div className="relative flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-2xl border-2 border-[var(--border-strong)] bg-white shadow-md p-3 transition-transform">
@@ -432,23 +439,23 @@ function Step1ModelMarkers() {
           </div>
         </div>
 
-        {/* Seta apontando para cima com animação float e traço pontilhado com riscos */}
-        <div className="my-2 flex items-center justify-center animate-float-gentle text-[var(--accent-primary)] z-15" aria-hidden="true">
+        {/* Seta apontando para cima com animação float e traço pontilhado (mais próxima dos documentos) */}
+        <div className="mt-1 -mb-1 flex items-center justify-center animate-float-gentle text-[var(--accent-primary)] z-15" aria-hidden="true">
           <svg
-            viewBox="0 0 24 36"
-            className="w-5 h-8 sm:w-6 sm:h-9 stroke-current fill-none"
+            viewBox="0 0 24 32"
+            className="w-5 h-7 sm:w-6 sm:h-8 stroke-current fill-none"
           >
             <path
-              d="M 6 12 L 12 5 L 18 12"
+              d="M 6 10 L 12 4 L 18 10"
               strokeWidth="2.2"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
             <line
               x1="12"
-              y1="6"
+              y1="5"
               x2="12"
-              y2="33"
+              y2="28"
               strokeWidth="2.2"
               strokeDasharray="3 3"
               strokeLinecap="round"
@@ -456,14 +463,16 @@ function Step1ModelMarkers() {
           </svg>
         </div>
 
-        {/* Câmara de fluxo ascendente: Modelos 1, 2 e 3 subindo em direção à logo */}
-        <div className="relative w-full max-w-[260px] h-[200px] flex justify-center items-center overflow-hidden z-10">
-          {UPLOAD_MODELS.map((model, i) => {
-            const cardOffset = i * 1500;
-            const cardTime = (elapsedMs + cardOffset) % 4500;
-            const p = cardTime / 4500;
+        {/* Câmara de fluxo ascendente: Modelos subindo em exibição sequencial contínua */}
+        <div className="relative w-full max-w-[260px] h-[190px] flex justify-center items-center overflow-hidden z-10">
+          {SEQUENTIAL_MODELS.map((model) => {
+            const cardAge = elapsedMs - model.startOffset;
+            if (cardAge < 0 || cardAge > CARD_TRAVEL_DURATION) {
+              return null;
+            }
 
-            let translateY = 100 - p * 160;
+            const p = cardAge / CARD_TRAVEL_DURATION;
+            let translateY = 95 - p * 155;
             let opacity = 1;
             let scale = 1;
 
