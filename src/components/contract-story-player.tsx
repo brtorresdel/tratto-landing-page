@@ -1559,7 +1559,7 @@ function Step3SendingSigning() {
               <div>
                 {/* Cabeçalho limpo com a rubrica oficial Tratto no canto superior direito */}
                 <div className="flex items-center justify-between pb-1.5 border-b border-gray-100 mb-1.5 select-none">
-                  <span className="font-mono text-[10px] uppercase tracking-wider font-semibold truncate text-emerald-800 font-bold">
+                  <span className="font-mono text-[10px] uppercase tracking-wider font-semibold truncate text-gray-700">
                     contrato_123456
                   </span>
                   <div className="flex items-center gap-1 shrink-0" title="Plataforma Tratto">
@@ -1585,11 +1585,11 @@ function Step3SendingSigning() {
                 <div className="space-y-1 text-[10px] sm:text-[11px] text-gray-700 leading-relaxed font-sans">
                   <p>
                     CONTRATANTE{" "}
-                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded">
+                    <span className="font-semibold text-gray-900 bg-gray-100 px-1 py-0.2 rounded">
                       João da Silva
                     </span>
                     , sob doc{" "}
-                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded font-mono text-[9px]">
+                    <span className="font-mono text-[9px] text-gray-800 bg-gray-100 px-1 py-0.2 rounded">
                       12.345.678/0001-90
                     </span>
                     .
@@ -1597,30 +1597,18 @@ function Step3SendingSigning() {
 
                   <p>
                     <strong>Cláusula 1ª:</strong> Serviço{" "}
-                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded">
-                      Plano XYZ
-                    </span>
-                    , vigência{" "}
-                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded">
-                      12 meses
-                    </span>
-                    .
+                    <span className="font-semibold text-gray-900">Plano XYZ</span>, vigência{" "}
+                    <span className="font-semibold text-gray-900">12 meses</span>.
                   </p>
 
                   <p>
                     <strong>Cláusula 2ª:</strong> Mensalidade de{" "}
-                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded">
-                      R$ 1.200,00
-                    </span>
-                    .
+                    <span className="font-semibold text-gray-900">R$ 1.200,00</span>.
                   </p>
 
                   <p>
                     <strong>Cláusula 3ª:</strong> Reajuste por{" "}
-                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded">
-                      Índice Oficial (IPCA / Bacen)
-                    </span>
-                    .
+                    <span className="font-semibold text-gray-900">Índice Oficial (IPCA / Bacen)</span>.
                   </p>
                 </div>
               </div>
