@@ -958,15 +958,29 @@ function Step2FillingCreation() {
           </div>
         ) : (
           <div className="w-full max-w-[360px] sm:max-w-[400px] rounded-md border border-gray-200 bg-white p-4 sm:p-5 shadow-xl shadow-black/8 ring-1 ring-black/5 transition-all text-left min-h-[365px] sm:min-h-[375px] flex flex-col justify-start relative animate-metric-fade-in">
-            {/* Cabeçalho do documento: modelo_prestacao_servicos -> contrato_123456 (sem bolinha e sem .docx) */}
-            <div className="flex items-center justify-between pb-2.5 border-b border-gray-100 mb-2.5 select-none">
-              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate max-w-[260px] transition-all duration-500">
+            {/* Cabeçalho do documento: modelo_prestacao_servicos -> contrato_123456 (com rubrica da Tratto no canto superior direito) */}
+            <div className="flex items-center justify-between pb-2 border-b border-gray-100 mb-2 select-none">
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate max-w-[230px] transition-all duration-500">
                 {isSaved ? (
                   <span className="text-emerald-800 font-bold">contrato_123456</span>
                 ) : (
                   <span className="text-gray-500">modelo_prestacao_servicos</span>
                 )}
               </span>
+              <div className="flex items-center gap-1 shrink-0" title="Plataforma Tratto">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 50 50"
+                  className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-gray-900 stroke-current fill-none"
+                  role="img"
+                  aria-label="Rubrica Tratto"
+                >
+                  <g strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M 6 22 C 14 20, 26 17, 40 19 C 45 20, 48 21, 48 21" strokeWidth="4.2" />
+                    <path d="M 31 11 C 30 19, 24 31, 18 36 C 14 40, 15 44, 18 44 C 23 44, 28 37, 33 27 C 34 23, 35 17, 35 13" strokeWidth="3.6" />
+                  </g>
+                </svg>
+              </div>
             </div>
 
             {/* Título do contrato */}
