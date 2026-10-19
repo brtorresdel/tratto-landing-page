@@ -114,18 +114,18 @@ export function ContractStoryPlayer() {
         })}
       </div>
 
-      {/* 2. Cabeçalho da Etapa: Título e Descrição */}
-      <div className="mt-6 pb-5 border-b border-[var(--border-subtle)]">
+      {/* 2. Cabeçalho da Etapa: Título e Descrição com largura total e altura estável */}
+      <div className="mt-6 pb-5 border-b border-[var(--border-subtle)] min-h-[84px] sm:min-h-[88px] flex flex-col justify-center">
         <h3 className="font-serif text-2xl sm:text-3xl italic font-semibold text-[var(--text-main)]">
           {activeStep.title}
         </h3>
-        <p className="mt-2 text-sm sm:text-base text-[var(--text-muted)] max-w-2xl leading-relaxed">
+        <p className="mt-2 text-sm sm:text-base text-[var(--text-muted)] w-full leading-relaxed">
           {activeStep.description}
         </p>
       </div>
 
-      {/* 3. Palco Visual Interativo com Animações Específicas por Etapa */}
-      <div className="mt-8 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-canvas)] p-4 sm:p-8 min-h-[380px] sm:min-h-[420px] flex items-center justify-center overflow-hidden relative">
+      {/* 3. Palco Visual Interativo com Animações Específicas por Etapa em Tamanho Padronizado */}
+      <div className="mt-8 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-canvas)] p-4 sm:p-6 lg:p-8 h-[740px] sm:h-[720px] lg:h-[500px] flex items-center justify-center overflow-hidden relative">
         {/* Botão de Controle de Pausa/Reprodução no Canto Superior Direito na cor do tema */}
         <button
           type="button"
@@ -819,9 +819,9 @@ function Step2FillingCreation() {
 
       {/* Painel Direito: Contrato idêntico à Etapa 1 com marcadores atualizados em tempo real */}
       <div className="lg:col-span-7 flex justify-center">
-        <div className="w-full max-w-[380px] sm:max-w-[420px] rounded-md border border-gray-200 bg-white p-5 sm:p-6 shadow-xl shadow-black/8 ring-1 ring-black/5 transition-all text-left min-h-[440px] flex flex-col justify-start relative">
+        <div className="w-full max-w-[360px] sm:max-w-[400px] rounded-md border border-gray-200 bg-white p-4 sm:p-5 shadow-xl shadow-black/8 ring-1 ring-black/5 transition-all text-left min-h-[365px] sm:min-h-[375px] flex flex-col justify-start relative">
           {/* Cabeçalho do documento: modelo_prestacao_servicos.docx -> contrato_123456.docx */}
-          <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4 select-none">
+          <div className="flex items-center justify-between pb-2.5 border-b border-gray-100 mb-3 select-none">
             <div className="flex items-center gap-2">
               <div
                 className={clsx(
@@ -840,12 +840,12 @@ function Step2FillingCreation() {
           </div>
 
           {/* Título do contrato idêntico à Etapa 1 */}
-          <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-100 mb-3 min-h-[32px] flex items-center justify-center">
+          <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-100 mb-2.5 min-h-[28px] flex items-center justify-center">
             Contrato de Prestação de Serviços
           </div>
 
           {/* Parágrafos: durante digitação/seleção mantêm a cor do tema, e viram verde somente quando Salvo */}
-          <div className="space-y-3.5 text-xs sm:text-[13px] text-gray-700 leading-relaxed font-sans">
+          <div className="space-y-3 text-xs sm:text-[13px] text-gray-700 leading-relaxed font-sans">
             <p>
               Pelo presente instrumento particular, de um lado a CONTRATADA, e de outro lado como CONTRATANTE{" "}
               <span
@@ -971,21 +971,21 @@ function Step3SendingSigning() {
   return (
     <div
       className={clsx(
-        "w-full max-w-xl mx-auto flex items-center justify-center relative min-h-[460px] py-4 transition-opacity duration-500",
+        "w-full max-w-xl mx-auto flex items-center justify-center relative transition-opacity duration-500",
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
       {/* Contrato idêntico ao final da Etapa 2 */}
       <div
         className={clsx(
-          "w-full max-w-[320px] sm:max-w-[390px] rounded-md border bg-white p-5 sm:p-6 shadow-xl shadow-black/8 ring-1 ring-black/5 transition-all duration-700 relative text-left select-none min-h-[440px] flex flex-col justify-start z-10",
+          "w-full max-w-[340px] sm:max-w-[400px] rounded-md border bg-white p-4 sm:p-5 shadow-xl shadow-black/8 ring-1 ring-black/5 transition-all duration-700 relative text-left select-none min-h-[365px] sm:min-h-[375px] flex flex-col justify-start z-10",
           isCenter && "translate-x-[-35px] sm:translate-x-[-55px] opacity-100 scale-100 border-gray-200",
           isMovingOut && "translate-x-[90px] sm:translate-x-[150px] opacity-0 scale-75 border-blue-400",
           isSigned && "translate-x-[-35px] sm:translate-x-[-55px] opacity-100 scale-100 border-emerald-400 ring-2 ring-emerald-400/20"
         )}
       >
         {/* Cabeçalho do documento idêntico ao final da Etapa 2 */}
-        <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4 select-none">
+        <div className="flex items-center justify-between pb-2.5 border-b border-gray-100 mb-3 select-none">
           <div className="flex items-center gap-2">
             <div className="h-2.5 w-2.5 rounded-full bg-emerald-600" />
             <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate max-w-[210px] text-emerald-800 font-bold">
@@ -995,12 +995,12 @@ function Step3SendingSigning() {
         </div>
 
         {/* Título do contrato idêntico à Etapa 2 */}
-        <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-100 mb-3 min-h-[32px] flex items-center justify-center">
+        <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-100 mb-2.5 min-h-[28px] flex items-center justify-center">
           Contrato de Prestação de Serviços
         </div>
 
         {/* Parágrafos com todos os marcadores preenchidos em verde */}
-        <div className="space-y-3.5 text-xs sm:text-[13px] text-gray-700 leading-relaxed font-sans">
+        <div className="space-y-3 text-xs sm:text-[13px] text-gray-700 leading-relaxed font-sans">
           <p>
             Pelo presente instrumento particular, de um lado a CONTRATADA, e de outro lado como CONTRATANTE{" "}
             <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs px-1.5 py-0.5 rounded inline-block align-baseline">
