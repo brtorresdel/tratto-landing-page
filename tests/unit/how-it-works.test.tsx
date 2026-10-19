@@ -136,7 +136,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     expect(screen.getByRole("heading", { name: /Envio & Assinatura/i })).toBeInTheDocument();
 
     act(() => {
-      vi.advanceTimersByTime(3800);
+      vi.advanceTimersByTime(6000);
     });
     expect(screen.getAllByText(/ASSINADO/i).length).toBeGreaterThan(0);
 
@@ -379,20 +379,22 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     expect(screen.getByText(/Cláusula 3ª:/i)).toBeInTheDocument();
     expect(screen.getByText(/Índice Oficial \(IPCA \/ Bacen\)/i)).toBeInTheDocument();
 
-    // 2. Signatário presente
-    expect(screen.getByText(/Signatário/i)).toBeInTheDocument();
+    // 2. Dois caminhos simultâneos presentes no centro (Download e ZapSign / Clicksign)
+    expect(screen.getByText(/Download PDF/i)).toBeInTheDocument();
+    expect(screen.getByText(/ZapSign \/ Clicksign/i)).toBeInTheDocument();
 
-    // 3. Valida remoção do texto da parte de baixo e de 'Validade jurídica · ZapSign / Clicksign'
-    expect(screen.queryByText(/Contrato pronto para despacho/i)).toBeNull();
-    expect(screen.queryByText(/Documento assinado com hash e validade jurídica!/i)).toBeNull();
-    expect(screen.queryByText(/Validade Jurídica · ZapSign \/ Clicksign/i)).toBeNull();
+    // 3. Signatário presente no ponto de convergência
+    expect(screen.getByText(/^Signatário$/i)).toBeInTheDocument();
 
-    // 4. Avança o tempo até o contrato retornar assinado (t = 3800ms)
+    // 4. Antes de passar pelo signatário, exibe aguardando assinatura
+    expect(screen.getByText(/Aguardando Assinatura/i)).toBeInTheDocument();
+
+    // 5. Avança o tempo até o contrato passar pelo signatário e se tornar assinado (t = 6000ms)
     act(() => {
-      vi.advanceTimersByTime(3800);
+      vi.advanceTimersByTime(6000);
     });
 
-    // O carimbo contém apenas o ícone e 'Assinado'
+    // O carimbo contém apenas o ícone e 'Assinado' no contrato da direita
     expect(screen.getByText(/^Assinado$/i)).toBeInTheDocument();
 
     vi.useRealTimers();

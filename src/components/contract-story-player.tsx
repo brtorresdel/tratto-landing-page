@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2, FileText } from "lucide-react";
+import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2, FileText, Download, Send, ArrowRight } from "lucide-react";
 
 export const STORY_STEPS = [
   {
@@ -1070,16 +1070,23 @@ function Step2FillingCreation() {
 }
 
 // =========================================================================
-// ETAPA 3: CONTRATO SE MOVE PARA O CLIENTE, SOME E VOLTA COM CARIMBO ASSINADO
+// ETAPA 3: CONTRATO NA ESQUERDA, DOIS CAMINHOS NO CENTRO CONVERGINDO NO
+// SIGNATÁRIO E TORNANDO-SE ASSINADO AO PASSAR PARA A DIREITA
 // =========================================================================
 const STEP3_TIMELINE = {
-  centerMs: 2000,
-  movingOutMs: 3600,
-  signedMs: 7800,
-  fadeMs: 600,
+  dispatchStartMs: 800,  // Início do despacho pelos dois caminhos simultâneos
+  dispatchEndMs: 3800,   // Término do trajeto e chegada ao Signatário
+  signingStartMs: 4000,  // Signatário em processo de assinatura
+  signingEndMs: 5600,    // Assinatura concluída no Signatário
+  signedAppearMs: 5800,  // O contrato passa para a direita e recebe o carimbo ASSINADO
+  readingPauseMs: 7000,  // Pausa tranquila para leitura e contemplação
+  fadeMs: 600,           // Fade out suave antes de reiniciar o loop
 };
 
-const STEP3_TOTAL_CYCLE = STEP3_TIMELINE.signedMs + STEP3_TIMELINE.fadeMs;
+const STEP3_TOTAL_CYCLE =
+  STEP3_TIMELINE.signedAppearMs +
+  STEP3_TIMELINE.readingPauseMs +
+  STEP3_TIMELINE.fadeMs; // ~13.400ms (13.4s)
 
 function Step3SendingSigning() {
   const [elapsedMs, setElapsedMs] = useState(0);
@@ -1093,114 +1100,293 @@ function Step3SendingSigning() {
     return () => clearInterval(interval);
   }, []);
 
-  const isCenter = elapsedMs < STEP3_TIMELINE.centerMs;
-  const isMovingOut =
-    elapsedMs >= STEP3_TIMELINE.centerMs && elapsedMs < STEP3_TIMELINE.movingOutMs;
+  const isDispatching =
+    elapsedMs >= STEP3_TIMELINE.dispatchStartMs &&
+    elapsedMs < STEP3_TIMELINE.dispatchEndMs;
+
+  const dispatchProgress = isDispatching
+    ? (elapsedMs - STEP3_TIMELINE.dispatchStartMs) /
+      (STEP3_TIMELINE.dispatchEndMs - STEP3_TIMELINE.dispatchStartMs)
+    : elapsedMs >= STEP3_TIMELINE.dispatchEndMs
+      ? 1
+      : 0;
+
+  const isSigning =
+    elapsedMs >= STEP3_TIMELINE.signingStartMs &&
+    elapsedMs < STEP3_TIMELINE.signedAppearMs;
+
   const isSigned =
-    elapsedMs >= STEP3_TIMELINE.movingOutMs && elapsedMs < STEP3_TIMELINE.signedMs;
-  const isFading = elapsedMs >= STEP3_TIMELINE.signedMs;
+    elapsedMs >= STEP3_TIMELINE.signedAppearMs &&
+    elapsedMs < (STEP3_TIMELINE.signedAppearMs + STEP3_TIMELINE.readingPauseMs);
+
+  const isFading =
+    elapsedMs >= (STEP3_TIMELINE.signedAppearMs + STEP3_TIMELINE.readingPauseMs);
 
   return (
     <div
       className={clsx(
-        "w-full max-w-xl mx-auto flex items-center justify-center relative transition-opacity duration-500",
+        "w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-4 items-center justify-center transition-opacity duration-500 py-1",
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
-      {/* Contrato idêntico ao final da Etapa 2 */}
-      <div
-        className={clsx(
-          "w-full max-w-[340px] sm:max-w-[400px] rounded-md border bg-white p-4 sm:p-5 shadow-xl shadow-black/8 ring-1 ring-black/5 transition-all duration-700 relative text-left select-none min-h-[365px] sm:min-h-[375px] flex flex-col justify-start z-10",
-          isCenter && "translate-x-[-35px] sm:translate-x-[-55px] opacity-100 scale-100 border-gray-200",
-          isMovingOut && "translate-x-[90px] sm:translate-x-[150px] opacity-0 scale-75 border-blue-400",
-          isSigned && "translate-x-[-35px] sm:translate-x-[-55px] opacity-100 scale-100 border-emerald-400 ring-2 ring-emerald-400/20"
-        )}
-      >
-        {/* Cabeçalho do documento idêntico ao final da Etapa 2 (sem bolinha e sem .docx) */}
-        <div className="flex items-center justify-between pb-2.5 border-b border-gray-100 mb-2.5 select-none">
-          <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate max-w-[260px] text-emerald-800 font-bold">
-            contrato_123456
+      {/* 1. LADO ESQUERDO (lg:col-span-4): Contrato Único Gerado na Tratto */}
+      <div className="lg:col-span-4 flex justify-center w-full">
+        <div className="w-full max-w-[270px] sm:max-w-[290px] rounded-md border border-gray-200 bg-white p-3.5 sm:p-4 shadow-md text-left select-none relative min-h-[355px] sm:min-h-[365px] flex flex-col justify-start">
+          {/* Cabeçalho limpo */}
+          <div className="flex items-center justify-between pb-2 border-b border-gray-100 mb-2 select-none">
+            <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate text-gray-700">
+              contrato_123456
+            </span>
+            <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[var(--accent-surface)] text-[var(--accent-primary)] font-semibold border border-[var(--border-subtle)]">
+              Tratto
+            </span>
+          </div>
+
+          <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-1.5 text-[11px] sm:text-xs border-b border-gray-100 mb-2 flex items-center justify-center">
+            Contrato de Prestação de Serviços
+          </div>
+
+          <div className="space-y-2 text-[11px] sm:text-xs text-gray-700 leading-relaxed font-sans">
+            <p>
+              CONTRATANTE{" "}
+              <span className="font-semibold text-gray-900 bg-gray-100 px-1 py-0.5 rounded">
+                João da Silva
+              </span>
+              , sob documento{" "}
+              <span className="font-mono text-[10px] text-gray-800 bg-gray-100 px-1 py-0.5 rounded">
+                12.345.678/0001-90
+              </span>
+              .
+            </p>
+
+            <p>
+              <strong>Cláusula 1ª:</strong> Serviço{" "}
+              <span className="font-semibold text-gray-900">Plano XYZ</span>, vigência de{" "}
+              <span className="font-semibold text-gray-900">12 meses</span>.
+            </p>
+
+            <p>
+              <strong>Cláusula 2ª:</strong> Mensalidade de{" "}
+              <span className="font-semibold text-gray-900">R$ 1.200,00</span>.
+            </p>
+
+            <p>
+              <strong>Cláusula 3ª:</strong> Reajuste por{" "}
+              <span className="font-semibold text-gray-900">Índice Oficial (IPCA / Bacen)</span>.
+            </p>
+          </div>
+
+          {/* Indicador de Despacho na borda direita */}
+          <div className="mt-auto pt-2 border-t border-gray-100 flex items-center justify-between text-[10px] font-mono text-[var(--text-muted)]">
+            <span>Origem: Tratto</span>
+            <div className="flex items-center gap-1 text-[var(--accent-primary)] font-semibold animate-pulse">
+              <span>Despachando</span>
+              <ArrowRight className="h-3 w-3" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. CENTRO (lg:col-span-4): Os Dois Caminhos Simultâneos convergindo no Signatário */}
+      <div className="lg:col-span-4 flex flex-col items-center justify-between min-h-[355px] sm:min-h-[365px] py-1 relative w-full">
+        {/* CAMINHO SUPERIOR: Download (Modo Manual / Presencial) */}
+        <div className="w-full rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-2.5 sm:p-3 shadow-xs relative overflow-hidden">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <div className="h-7 w-7 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
+                <Download className="h-3.5 w-3.5" />
+              </div>
+              <div className="text-left">
+                <span className="font-semibold block text-xs text-gray-900">
+                  Download PDF
+                </span>
+                <span className="text-[10px] font-mono text-[var(--text-muted)] block">
+                  Envio manual / presencial
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Trilho com linha pontilhada e mini-documento viajando simultaneamente */}
+          <div className="relative h-6 bg-[var(--bg-canvas)] rounded-md border border-[var(--border-subtle)] flex items-center px-2 overflow-hidden">
+            <div className="w-full border-b border-dashed border-[var(--border-strong)]/60 absolute left-0 right-0" />
+            <div
+              style={{
+                transform: `translateX(${dispatchProgress * 210}px)`,
+                opacity: dispatchProgress > 0 && dispatchProgress < 1 ? 1 : dispatchProgress === 1 ? 0 : 0.4,
+              }}
+              className="relative z-10 px-2 py-0.5 rounded bg-blue-600 text-white font-mono text-[9px] font-bold shadow-xs flex items-center gap-1 transition-transform duration-75"
+            >
+              <FileText className="h-2.5 w-2.5" />
+              <span>PDF</span>
+            </div>
+          </div>
+        </div>
+
+        {/* NÓ CENTRAL DE CONVERGÊNCIA: O Signatário */}
+        <div className="my-1.5 flex flex-col items-center justify-center select-none z-20">
+          <div
+            className={clsx(
+              "flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full border-2 transition-all duration-300 shadow-sm relative",
+              isSigned
+                ? "bg-emerald-50 text-emerald-700 border-emerald-300 ring-4 ring-emerald-400/20"
+                : isSigning
+                  ? "bg-[var(--accent-primary)] text-white border-[var(--accent-primary)] ring-4 ring-[var(--accent-primary)]/30 scale-105"
+                  : isDispatching
+                    ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--accent-primary)] animate-pulse"
+                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)]"
+            )}
+          >
+            <User className="h-7 w-7 sm:h-8 sm:w-8" />
+            {isSigned && (
+              <span className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] shadow-xs">
+                ✓
+              </span>
+            )}
+          </div>
+          <span className="font-mono text-xs font-semibold text-[var(--text-main)] mt-1">
+            Signatário
+          </span>
+          <span
+            className={clsx(
+              "text-[10px] font-mono px-2 py-0.5 rounded-full mt-0.5 transition-colors",
+              isSigned
+                ? "bg-emerald-100 text-emerald-800 font-bold"
+                : isSigning
+                  ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] font-bold animate-pulse"
+                  : "bg-gray-100 text-gray-600"
+            )}
+          >
+            {isSigned ? "Concluído" : isSigning ? "Assinando..." : "Aguardando"}
           </span>
         </div>
 
-        {/* Título do contrato idêntico à Etapa 2 */}
-        <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-100 mb-2 min-h-[26px] flex items-center justify-center">
-          Contrato de Prestação de Serviços
+        {/* CAMINHO INFERIOR: Assinatura Digital (ZapSign / Clicksign) */}
+        <div className="w-full rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-2.5 sm:p-3 shadow-xs relative overflow-hidden">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <div className="h-7 w-7 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0">
+                <Send className="h-3.5 w-3.5" />
+              </div>
+              <div className="text-left">
+                <span className="font-semibold block text-xs text-gray-900">
+                  ZapSign / Clicksign
+                </span>
+                <span className="text-[10px] font-mono text-[var(--text-muted)] block">
+                  Assinatura Eletrônica (API)
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Trilho com linha pontilhada e mini-documento viajando simultaneamente */}
+          <div className="relative h-6 bg-[var(--bg-canvas)] rounded-md border border-[var(--border-subtle)] flex items-center px-2 overflow-hidden">
+            <div className="w-full border-b border-dashed border-[var(--border-strong)]/60 absolute left-0 right-0" />
+            <div
+              style={{
+                transform: `translateX(${dispatchProgress * 210}px)`,
+                opacity: dispatchProgress > 0 && dispatchProgress < 1 ? 1 : dispatchProgress === 1 ? 0 : 0.4,
+              }}
+              className="relative z-10 px-2 py-0.5 rounded bg-[var(--accent-primary)] text-white font-mono text-[9px] font-bold shadow-xs flex items-center gap-1 transition-transform duration-75"
+            >
+              <ShieldCheck className="h-2.5 w-2.5" />
+              <span>Digital</span>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Parágrafos com todos os marcadores preenchidos em verde e as 3 cláusulas */}
-        <div className="space-y-2.5 text-xs sm:text-[13px] text-gray-700 leading-relaxed font-sans">
-          <p>
-            Pelo presente instrumento particular, de um lado a CONTRATADA, e de outro lado como CONTRATANTE{" "}
-            <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs px-1.5 py-0.5 rounded inline-block align-baseline">
-              João da Silva
-            </span>
-            , inscrito sob o documento oficial{" "}
-            <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs px-1.5 py-0.5 rounded inline-block align-baseline">
-              12.345.678/0001-90
-            </span>
-            .
-          </p>
-
-          <p>
-            <strong>Cláusula 1ª:</strong> O objeto deste contrato é a prestação do serviço correspondente ao{" "}
-            <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs px-1.5 py-0.5 rounded inline-block align-baseline">
-              Plano XYZ
-            </span>
-            , com a vigência estipulada de{" "}
-            <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs px-1.5 py-0.5 rounded inline-block align-baseline">
-              12 meses
-            </span>
-            .
-          </p>
-
-          <p>
-            <strong>Cláusula 2ª:</strong> Pela execução dos serviços, o CONTRATANTE pagará o valor mensal de{" "}
-            <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs px-1.5 py-0.5 rounded inline-block align-baseline">
-              R$ 1.200,00
-            </span>
-            .
-          </p>
-
-          <p>
-            <strong>Cláusula 3ª:</strong> O valor mensal será reajustado anualmente por{" "}
-            <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs px-1.5 py-0.5 rounded inline-block align-baseline">
-              Índice Oficial (IPCA / Bacen)
-            </span>
-            .
-          </p>
-        </div>
-
-        {/* Carimbo ASSINADO na diagonal com rotação, borda pontilhada e fundo transparente estilo carimbo físico */}
-        {isSigned && (
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-            <div className="rotate-[-12deg] rounded-lg border-2 border-dotted border-emerald-600 bg-transparent px-4 py-2 flex items-center gap-2 animate-metric-fade-in select-none">
-              <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600 shrink-0" />
-              <span className="font-mono text-base sm:text-lg font-black tracking-wider text-emerald-700 uppercase">
-                Assinado
+      {/* 3. LADO DIREITO (lg:col-span-4): O Contrato que se torna Assinado após passar pelo Signatário */}
+      <div className="lg:col-span-4 flex justify-center w-full">
+        {!isSigned ? (
+          <div className="w-full max-w-[270px] sm:max-w-[290px] rounded-md border-2 border-dashed border-[var(--border-subtle)] bg-[var(--bg-canvas)]/40 p-5 text-center min-h-[355px] sm:min-h-[365px] flex flex-col items-center justify-center gap-2.5 select-none transition-all">
+            <div className="h-12 w-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400">
+              <ShieldCheck className="h-6 w-6 stroke-[1.8]" />
+            </div>
+            <div className="space-y-1">
+              <p className="font-semibold text-xs text-gray-700">
+                Aguardando Assinatura
+              </p>
+              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] max-w-[190px] mx-auto leading-relaxed">
+                O contrato se torna oficial após a conclusão da assinatura.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="w-full max-w-[270px] sm:max-w-[290px] rounded-md border border-emerald-400 ring-2 ring-emerald-400/20 bg-white p-3.5 sm:p-4 shadow-xl text-left select-none relative min-h-[355px] sm:min-h-[365px] flex flex-col justify-start animate-metric-fade-in">
+            {/* Cabeçalho limpo oficializado */}
+            <div className="flex items-center justify-between pb-2 border-b border-gray-100 mb-2 select-none">
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate text-emerald-800 font-bold">
+                contrato_123456
               </span>
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
+                Oficial
+              </span>
+            </div>
+
+            <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-1.5 text-[11px] sm:text-xs border-b border-gray-100 mb-2 flex items-center justify-center">
+              Contrato de Prestação de Serviços
+            </div>
+
+            <div className="space-y-2 text-[11px] sm:text-xs text-gray-700 leading-relaxed font-sans">
+              <p>
+                CONTRATANTE{" "}
+                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded">
+                  João da Silva
+                </span>
+                , sob documento{" "}
+                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded font-mono text-[10px]">
+                  12.345.678/0001-90
+                </span>
+                .
+              </p>
+
+              <p>
+                <strong>Cláusula 1ª:</strong> Serviço{" "}
+                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded">
+                  Plano XYZ
+                </span>
+                , vigência de{" "}
+                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded">
+                  12 meses
+                </span>
+                .
+              </p>
+
+              <p>
+                <strong>Cláusula 2ª:</strong> Mensalidade de{" "}
+                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded">
+                  R$ 1.200,00
+                </span>
+                .
+              </p>
+
+              <p>
+                <strong>Cláusula 3ª:</strong> Reajuste por{" "}
+                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded">
+                  Índice Oficial (IPCA / Bacen)
+                </span>
+                .
+              </p>
+            </div>
+
+            {/* Carimbo ASSINADO sobreposto com rotação diagonal e check verde */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+              <div className="rotate-[-12deg] rounded-lg border-2 border-dotted border-emerald-600 bg-emerald-50/90 backdrop-blur-xs px-3.5 py-1.5 flex items-center gap-2 shadow-md animate-metric-fade-in select-none">
+                <CheckCircle className="h-5 w-5 text-emerald-600 shrink-0" />
+                <span className="font-mono text-base font-black tracking-wider text-emerald-700 uppercase">
+                  Assinado
+                </span>
+              </div>
+            </div>
+
+            {/* Rodapé oficial */}
+            <div className="mt-auto pt-2 border-t border-emerald-100 flex items-center justify-between text-[10px] font-mono text-emerald-800">
+              <span>Validade Jurídica</span>
+              <span className="font-bold">100% Concluído</span>
             </div>
           </div>
         )}
-      </div>
-
-      {/* Ícone de Pessoa / Signatário à direita com escala aumentada */}
-      <div className="absolute right-0 sm:right-2 top-1/2 -translate-y-1/2 flex flex-col items-center gap-2 z-20 select-none">
-        <div
-          className={clsx(
-            "flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full border-2 transition-all duration-500 shadow-md",
-            isMovingOut
-              ? "bg-[var(--accent-primary)] text-white border-[var(--accent-primary)] ring-4 ring-[var(--accent-primary)]/20 scale-110"
-              : isSigned
-                ? "bg-emerald-50 text-emerald-700 border-emerald-300 ring-2 ring-emerald-400/20"
-                : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)]"
-          )}
-        >
-          <User className="h-8 w-8 sm:h-10 sm:w-10" />
-        </div>
-        <span className="font-mono text-xs sm:text-sm font-semibold tracking-wide text-[var(--text-main)]">
-          Signatário
-        </span>
       </div>
     </div>
   );
