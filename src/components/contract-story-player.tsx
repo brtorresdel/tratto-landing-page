@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2, FileText, Download, Send, ArrowRight } from "lucide-react";
+import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2, FileText, Download, Send, ArrowRight, Mail, Copy } from "lucide-react";
 
 export const STORY_STEPS = [
   {
@@ -1084,23 +1084,25 @@ function Step2FillingCreation() {
 }
 
 // =========================================================================
-// ETAPA 3: CONTRATO NA ESQUERDA, DOIS CAMINHOS NO CENTRO CONVERGINDO NO
-// SIGNATÁRIO E TORNANDO-SE ASSINADO AO PASSAR PARA A DIREITA
+// ETAPA 3: CONTRATO NA ESQUERDA, ENVELOPAMENTO E DUPLICAÇÃO EM 2 VIAS,
+// DOIS CAMINHOS SIMULTÂNEOS CONVERGINDO NO SIGNATÁRIO E CONTRATO ASSINADO À DIREITA
 // =========================================================================
 const STEP3_TIMELINE = {
-  dispatchStartMs: 800,  // Início do despacho pelos dois caminhos simultâneos
-  dispatchEndMs: 3800,   // Término do trajeto e chegada ao Signatário
-  signingStartMs: 4000,  // Signatário em processo de assinatura
-  signingEndMs: 5600,    // Assinatura concluída no Signatário
-  signedAppearMs: 5800,  // O contrato passa para a direita e recebe o carimbo ASSINADO
-  readingPauseMs: 7000,  // Pausa tranquila para leitura e contemplação
-  fadeMs: 600,           // Fade out suave antes de reiniciar o loop
+  envelopeStartMs: 600,    // Início da folha de contrato entrando na carta aberta
+  envelopeClosedMs: 1800,  // Folha entra totalmente e o envelope sela com o selo Tratto
+  duplicateStartMs: 1900,  // A carta fechada começa a se duplicar em 2 vias
+  travelStartMs: 3100,     // As duas vias começam a percorrer os trilhos simultaneamente
+  travelEndMs: 5100,       // As duas vias chegam ao Signatário
+  signingStartMs: 5100,    // Signatário em processo de assinatura
+  signedAppearMs: 5700,    // Contrato assinado aparece com carimbo ASSINADO à direita
+  readingPauseMs: 7000,    // Pausa confortável para leitura e contemplação
+  fadeMs: 600,             // Fade out suave antes de reiniciar o loop
 };
 
 const STEP3_TOTAL_CYCLE =
   STEP3_TIMELINE.signedAppearMs +
   STEP3_TIMELINE.readingPauseMs +
-  STEP3_TIMELINE.fadeMs; // ~13.400ms (13.4s)
+  STEP3_TIMELINE.fadeMs; // ~13.300ms (13.3s)
 
 function Step3SendingSigning() {
   const [elapsedMs, setElapsedMs] = useState(0);
@@ -1114,16 +1116,26 @@ function Step3SendingSigning() {
     return () => clearInterval(interval);
   }, []);
 
-  const isDispatching =
-    elapsedMs >= STEP3_TIMELINE.dispatchStartMs &&
-    elapsedMs < STEP3_TIMELINE.dispatchEndMs;
+  const isEnveloping =
+    elapsedMs >= STEP3_TIMELINE.envelopeStartMs &&
+    elapsedMs < STEP3_TIMELINE.duplicateStartMs;
+  const envelopingProgress = isEnveloping
+    ? Math.min(1, Math.max(0, (elapsedMs - STEP3_TIMELINE.envelopeStartMs) / (STEP3_TIMELINE.envelopeClosedMs - STEP3_TIMELINE.envelopeStartMs)))
+    : elapsedMs >= STEP3_TIMELINE.duplicateStartMs ? 1 : 0;
 
-  const dispatchProgress = isDispatching
-    ? (elapsedMs - STEP3_TIMELINE.dispatchStartMs) /
-      (STEP3_TIMELINE.dispatchEndMs - STEP3_TIMELINE.dispatchStartMs)
-    : elapsedMs >= STEP3_TIMELINE.dispatchEndMs
-      ? 1
-      : 0;
+  const isDuplicating =
+    elapsedMs >= STEP3_TIMELINE.duplicateStartMs &&
+    elapsedMs < STEP3_TIMELINE.travelStartMs;
+  const duplicateProgress = isDuplicating
+    ? Math.min(1, Math.max(0, (elapsedMs - STEP3_TIMELINE.duplicateStartMs) / (STEP3_TIMELINE.travelStartMs - STEP3_TIMELINE.duplicateStartMs)))
+    : elapsedMs >= STEP3_TIMELINE.travelStartMs ? 1 : 0;
+
+  const isTraveling =
+    elapsedMs >= STEP3_TIMELINE.travelStartMs &&
+    elapsedMs < STEP3_TIMELINE.travelEndMs;
+  const travelProgress = isTraveling
+    ? Math.min(1, Math.max(0, (elapsedMs - STEP3_TIMELINE.travelStartMs) / (STEP3_TIMELINE.travelEndMs - STEP3_TIMELINE.travelStartMs)))
+    : elapsedMs >= STEP3_TIMELINE.travelEndMs ? 1 : 0;
 
   const isSigning =
     elapsedMs >= STEP3_TIMELINE.signingStartMs &&
@@ -1143,24 +1155,35 @@ function Step3SendingSigning() {
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
-      {/* 1. LADO ESQUERDO (lg:col-span-4): Contrato Único Gerado na Tratto */}
+      {/* 1. LADO ESQUERDO (lg:col-span-4): Contrato Gerado na Tratto com a Rubrica no Topo e Palco de Envelopamento e Duplicação */}
       <div className="lg:col-span-4 flex justify-center w-full">
         <div className="w-full max-w-[270px] sm:max-w-[290px] rounded-md border border-gray-200 bg-white p-3.5 sm:p-4 shadow-md text-left select-none relative min-h-[355px] sm:min-h-[365px] flex flex-col justify-start">
-          {/* Cabeçalho limpo */}
+          {/* Cabeçalho limpo com a rubrica oficial Tratto no canto superior direito */}
           <div className="flex items-center justify-between pb-2 border-b border-gray-100 mb-2 select-none">
             <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate text-gray-700">
               contrato_123456
             </span>
-            <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-[var(--accent-surface)] text-[var(--accent-primary)] font-semibold border border-[var(--border-subtle)]">
-              Tratto
-            </span>
+            <div className="flex items-center gap-1 shrink-0" title="Plataforma Tratto">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 50 50"
+                className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-gray-900 stroke-current fill-none"
+                role="img"
+                aria-label="Rubrica Tratto"
+              >
+                <g strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M 6 22 C 14 20, 26 17, 40 19 C 45 20, 48 21, 48 21" strokeWidth="4.2" />
+                  <path d="M 31 11 C 30 19, 24 31, 18 36 C 14 40, 15 44, 18 44 C 23 44, 28 37, 33 27 C 34 23, 35 17, 35 13" strokeWidth="3.6" />
+                </g>
+              </svg>
+            </div>
           </div>
 
           <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-1.5 text-[11px] sm:text-xs border-b border-gray-100 mb-2 flex items-center justify-center">
             Contrato de Prestação de Serviços
           </div>
 
-          <div className="space-y-2 text-[11px] sm:text-xs text-gray-700 leading-relaxed font-sans">
+          <div className="space-y-1.5 text-[11px] sm:text-xs text-gray-700 leading-relaxed font-sans">
             <p>
               CONTRATANTE{" "}
               <span className="font-semibold text-gray-900 bg-gray-100 px-1 py-0.5 rounded">
@@ -1190,12 +1213,120 @@ function Step3SendingSigning() {
             </p>
           </div>
 
-          {/* Indicador de Despacho na borda direita */}
-          <div className="mt-auto pt-2 border-t border-gray-100 flex items-center justify-between text-[10px] font-mono text-[var(--text-muted)]">
-            <span>Origem: Tratto</span>
-            <div className="flex items-center gap-1 text-[var(--accent-primary)] font-semibold animate-pulse">
-              <span>Despachando</span>
-              <ArrowRight className="h-3 w-3" />
+          {/* Mini Estágio de Envelopamento e Duplicação no Contrato de Origem */}
+          <div className="mt-auto pt-2 border-t border-gray-100 flex flex-col justify-end">
+            <div className="flex items-center justify-between text-[10px] font-mono mb-1.5">
+              <span className="text-[var(--text-muted)]">Origem: Tratto</span>
+              <span className="font-semibold text-[var(--accent-primary)] truncate max-w-[170px]">
+                {elapsedMs < STEP3_TIMELINE.envelopeStartMs
+                  ? "Pronto para despacho"
+                  : elapsedMs < STEP3_TIMELINE.envelopeClosedMs
+                    ? "Envelopando contrato..."
+                    : elapsedMs < STEP3_TIMELINE.travelStartMs
+                      ? "Duplicando em 2 vias..."
+                      : isTraveling
+                        ? "Despachando vias..."
+                        : isSigning
+                          ? "Em assinatura..."
+                          : "Concluído ✓"}
+              </span>
+            </div>
+
+            {/* Palco animado: Envelopamento e Duplicação */}
+            <div className="relative h-15 w-full rounded-lg bg-[var(--bg-canvas)] border border-[var(--border-subtle)] overflow-hidden flex items-center justify-center px-2 py-1 select-none">
+              {elapsedMs < STEP3_TIMELINE.envelopeStartMs ? (
+                // Estado Inicial: Contrato pronto
+                <div className="flex items-center gap-2 text-gray-500 animate-in fade-in duration-200">
+                  <FileText className="h-4 w-4 text-[var(--accent-primary)] shrink-0" />
+                  <span className="font-mono text-[10px]">Contrato pronto para envio</span>
+                </div>
+              ) : elapsedMs < STEP3_TIMELINE.duplicateStartMs ? (
+                // FASE 1: O Contrato desliza para dentro da carta e a carta se fecha
+                <div className="relative flex flex-col items-center justify-center w-full h-full">
+                  {/* Folhinha de contrato deslizando para dentro */}
+                  <div
+                    style={{
+                      transform: `translateY(${
+                        envelopingProgress < 0.65
+                          ? -16 + envelopingProgress * 20
+                          : 4
+                      }px) scale(${envelopingProgress < 0.65 ? 0.9 : 0.75})`,
+                      opacity: envelopingProgress < 0.85 ? 1 : 0,
+                    }}
+                    className="absolute z-10 w-7 h-9 bg-white border border-gray-300 rounded shadow-xs p-0.5 flex flex-col justify-between transition-transform duration-75 pointer-events-none"
+                  >
+                    <div className="flex justify-between items-center border-b border-gray-100 pb-0.5">
+                      <div className="h-0.5 w-2 bg-gray-400 rounded" />
+                      <div className="h-1 w-1 rounded-full bg-[var(--accent-primary)]" />
+                    </div>
+                    <div className="space-y-0.5">
+                      <div className="h-0.5 w-full bg-gray-200 rounded" />
+                      <div className="h-0.5 w-3/4 bg-gray-200 rounded" />
+                    </div>
+                    <div className="h-0.5 w-full bg-emerald-200 rounded" />
+                  </div>
+
+                  {/* Envelope */}
+                  <div className="relative w-12 h-7.5 bg-amber-50/90 border border-amber-300 rounded shadow-xs flex items-center justify-center overflow-hidden z-20">
+                    <svg
+                      className="absolute inset-0 w-full h-full text-amber-300/90 stroke-current fill-none"
+                      viewBox="0 0 48 30"
+                    >
+                      <path d="M 0 0 L 24 15 L 48 0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M 0 30 L 18 13" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M 48 30 L 30 13" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+
+                    {/* Selo no envelope fechado */}
+                    {envelopingProgress >= 0.65 && (
+                      <div className="relative z-30 h-3.5 w-3.5 rounded-full bg-[var(--accent-primary)] text-white flex items-center justify-center shadow-xs animate-in zoom-in-50 duration-200">
+                        <Check className="h-2 w-2 stroke-[3]" />
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : elapsedMs < STEP3_TIMELINE.travelStartMs ? (
+                // FASE 2: A carta se duplica em duas vias (uma para Download e uma para Assinatura Digital)
+                <div className="relative flex items-center justify-center w-full h-full">
+                  {/* Via 1: Download PDF */}
+                  <div
+                    style={{
+                      transform: `translate(${-duplicateProgress * 32}px, ${-duplicateProgress * 4}px) scale(0.9)`,
+                    }}
+                    className="absolute flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 border border-blue-300 text-blue-800 shadow-2xs font-mono text-[9px] font-bold transition-transform duration-75"
+                  >
+                    <Mail className="h-2.5 w-2.5 text-blue-600 shrink-0" />
+                    <span>Via 1: PDF</span>
+                  </div>
+
+                  {/* Via 2: Assinatura Digital */}
+                  <div
+                    style={{
+                      transform: `translate(${duplicateProgress * 32}px, ${duplicateProgress * 4}px) scale(0.9)`,
+                    }}
+                    className="absolute flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-50 border border-emerald-300 text-emerald-800 shadow-2xs font-mono text-[9px] font-bold transition-transform duration-75"
+                  >
+                    <Mail className="h-2.5 w-2.5 text-emerald-600 shrink-0" />
+                    <span>Via 2: Digital</span>
+                  </div>
+                </div>
+              ) : (
+                // FASE 3: As vias foram despachadas para as plataformas simultâneas
+                <div className="flex items-center justify-between w-full px-2 text-[10px] font-mono">
+                  <div className="flex items-center gap-1 text-blue-700">
+                    <Mail className="h-3 w-3" />
+                    <span>Via PDF</span>
+                  </div>
+                  <div className="flex items-center gap-1 text-[var(--accent-primary)] font-bold animate-pulse">
+                    <span>Enviadas</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </div>
+                  <div className="flex items-center gap-1 text-emerald-700">
+                    <Mail className="h-3 w-3" />
+                    <span>Via Digital</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1221,17 +1352,17 @@ function Step3SendingSigning() {
             </div>
           </div>
 
-          {/* Trilho com linha pontilhada e mini-documento viajando simultaneamente */}
+          {/* Trilho com linha pontilhada e mini-carta viajando simultaneamente */}
           <div className="relative h-6 bg-[var(--bg-canvas)] rounded-md border border-[var(--border-subtle)] flex items-center px-2 overflow-hidden">
             <div className="w-full border-b border-dashed border-[var(--border-strong)]/60 absolute left-0 right-0" />
             <div
               style={{
-                transform: `translateX(${dispatchProgress * 210}px)`,
-                opacity: dispatchProgress > 0 && dispatchProgress < 1 ? 1 : dispatchProgress === 1 ? 0 : 0.4,
+                transform: `translateX(${travelProgress * 210}px)`,
+                opacity: isTraveling ? 1 : travelProgress === 1 ? 0 : 0.35,
               }}
               className="relative z-10 px-2 py-0.5 rounded bg-blue-600 text-white font-mono text-[9px] font-bold shadow-xs flex items-center gap-1 transition-transform duration-75"
             >
-              <FileText className="h-2.5 w-2.5" />
+              <Mail className="h-2.5 w-2.5" />
               <span>PDF</span>
             </div>
           </div>
@@ -1246,7 +1377,7 @@ function Step3SendingSigning() {
                 ? "bg-emerald-50 text-emerald-700 border-emerald-300 ring-4 ring-emerald-400/20"
                 : isSigning
                   ? "bg-[var(--accent-primary)] text-white border-[var(--accent-primary)] ring-4 ring-[var(--accent-primary)]/30 scale-105"
-                  : isDispatching
+                  : isTraveling
                     ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--accent-primary)] animate-pulse"
                     : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)]"
             )}
@@ -1293,17 +1424,17 @@ function Step3SendingSigning() {
             </div>
           </div>
 
-          {/* Trilho com linha pontilhada e mini-documento viajando simultaneamente */}
+          {/* Trilho com linha pontilhada e mini-carta viajando simultaneamente */}
           <div className="relative h-6 bg-[var(--bg-canvas)] rounded-md border border-[var(--border-subtle)] flex items-center px-2 overflow-hidden">
             <div className="w-full border-b border-dashed border-[var(--border-strong)]/60 absolute left-0 right-0" />
             <div
               style={{
-                transform: `translateX(${dispatchProgress * 210}px)`,
-                opacity: dispatchProgress > 0 && dispatchProgress < 1 ? 1 : dispatchProgress === 1 ? 0 : 0.4,
+                transform: `translateX(${travelProgress * 210}px)`,
+                opacity: isTraveling ? 1 : travelProgress === 1 ? 0 : 0.35,
               }}
               className="relative z-10 px-2 py-0.5 rounded bg-[var(--accent-primary)] text-white font-mono text-[9px] font-bold shadow-xs flex items-center gap-1 transition-transform duration-75"
             >
-              <ShieldCheck className="h-2.5 w-2.5" />
+              <Mail className="h-2.5 w-2.5" />
               <span>Digital</span>
             </div>
           </div>
@@ -1328,21 +1459,32 @@ function Step3SendingSigning() {
           </div>
         ) : (
           <div className="w-full max-w-[270px] sm:max-w-[290px] rounded-md border border-emerald-400 ring-2 ring-emerald-400/20 bg-white p-3.5 sm:p-4 shadow-xl text-left select-none relative min-h-[355px] sm:min-h-[365px] flex flex-col justify-start animate-metric-fade-in">
-            {/* Cabeçalho limpo oficializado */}
+            {/* Cabeçalho limpo com a rubrica oficial Tratto no canto superior direito */}
             <div className="flex items-center justify-between pb-2 border-b border-gray-100 mb-2 select-none">
               <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate text-emerald-800 font-bold">
                 contrato_123456
               </span>
-              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-800 font-bold border border-emerald-200">
-                Oficial
-              </span>
+              <div className="flex items-center gap-1 shrink-0" title="Plataforma Tratto">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 50 50"
+                  className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-gray-900 stroke-current fill-none"
+                  role="img"
+                  aria-label="Rubrica Tratto"
+                >
+                  <g strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M 6 22 C 14 20, 26 17, 40 19 C 45 20, 48 21, 48 21" strokeWidth="4.2" />
+                    <path d="M 31 11 C 30 19, 24 31, 18 36 C 14 40, 15 44, 18 44 C 23 44, 28 37, 33 27 C 34 23, 35 17, 35 13" strokeWidth="3.6" />
+                  </g>
+                </svg>
+              </div>
             </div>
 
             <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-1.5 text-[11px] sm:text-xs border-b border-gray-100 mb-2 flex items-center justify-center">
               Contrato de Prestação de Serviços
             </div>
 
-            <div className="space-y-2 text-[11px] sm:text-xs text-gray-700 leading-relaxed font-sans">
+            <div className="space-y-1.5 text-[11px] sm:text-xs text-gray-700 leading-relaxed font-sans">
               <p>
                 CONTRATANTE{" "}
                 <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded">

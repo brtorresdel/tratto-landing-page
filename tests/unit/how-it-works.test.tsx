@@ -348,7 +348,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     vi.useRealTimers();
   });
 
-  it("deve simular o fluxo de Envio & Assinatura na Etapa 3 com contrato preenchido, signatário em destaque e carimbo limpo", () => {
+  it("deve simular o fluxo de Envio & Assinatura na Etapa 3 com contrato preenchido, signatário em destaque, envelopamento, duplicação em 2 vias e rubrica Tratto", () => {
     vi.useFakeTimers();
     render(<HowItWorksSection />);
 
@@ -379,6 +379,10 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     expect(screen.getByText(/Cláusula 3ª:/i)).toBeInTheDocument();
     expect(screen.getByText(/Índice Oficial \(IPCA \/ Bacen\)/i)).toBeInTheDocument();
 
+    // Valida que o badge verde antigo de texto Tratto foi removido e substituído pela rubrica Tratto
+    const rubrics = screen.getAllByRole("img", { name: "Rubrica Tratto" });
+    expect(rubrics.length).toBeGreaterThan(0);
+
     // 2. Dois caminhos simultâneos presentes no centro (Download e ZapSign / Clicksign)
     expect(screen.getByText(/Download PDF/i)).toBeInTheDocument();
     expect(screen.getByText(/ZapSign \/ Clicksign/i)).toBeInTheDocument();
@@ -389,9 +393,23 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     // 4. Antes de passar pelo signatário, exibe aguardando assinatura
     expect(screen.getByText(/Aguardando Assinatura/i)).toBeInTheDocument();
 
-    // 5. Avança o tempo até o contrato passar pelo signatário e se tornar assinado (t = 6000ms)
+    // 5. Início do envelopamento do contrato (t = 1000ms)
     act(() => {
-      vi.advanceTimersByTime(6000);
+      vi.advanceTimersByTime(1000);
+    });
+    expect(screen.getByText(/Envelopando contrato\.\.\./i)).toBeInTheDocument();
+
+    // 6. Duplicação da carta em duas vias (t = 2400ms)
+    act(() => {
+      vi.advanceTimersByTime(1400);
+    });
+    expect(screen.getByText(/Duplicando em 2 vias\.\.\./i)).toBeInTheDocument();
+    expect(screen.getByText(/Via 1: PDF/i)).toBeInTheDocument();
+    expect(screen.getByText(/Via 2: Digital/i)).toBeInTheDocument();
+
+    // 7. Avança o tempo até o contrato passar pelo signatário e se tornar assinado (t = 6000ms total, +3600ms)
+    act(() => {
+      vi.advanceTimersByTime(3600);
     });
 
     // O carimbo contém apenas o ícone e 'Assinado' no contrato da direita
