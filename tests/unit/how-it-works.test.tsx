@@ -130,4 +130,26 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
 
     vi.useRealTimers();
   });
+
+  it("deve avançar automaticamente de etapa a cada 25 segundos", () => {
+    vi.useFakeTimers();
+    render(<HowItWorksSection />);
+
+    // Inicia na Etapa 1: Modelo & Marcadores
+    expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
+
+    // Com 20 segundos ainda permanece na Etapa 1
+    act(() => {
+      vi.advanceTimersByTime(20000);
+    });
+    expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
+
+    // Ao completar os 25 segundos (mais 5s), transita para a Etapa 2: Preenchimento & Criação
+    act(() => {
+      vi.advanceTimersByTime(5000);
+    });
+    expect(screen.getByRole("heading", { name: /Preenchimento & Criação/i })).toBeInTheDocument();
+
+    vi.useRealTimers();
+  });
 });

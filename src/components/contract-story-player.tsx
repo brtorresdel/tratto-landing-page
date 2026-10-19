@@ -40,11 +40,11 @@ export function ContractStoryPlayer() {
   const [resetKey, setResetKey] = useState(0);
   const activeStep = STORY_STEPS[activeStepIndex];
 
-  // Temporizador de 12 segundos por etapa do Story
+  // Temporizador de 25 segundos por etapa do Story
   useEffect(() => {
     const timer = setTimeout(() => {
       setActiveStepIndex((prev) => (prev + 1) % STORY_STEPS.length);
-    }, 12000);
+    }, 25000);
 
     return () => clearTimeout(timer);
   }, [activeStepIndex, resetKey]);
@@ -89,7 +89,7 @@ export function ContractStoryPlayer() {
                   <div
                     key={`story-progress-${step.id}-${resetKey}`}
                     className="h-full bg-[var(--accent-primary)] rounded-full animate-metric-progress"
-                    style={{ animationDuration: "12s" }}
+                    style={{ animationDuration: "25s" }}
                   />
                 )}
               </div>
