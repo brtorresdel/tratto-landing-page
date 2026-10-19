@@ -166,4 +166,49 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
 
     vi.useRealTimers();
   });
+
+  it("deve permitir pausar e retomar a reprodução automática dos stories pelo botão superior direito", () => {
+    vi.useFakeTimers();
+    render(<HowItWorksSection />);
+
+    // Botão de pause inicialmente presente no canto superior direito
+    const pauseBtn = screen.getByRole("button", { name: /Pausar reprodução automática/i });
+    expect(pauseBtn).toBeInTheDocument();
+    expect(pauseBtn).toHaveClass("text-[var(--accent-primary)]");
+    expect(pauseBtn).toHaveClass("bg-[var(--accent-surface)]");
+
+    // Clica para pausar
+    act(() => {
+      fireEvent.click(pauseBtn);
+    });
+
+    // O botão deve alternar para o estado de play/retomar
+    const playBtn = screen.getByRole("button", { name: /Retomar reprodução automática/i });
+    expect(playBtn).toBeInTheDocument();
+
+    // Avança 30 segundos com o player pausado
+    act(() => {
+      vi.advanceTimersByTime(30000);
+    });
+
+    // Deve permanecer na Etapa 1 sem avançar automaticamente
+    expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: /Preenchimento & Criação/i })).toBeNull();
+
+    // Clica para retomar a reprodução automática
+    act(() => {
+      fireEvent.click(playBtn);
+    });
+    expect(screen.getByRole("button", { name: /Pausar reprodução automática/i })).toBeInTheDocument();
+
+    // Avança os 25 segundos do story despausado
+    act(() => {
+      vi.advanceTimersByTime(25000);
+    });
+
+    // Agora deve ter avançado para a Etapa 2
+    expect(screen.getByRole("heading", { name: /Preenchimento & Criação/i })).toBeInTheDocument();
+
+    vi.useRealTimers();
+  });
 });

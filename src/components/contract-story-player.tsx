@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp } from "lucide-react";
+import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause } from "lucide-react";
 
 export const STORY_STEPS = [
   {
@@ -38,16 +38,19 @@ export const STORY_STEPS = [
 export function ContractStoryPlayer() {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [resetKey, setResetKey] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
   const activeStep = STORY_STEPS[activeStepIndex];
 
-  // Temporizador de 25 segundos por etapa do Story
+  // Temporizador de 25 segundos por etapa do Story (pausável)
   useEffect(() => {
+    if (isPaused) return;
+
     const timer = setTimeout(() => {
       setActiveStepIndex((prev) => (prev + 1) % STORY_STEPS.length);
     }, 25000);
 
     return () => clearTimeout(timer);
-  }, [activeStepIndex, resetKey]);
+  }, [activeStepIndex, resetKey, isPaused]);
 
   const handleSelectStep = (index: number) => {
     setActiveStepIndex(index);
@@ -89,7 +92,10 @@ export function ContractStoryPlayer() {
                   <div
                     key={`story-progress-${step.id}-${resetKey}`}
                     className="h-full bg-[var(--accent-primary)] rounded-full animate-metric-progress"
-                    style={{ animationDuration: "25s" }}
+                    style={{
+                      animationDuration: "25s",
+                      animationPlayState: isPaused ? "paused" : "running",
+                    }}
                   />
                 )}
               </div>
@@ -120,6 +126,21 @@ export function ContractStoryPlayer() {
 
       {/* 3. Palco Visual Interativo com Animações Específicas por Etapa */}
       <div className="mt-8 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-canvas)] p-4 sm:p-8 min-h-[380px] sm:min-h-[420px] flex items-center justify-center overflow-hidden relative">
+        {/* Botão de Controle de Pausa/Reprodução no Canto Superior Direito na cor do tema */}
+        <button
+          type="button"
+          onClick={() => setIsPaused((prev) => !prev)}
+          aria-label={isPaused ? "Retomar reprodução automática" : "Pausar reprodução automática"}
+          title={isPaused ? "Retomar reprodução automática" : "Pausar reprodução automática"}
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg border border-[var(--border-strong)] bg-[var(--accent-surface)] text-[var(--accent-primary)] hover:opacity-85 active:scale-95 transition-all cursor-pointer shadow-xs"
+        >
+          {isPaused ? (
+            <Play className="h-4 w-4 fill-current ml-0.5" />
+          ) : (
+            <Pause className="h-4 w-4 fill-current" />
+          )}
+        </button>
+
         {activeStepIndex === 0 && <Step1ModelMarkers />}
         {activeStepIndex === 1 && <Step2FillingCreation />}
         {activeStepIndex === 2 && <Step3SendingSigning />}
