@@ -7,13 +7,13 @@ export function AudienceSection() {
       icon: Building2,
       name: "Coworkings",
       description:
-        "acordos de utilização do endereço fiscal, estações de trabalho, salas de reunião, e outros serviços adicionais;",
+        "Acordos de utilização do endereço fiscal, estações de trabalho, salas de reunião, e outros serviços adicionais;",
     },
     {
       icon: Scale,
       name: "Escritórios de advocacia",
       description:
-        "atuação em processos em andamento, abertura de novos processos, consultorias, etc.;",
+        "Atuação em processos em andamento, abertura de novos processos, consultorias, etc.;",
     },
     {
       icon: Dumbbell,
@@ -31,13 +31,13 @@ export function AudienceSection() {
       icon: Users,
       name: "RH & Compliance",
       description:
-        "gestão de contratos dos funcionários, controle de cláusulas adicionais, e acompanhamento para controle completo de validades",
+        "Gestão de contratos dos funcionários, controle de cláusulas adicionais, e acompanhamento para controle completo de validades;",
     },
     {
       icon: Sparkles,
       name: "Outros segmentos",
       description:
-        "independente do que você faça na sua empresa, se precisa gerar contratos, a Tratto é o lugar certo!",
+        "Independentemente do ramo de atuação da sua empresa, se você precisa formalizar e gerenciar contratos, a Tratto se adapta com total precisão à sua rotina.",
     },
   ];
 
@@ -80,26 +80,6 @@ export function AudienceSection() {
               </div>
             );
           })}
-        </div>
-
-        {/* Bloco de Síntese Editorial */}
-        <div className="mt-12 rounded-xl border border-[var(--border-subtle)] bg-[var(--accent-surface)] p-6 sm:p-7 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3.5">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--accent-primary)] text-white shadow-xs">
-              <Sparkles className="h-5 w-5" />
-            </div>
-            <div>
-              <h4 className="font-semibold text-sm sm:text-base text-[var(--text-main)]">
-                Não encontrou seu nicho específico?
-              </h4>
-              <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-0.5">
-                Clínicas, agências, escolas de idiomas, TI: qualquer contrato em .docx se adapta instantaneamente à Tratto.
-              </p>
-            </div>
-          </div>
-          <span className="shrink-0 font-mono text-xs font-semibold text-[var(--accent-primary)] border-b border-[var(--accent-primary)] pb-0.5">
-            Sem amarras a nichos
-          </span>
         </div>
       </div>
     </section>
