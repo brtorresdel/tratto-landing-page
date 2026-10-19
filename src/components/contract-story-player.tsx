@@ -189,41 +189,74 @@ const STEP1_PARAGRAPHS: DocParagraph[] = [
   },
 ];
 
-const TOTAL_DOC_CHARS =
-  STEP1_TITLE.length +
+const FULL_DOC_TEXT =
+  STEP1_TITLE +
   STEP1_PARAGRAPHS.reduce(
-    (acc, block) => acc + block.segments.reduce((sAcc, s) => sAcc + s.text.length, 0),
-    0
+    (acc, p) => acc + p.segments.reduce((sAcc, s) => sAcc + s.text, ""),
+    ""
   );
 
+const TOTAL_DOC_CHARS = FULL_DOC_TEXT.length;
+
+function getCharTypingDelay(index: number): number {
+  if (index >= FULL_DOC_TEXT.length) return 25;
+  const char = FULL_DOC_TEXT[index];
+
+  // Pausa após o título do documento
+  if (index === STEP1_TITLE.length - 1) return 100;
+
+  // Pausas naturais de respiração e pontuação
+  if (char === "." || char === ":") return 80;
+  if (char === ",") return 55;
+  if (char === " ") return 32;
+
+  // Pausa sutil ao finalizar um marcador completo
+  if (char === "}" && index > 0 && FULL_DOC_TEXT[index - 1] === "}") return 75;
+
+  // Variação orgânica entre teclas normais (20ms a 32ms)
+  const rhythm = (index * 7) % 13;
+  return 20 + rhythm;
+}
+
+// Pré-computa tempos acumulados para cada caractere para garantir timing preciso e natural
+const CUMULATIVE_CHAR_TIMES: number[] = [];
+let accDocTime = 0;
+for (let i = 0; i < FULL_DOC_TEXT.length; i++) {
+  accDocTime += getCharTypingDelay(i);
+  CUMULATIVE_CHAR_TIMES.push(accDocTime);
+}
+
+const DOC_TYPING_DURATION = accDocTime;
+const DOC_READING_PAUSE = 5000;
+const DOC_FADE_DURATION = 600;
+const TOTAL_CYCLE_MS = DOC_TYPING_DURATION + DOC_READING_PAUSE + DOC_FADE_DURATION;
+
 function Step1ModelMarkers() {
-  const [typedChars, setTypedChars] = useState(0);
-  const [isFading, setIsFading] = useState(false);
+  const [elapsedMs, setElapsedMs] = useState(0);
 
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null;
-    let timeout: NodeJS.Timeout | null = null;
+    const TICK_INTERVAL = 25;
+    const interval = setInterval(() => {
+      setElapsedMs((prev) => (prev + TICK_INTERVAL) % TOTAL_CYCLE_MS);
+    }, TICK_INTERVAL);
 
-    if (typedChars < TOTAL_DOC_CHARS) {
-      interval = setInterval(() => {
-        setTypedChars((prev) => Math.min(prev + 1, TOTAL_DOC_CHARS));
-      }, 16);
-    } else {
-      // Quando termina de digitar tudo, aguarda 5s para leitura, depois reseta com fade suave para branco
-      timeout = setTimeout(() => {
-        setIsFading(true);
-        setTimeout(() => {
-          setTypedChars(0);
-          setIsFading(false);
-        }, 500);
-      }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const isFading = elapsedMs >= DOC_TYPING_DURATION + DOC_READING_PAUSE;
+
+  let typedChars = 0;
+  if (elapsedMs < DOC_TYPING_DURATION) {
+    for (let i = 0; i < CUMULATIVE_CHAR_TIMES.length; i++) {
+      if (CUMULATIVE_CHAR_TIMES[i] <= elapsedMs) {
+        typedChars = i + 1;
+      } else {
+        break;
+      }
     }
-
-    return () => {
-      if (interval) clearInterval(interval);
-      if (timeout) clearTimeout(timeout);
-    };
-  }, [typedChars]);
+  } else {
+    typedChars = TOTAL_DOC_CHARS;
+  }
 
   // Calcula fatias de texto digitadas para cada segmento
   let charBudget = typedChars;

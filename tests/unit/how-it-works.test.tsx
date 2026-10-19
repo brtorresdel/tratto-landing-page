@@ -61,15 +61,15 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     // No início imediato (t=0), o corpo com marcadores ainda não foi digitado
     expect(screen.queryByText(/\{\{cliente_nome\}\}/i)).toBeNull();
 
-    // Durante a digitação do marcador (t=2100ms), o texto incompleto é preto normal (sem cor do tema)
+    // Durante a digitação do marcador (t=3800ms), o texto incompleto é preto normal (sem cor do tema)
     act(() => {
-      vi.advanceTimersByTime(2100);
+      vi.advanceTimersByTime(3800);
     });
     expect(screen.queryByText(/\{\{cliente_nome\}\}/i)).toBeNull();
 
-    // Ao digitar o último dígito '}' (t=2500ms), o marcador é concluído e se converte na cor do tema
+    // Ao digitar o último dígito '}' (t=4300ms), o marcador é concluído e se converte na cor do tema
     act(() => {
-      vi.advanceTimersByTime(400);
+      vi.advanceTimersByTime(500);
     });
     const marker = screen.getByText(/\{\{cliente_nome\}\}/i);
     expect(marker).toBeInTheDocument();
@@ -127,7 +127,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
 
     act(() => {
-      vi.advanceTimersByTime(2500);
+      vi.advanceTimersByTime(4500);
     });
     expect(screen.getByText(/\{\{cliente_nome\}\}/i)).toBeInTheDocument();
 
