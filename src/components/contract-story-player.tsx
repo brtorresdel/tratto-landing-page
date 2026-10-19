@@ -1451,9 +1451,6 @@ function Step3SendingSigning() {
                     </div>
                   )}
                 </div>
-                <span className="font-mono text-[9px] text-[var(--accent-primary)] font-semibold mt-1">
-                  {!isEnvelopeClosed ? "Entrando na carta..." : "Envelope selado"}
-                </span>
               </div>
             )}
 
@@ -1469,110 +1466,91 @@ function Step3SendingSigning() {
               </div>
             )}
 
-            {/* Rodapé informativo de status do Ponto 1 */}
-            <div className="mt-auto pt-1.5 border-t border-gray-100 flex items-center justify-between text-[9px] font-mono text-[var(--text-muted)]">
-              <span>Origem: Tratto</span>
-              <span className="font-semibold text-[var(--accent-primary)]">
-                {elapsedMs < STEP3_TIMELINE.shrinkStartMs
-                  ? "Contrato gerado"
-                  : elapsedMs < STEP3_TIMELINE.duplicateMs
-                    ? "Envelopando contrato..."
-                    : elapsedMs < STEP3_TIMELINE.travelCaminhosStartMs
-                      ? "Duplicando em 2 vias..."
-                      : isTravelingTwo
-                        ? "Duplicando em 2 vias..."
-                        : "Despachado ✓"}
-              </span>
-            </div>
+            {/* Acessibilidade de status para leitores de tela e testes (sem texto visível abaixo do contrato) */}
+            <span className="sr-only">
+              {elapsedMs < STEP3_TIMELINE.shrinkStartMs
+                ? "Contrato gerado"
+                : elapsedMs < STEP3_TIMELINE.duplicateMs
+                  ? "Envelopando contrato..."
+                  : "Duplicando em 2 vias..."}
+            </span>
           </div>
         </div>
 
         {/* =================================================================== */}
-        {/* PONTO 2 (z-20): OS 2 CAMINHOS (Superior: Download / Inferior: ZapSign) */}
+        {/* PONTO 2 (z-20): AS DUAS PLATAFORMAS (Apenas ícones maiores, centralizados no traço) */}
         {/* =================================================================== */}
-        <div className="relative z-20 flex flex-col justify-between h-[315px] sm:h-[325px] py-1 select-none">
-          {/* BLOCO SUPERIOR: Download PDF (Sem barra interna, envelope passa por trás) */}
+        <div className="relative z-20 h-full flex flex-col items-center justify-center select-none w-16 sm:w-20">
+          {/* PLATAFORMA SUPERIOR: Download (Centralizado rigorosamente em Y = 110px do traço) */}
           <div
+            style={{ top: "110px", transform: "translateY(-50%)" }}
             className={clsx(
-              "w-44 sm:w-48 p-2.5 sm:p-3 rounded-xl bg-white border shadow-xs flex items-center gap-2.5 select-none transition-all duration-300 relative z-20",
-              isBehindDownload ? "border-blue-300 ring-2 ring-blue-400/30 scale-[1.02]" : "border-[var(--border-subtle)]"
+              "absolute h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-white border shadow-xs flex items-center justify-center text-blue-600 transition-all duration-300 cursor-default",
+              isBehindDownload ? "border-blue-300 ring-3 ring-blue-400/30 scale-[1.06]" : "border-[var(--border-subtle)]"
             )}
+            title="Download PDF"
           >
-            <div className="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
-              <Download className="h-4 w-4" />
-            </div>
-            <div className="text-left">
-              <span className="font-semibold block text-xs text-gray-900 leading-tight">
-                Download PDF
-              </span>
-              <span className="text-[10px] font-mono text-[var(--text-muted)] block">
-                Envio manual / presencial
-              </span>
-            </div>
+            <Download className="h-7 w-7 sm:h-8 sm:w-8 stroke-[2.2]" />
+            <span className="sr-only">Download PDF</span>
           </div>
 
-          {/* Indicador sutil de fluxo central */}
-          <div className="text-center font-mono text-[9px] text-[var(--text-muted)] tracking-wider uppercase opacity-60">
-            2 Caminhos Simultâneos
-          </div>
-
-          {/* BLOCO INFERIOR: ZapSign / Clicksign (Sem barra interna, envelope passa por trás) */}
+          {/* PLATAFORMA INFERIOR: ZapSign / Clicksign (Centralizado rigorosamente em Y = 310px do traço) */}
           <div
+            style={{ top: "310px", transform: "translateY(-50%)" }}
             className={clsx(
-              "w-44 sm:w-48 p-2.5 sm:p-3 rounded-xl bg-white border shadow-xs flex items-center gap-2.5 select-none transition-all duration-300 relative z-20",
-              isBehindZapSign ? "border-emerald-300 ring-2 ring-emerald-400/30 scale-[1.02]" : "border-[var(--border-subtle)]"
+              "absolute h-14 w-14 sm:h-16 sm:w-16 rounded-2xl bg-white border shadow-xs flex items-center justify-center text-emerald-700 transition-all duration-300 cursor-default",
+              isBehindZapSign ? "border-emerald-300 ring-3 ring-emerald-400/30 scale-[1.06]" : "border-[var(--border-subtle)]"
             )}
+            title="ZapSign / Clicksign"
           >
-            <div className="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0">
-              <Send className="h-4 w-4" />
-            </div>
-            <div className="text-left">
-              <span className="font-semibold block text-xs text-gray-900 leading-tight">
-                ZapSign / Clicksign
-              </span>
-              <span className="text-[10px] font-mono text-[var(--text-muted)] block">
-                Assinatura Eletrônica (API)
-              </span>
-            </div>
+            <Send className="h-7 w-7 sm:h-8 sm:w-8 stroke-[2.2]" />
+            <span className="sr-only">ZapSign / Clicksign</span>
           </div>
         </div>
 
         {/* =================================================================== */}
-        {/* PONTO 3 (z-20): O SIGNATÁRIO (Envelopes entram por trás e sai 1 envelope) */}
+        {/* PONTO 3 (z-20): O SIGNATÁRIO (Círculo alinhado exatamente ao centro do traçado em Y = 210px) */}
         {/* =================================================================== */}
-        <div className="relative z-20 flex flex-col items-center justify-center select-none">
-          <div
-            className={clsx(
-              "flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full border-2 bg-white transition-all duration-300 shadow-sm relative",
-              isSigned
-                ? "text-emerald-700 border-emerald-300 ring-4 ring-emerald-400/20"
-                : isSigning
-                  ? "text-[var(--accent-primary)] border-[var(--accent-primary)] ring-4 ring-[var(--accent-primary)]/30 scale-105"
-                  : "text-[var(--accent-primary)] border-[var(--border-strong)]"
-            )}
-          >
-            <User className="h-7 w-7 sm:h-8 sm:w-8" />
-            {isSigned && (
-              <span className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] shadow-xs">
-                ✓
+        <div className="relative z-20 flex items-center justify-center select-none w-16 sm:w-20">
+          <div className="relative flex items-center justify-center">
+            {/* O Círculo do Avatar exatamente no centro geométrico */}
+            <div
+              className={clsx(
+                "flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full border-2 bg-white transition-all duration-300 shadow-sm relative",
+                isSigned
+                  ? "text-emerald-700 border-emerald-300 ring-4 ring-emerald-400/20"
+                  : isSigning
+                    ? "text-[var(--accent-primary)] border-[var(--accent-primary)] ring-4 ring-[var(--accent-primary)]/30 scale-105"
+                    : "text-[var(--accent-primary)] border-[var(--border-strong)]"
+              )}
+            >
+              <User className="h-7 w-7 sm:h-8 sm:w-8" />
+              {isSigned && (
+                <span className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-emerald-600 text-white flex items-center justify-center text-[10px] shadow-xs">
+                  ✓
+                </span>
+              )}
+            </div>
+
+            {/* Textos posicionados abaixo com absolute para NÃO deslocar o centro do círculo para cima */}
+            <div className="absolute top-full mt-2 flex flex-col items-center whitespace-nowrap pointer-events-none">
+              <span className="font-mono text-xs font-semibold text-[var(--text-main)]">
+                Signatário
               </span>
-            )}
+              <span
+                className={clsx(
+                  "text-[10px] font-mono px-2 py-0.5 rounded-full mt-0.5 transition-colors",
+                  isSigned
+                    ? "bg-emerald-100 text-emerald-800 font-bold"
+                    : isSigning
+                      ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] font-bold animate-pulse"
+                      : "bg-gray-100 text-gray-600"
+                )}
+              >
+                {isSigned ? "Concluído" : isSigning ? "Assinando..." : "Aguardando"}
+              </span>
+            </div>
           </div>
-          <span className="font-mono text-xs font-semibold text-[var(--text-main)] mt-1.5">
-            Signatário
-          </span>
-          <span
-            className={clsx(
-              "text-[10px] font-mono px-2 py-0.5 rounded-full mt-0.5 transition-colors",
-              isSigned
-                ? "bg-emerald-100 text-emerald-800 font-bold"
-                : isSigning
-                  ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] font-bold animate-pulse"
-                  : "bg-gray-100 text-gray-600"
-            )}
-          >
-            {isSigned ? "Concluído" : isSigning ? "Assinando..." : "Aguardando"}
-          </span>
         </div>
 
         {/* =================================================================== */}
