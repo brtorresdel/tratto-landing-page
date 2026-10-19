@@ -1084,25 +1084,34 @@ function Step2FillingCreation() {
 }
 
 // =========================================================================
-// ETAPA 3: CONTRATO NA ESQUERDA, ENVELOPAMENTO E DUPLICAÇÃO EM 2 VIAS,
-// DOIS CAMINHOS SIMULTÂNEOS CONVERGINDO NO SIGNATÁRIO E CONTRATO ASSINADO À DIREITA
+// ETAPA 3: FLUXO HORIZONTAL EM 4 PONTOS CONECTADOS POR LINHA DASHED EM MOVIMENTO:
+// 1. Contrato diminui e entra no envelope, que fecha e se duplica em 2;
+// 2. Os 2 envelopes passam por trás dos blocos de caminhos (Download e ZapSign);
+// 3. Os envelopes passam por trás do signatário e sai apenas 1 envelope único;
+// 4. No final, o envelope abre e some, revelando o contrato assinado.
 // =========================================================================
 const STEP3_TIMELINE = {
-  envelopeStartMs: 600,    // Início da folha de contrato entrando na carta aberta
-  envelopeClosedMs: 1800,  // Folha entra totalmente e o envelope sela com o selo Tratto
-  duplicateStartMs: 1900,  // A carta fechada começa a se duplicar em 2 vias
-  travelStartMs: 3100,     // As duas vias começam a percorrer os trilhos simultaneamente
-  travelEndMs: 5100,       // As duas vias chegam ao Signatário
-  signingStartMs: 5100,    // Signatário em processo de assinatura
-  signedAppearMs: 5700,    // Contrato assinado aparece com carimbo ASSINADO à direita
-  readingPauseMs: 7000,    // Pausa confortável para leitura e contemplação
-  fadeMs: 600,             // Fade out suave antes de reiniciar o loop
+  shrinkStartMs: 500,           // Contrato começa a diminuir de tamanho
+  envelopeOpenMs: 900,          // Surge o envelope aberto
+  envelopeEnterMs: 1400,        // Contrato entra dentro do envelope
+  envelopeCloseMs: 1800,        // Envelope fecha com o selo Tratto
+  duplicateMs: 2200,            // Envelope se multiplica em 2
+  travelCaminhosStartMs: 2200,  // Envelopes partem em direção aos 2 caminhos
+  travelCaminhosEnterMs: 3100,  // Envelopes passam por trás dos blocos de caminhos
+  travelCaminhosExitMs: 4000,   // Envelopes saem de trás dos blocos de caminhos
+  travelSignatarioEnterMs: 4600,// Envelopes entram por trás do Signatário
+  singleEnvelopeExitMs: 5000,   // Sai 1 único envelope de trás do Signatário
+  arriveFinalMs: 5600,          // Envelope único chega ao Ponto 4 e abre
+  envelopeDissolveMs: 5800,     // Envelope some e contrato surge com o carimbo ASSINADO
+  signedAppearMs: 5800,         // Contrato assinado visível em tamanho completo
+  readingPauseMs: 7000,         // Pausa confortável para leitura
+  fadeMs: 600,                  // Fade out suave antes de reiniciar o loop
 };
 
 const STEP3_TOTAL_CYCLE =
   STEP3_TIMELINE.signedAppearMs +
   STEP3_TIMELINE.readingPauseMs +
-  STEP3_TIMELINE.fadeMs; // ~13.300ms (13.3s)
+  STEP3_TIMELINE.fadeMs; // ~13.400ms (13.4s)
 
 function Step3SendingSigning() {
   const [elapsedMs, setElapsedMs] = useState(0);
@@ -1116,31 +1125,82 @@ function Step3SendingSigning() {
     return () => clearInterval(interval);
   }, []);
 
-  const isEnveloping =
-    elapsedMs >= STEP3_TIMELINE.envelopeStartMs &&
-    elapsedMs < STEP3_TIMELINE.duplicateStartMs;
-  const envelopingProgress = isEnveloping
-    ? Math.min(1, Math.max(0, (elapsedMs - STEP3_TIMELINE.envelopeStartMs) / (STEP3_TIMELINE.envelopeClosedMs - STEP3_TIMELINE.envelopeStartMs)))
-    : elapsedMs >= STEP3_TIMELINE.duplicateStartMs ? 1 : 0;
+  // Fases da animação no Ponto 1 (Envelopamento e Duplicação)
+  const isShrinking = elapsedMs >= STEP3_TIMELINE.shrinkStartMs && elapsedMs < STEP3_TIMELINE.envelopeEnterMs;
+  const shrinkProgress = isShrinking
+    ? (elapsedMs - STEP3_TIMELINE.shrinkStartMs) / (STEP3_TIMELINE.envelopeEnterMs - STEP3_TIMELINE.shrinkStartMs)
+    : elapsedMs >= STEP3_TIMELINE.envelopeEnterMs
+      ? 1
+      : 0;
 
-  const isDuplicating =
-    elapsedMs >= STEP3_TIMELINE.duplicateStartMs &&
-    elapsedMs < STEP3_TIMELINE.travelStartMs;
-  const duplicateProgress = isDuplicating
-    ? Math.min(1, Math.max(0, (elapsedMs - STEP3_TIMELINE.duplicateStartMs) / (STEP3_TIMELINE.travelStartMs - STEP3_TIMELINE.duplicateStartMs)))
-    : elapsedMs >= STEP3_TIMELINE.travelStartMs ? 1 : 0;
+  const isEnteringEnvelope = elapsedMs >= STEP3_TIMELINE.envelopeOpenMs && elapsedMs < STEP3_TIMELINE.envelopeCloseMs;
+  const isEnvelopeClosed = elapsedMs >= STEP3_TIMELINE.envelopeCloseMs;
+  const isDuplicated = elapsedMs >= STEP3_TIMELINE.duplicateMs;
 
-  const isTraveling =
-    elapsedMs >= STEP3_TIMELINE.travelStartMs &&
-    elapsedMs < STEP3_TIMELINE.travelEndMs;
-  const travelProgress = isTraveling
-    ? Math.min(1, Math.max(0, (elapsedMs - STEP3_TIMELINE.travelStartMs) / (STEP3_TIMELINE.travelEndMs - STEP3_TIMELINE.travelStartMs)))
-    : elapsedMs >= STEP3_TIMELINE.travelEndMs ? 1 : 0;
+  // Fases de Viagem dos 2 Envelopes (do Ponto 1 até o Signatário: 2200ms -> 4600ms)
+  const isTravelingTwo = elapsedMs >= STEP3_TIMELINE.travelCaminhosStartMs && elapsedMs < STEP3_TIMELINE.travelSignatarioEnterMs;
+  const travelTwoProgress = isTravelingTwo
+    ? (elapsedMs - STEP3_TIMELINE.travelCaminhosStartMs) /
+      (STEP3_TIMELINE.travelSignatarioEnterMs - STEP3_TIMELINE.travelCaminhosStartMs)
+    : elapsedMs >= STEP3_TIMELINE.travelSignatarioEnterMs
+      ? 1
+      : 0;
 
-  const isSigning =
-    elapsedMs >= STEP3_TIMELINE.signingStartMs &&
-    elapsedMs < STEP3_TIMELINE.signedAppearMs;
+  // Coordenadas calculadas no plano do viewBox (1000 x 420):
+  // X vai de 195 (saída Ponto 1) até 630 (centro Signatário)
+  const twoX = 195 + travelTwoProgress * (630 - 195);
 
+  // Y Superior: 210 -> sobe para 110 (Download PDF) -> mantém em 110 -> desce para 210 (Signatário)
+  let twoYSup = 210;
+  if (travelTwoProgress < 0.28) {
+    const p = travelTwoProgress / 0.28;
+    twoYSup = 210 - (1 - Math.cos(p * Math.PI)) / 2 * 100;
+  } else if (travelTwoProgress <= 0.68) {
+    twoYSup = 110;
+  } else {
+    const p = (travelTwoProgress - 0.68) / 0.32;
+    twoYSup = 110 + (1 - Math.cos(p * Math.PI)) / 2 * 100;
+  }
+
+  // Y Inferior: 210 -> desce para 310 (ZapSign / Clicksign) -> mantém em 310 -> sobe para 210 (Signatário)
+  let twoYInf = 210;
+  if (travelTwoProgress < 0.28) {
+    const p = travelTwoProgress / 0.28;
+    twoYInf = 210 + (1 - Math.cos(p * Math.PI)) / 2 * 100;
+  } else if (travelTwoProgress <= 0.68) {
+    twoYInf = 310;
+  } else {
+    const p = (travelTwoProgress - 0.68) / 0.32;
+    twoYInf = 310 - (1 - Math.cos(p * Math.PI)) / 2 * 100;
+  }
+
+  // Destaque quando os envelopes passam por trás dos blocos de caminhos
+  const isBehindDownload = elapsedMs >= STEP3_TIMELINE.travelCaminhosEnterMs && elapsedMs < STEP3_TIMELINE.travelCaminhosExitMs;
+  const isBehindZapSign = isBehindDownload;
+
+  // Fase do Signatário: envelopes entram por trás e assinam (4600ms -> 5000ms)
+  const isSigning = elapsedMs >= STEP3_TIMELINE.travelSignatarioEnterMs && elapsedMs < STEP3_TIMELINE.signedAppearMs;
+
+  // Fase do Envelope Único que sai de trás do Signatário (5000ms -> 5800ms)
+  const isSingleTraveling = elapsedMs >= STEP3_TIMELINE.singleEnvelopeExitMs && elapsedMs < STEP3_TIMELINE.envelopeDissolveMs;
+  const singleProgress = isSingleTraveling
+    ? (elapsedMs - STEP3_TIMELINE.singleEnvelopeExitMs) /
+      (STEP3_TIMELINE.arriveFinalMs - STEP3_TIMELINE.singleEnvelopeExitMs)
+    : elapsedMs >= STEP3_TIMELINE.arriveFinalMs
+      ? 1
+      : 0;
+
+  // X do Envelope Único: vai de 630 (Signatário) até 800 (entrada Ponto 4)
+  const singleX = 630 + Math.min(1, singleProgress) * (800 - 630);
+  const singleY = 210;
+
+  // No Ponto 4, o envelope abre e dissolve (5600ms -> 5800ms)
+  const singleIsOpen = elapsedMs >= STEP3_TIMELINE.arriveFinalMs;
+  const singleDissolveOpacity = elapsedMs >= STEP3_TIMELINE.arriveFinalMs
+    ? Math.max(0, 1 - (elapsedMs - STEP3_TIMELINE.arriveFinalMs) / (STEP3_TIMELINE.envelopeDissolveMs - STEP3_TIMELINE.arriveFinalMs))
+    : 1;
+
+  // Contrato Assinado final no Ponto 4
   const isSigned =
     elapsedMs >= STEP3_TIMELINE.signedAppearMs &&
     elapsedMs < (STEP3_TIMELINE.signedAppearMs + STEP3_TIMELINE.readingPauseMs);
@@ -1151,235 +1211,344 @@ function Step3SendingSigning() {
   return (
     <div
       className={clsx(
-        "w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-4 items-center justify-center transition-opacity duration-500 py-1",
+        "w-full max-w-5xl mx-auto overflow-x-auto pb-2 custom-scrollbar transition-opacity duration-500 py-1",
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
-      {/* 1. LADO ESQUERDO (lg:col-span-4): Contrato Gerado na Tratto com a Rubrica no Topo e Palco de Envelopamento e Duplicação */}
-      <div className="lg:col-span-4 flex justify-center w-full">
-        <div className="w-full max-w-[270px] sm:max-w-[290px] rounded-md border border-gray-200 bg-white p-3.5 sm:p-4 shadow-md text-left select-none relative min-h-[355px] sm:min-h-[365px] flex flex-col justify-start">
-          {/* Cabeçalho limpo com a rubrica oficial Tratto no canto superior direito */}
-          <div className="flex items-center justify-between pb-2 border-b border-gray-100 mb-2 select-none">
-            <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate text-gray-700">
-              contrato_123456
-            </span>
-            <div className="flex items-center gap-1 shrink-0" title="Plataforma Tratto">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 50 50"
-                className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-gray-900 stroke-current fill-none"
-                role="img"
-                aria-label="Rubrica Tratto"
-              >
-                <g strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M 6 22 C 14 20, 26 17, 40 19 C 45 20, 48 21, 48 21" strokeWidth="4.2" />
-                  <path d="M 31 11 C 30 19, 24 31, 18 36 C 14 40, 15 44, 18 44 C 23 44, 28 37, 33 27 C 34 23, 35 17, 35 13" strokeWidth="3.6" />
-                </g>
-              </svg>
-            </div>
-          </div>
+      <div className="min-w-[880px] lg:min-w-full h-[400px] sm:h-[420px] relative flex items-center justify-between px-3 select-none">
+        {/* =================================================================== */}
+        {/* CAMADA 0 (z-0): LINHA DASHED EM MOVIMENTO PASSANDO POR TODOS OS PONTOS */}
+        {/* =================================================================== */}
+        <svg
+          className="absolute inset-0 w-full h-full pointer-events-none z-0"
+          viewBox="0 0 1000 420"
+          preserveAspectRatio="none"
+        >
+          {/* Rota Superior: Ponto 1 -> Download PDF -> Signatário */}
+          <path
+            d="M 195 210 C 245 210, 260 110, 320 110 L 490 110 C 545 110, 580 210, 630 210"
+            fill="none"
+            stroke="var(--border-strong)"
+            strokeWidth="2.2"
+            strokeDasharray="6 6"
+            style={{
+              strokeDashoffset: -((elapsedMs / 25) % 24),
+              opacity: 0.7,
+            }}
+          />
 
-          <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-1.5 text-[11px] sm:text-xs border-b border-gray-100 mb-2 flex items-center justify-center">
-            Contrato de Prestação de Serviços
-          </div>
+          {/* Rota Inferior: Ponto 1 -> ZapSign / Clicksign -> Signatário */}
+          <path
+            d="M 195 210 C 245 210, 260 310, 320 310 L 490 310 C 545 310, 580 210, 630 210"
+            fill="none"
+            stroke="var(--border-strong)"
+            strokeWidth="2.2"
+            strokeDasharray="6 6"
+            style={{
+              strokeDashoffset: -((elapsedMs / 25) % 24),
+              opacity: 0.7,
+            }}
+          />
 
-          <div className="space-y-1.5 text-[11px] sm:text-xs text-gray-700 leading-relaxed font-sans">
-            <p>
-              CONTRATANTE{" "}
-              <span className="font-semibold text-gray-900 bg-gray-100 px-1 py-0.5 rounded">
-                João da Silva
-              </span>
-              , sob documento{" "}
-              <span className="font-mono text-[10px] text-gray-800 bg-gray-100 px-1 py-0.5 rounded">
-                12.345.678/0001-90
-              </span>
-              .
-            </p>
+          {/* Rota Final: Signatário -> Ponto 4 (Contrato Assinado) */}
+          <path
+            d="M 630 210 L 800 210"
+            fill="none"
+            stroke="var(--border-strong)"
+            strokeWidth="2.2"
+            strokeDasharray="6 6"
+            style={{
+              strokeDashoffset: -((elapsedMs / 25) % 24),
+              opacity: 0.7,
+            }}
+          />
+        </svg>
 
-            <p>
-              <strong>Cláusula 1ª:</strong> Serviço{" "}
-              <span className="font-semibold text-gray-900">Plano XYZ</span>, vigência de{" "}
-              <span className="font-semibold text-gray-900">12 meses</span>.
-            </p>
-
-            <p>
-              <strong>Cláusula 2ª:</strong> Mensalidade de{" "}
-              <span className="font-semibold text-gray-900">R$ 1.200,00</span>.
-            </p>
-
-            <p>
-              <strong>Cláusula 3ª:</strong> Reajuste por{" "}
-              <span className="font-semibold text-gray-900">Índice Oficial (IPCA / Bacen)</span>.
-            </p>
-          </div>
-
-          {/* Mini Estágio de Envelopamento e Duplicação no Contrato de Origem */}
-          <div className="mt-auto pt-2 border-t border-gray-100 flex flex-col justify-end">
-            <div className="flex items-center justify-between text-[10px] font-mono mb-1.5">
-              <span className="text-[var(--text-muted)]">Origem: Tratto</span>
-              <span className="font-semibold text-[var(--accent-primary)] truncate max-w-[170px]">
-                {elapsedMs < STEP3_TIMELINE.envelopeStartMs
-                  ? "Pronto para despacho"
-                  : elapsedMs < STEP3_TIMELINE.envelopeClosedMs
-                    ? "Envelopando contrato..."
-                    : elapsedMs < STEP3_TIMELINE.travelStartMs
-                      ? "Duplicando em 2 vias..."
-                      : isTraveling
-                        ? "Despachando vias..."
-                        : isSigning
-                          ? "Em assinatura..."
-                          : "Concluído ✓"}
-              </span>
-            </div>
-
-            {/* Palco animado: Envelopamento e Duplicação */}
-            <div className="relative h-15 w-full rounded-lg bg-[var(--bg-canvas)] border border-[var(--border-subtle)] overflow-hidden flex items-center justify-center px-2 py-1 select-none">
-              {elapsedMs < STEP3_TIMELINE.envelopeStartMs ? (
-                // Estado Inicial: Contrato pronto
-                <div className="flex items-center gap-2 text-gray-500 animate-in fade-in duration-200">
-                  <FileText className="h-4 w-4 text-[var(--accent-primary)] shrink-0" />
-                  <span className="font-mono text-[10px]">Contrato pronto para envio</span>
+        {/* =================================================================== */}
+        {/* CAMADA 10 (z-10): ENVELOPES MÓVEIS (Passam literalmente POR TRÁS dos blocos) */}
+        {/* =================================================================== */}
+        {/* 1. Envelope Superior (Caminho Download PDF): ativo de 2500ms até 4800ms */}
+        {isTravelingTwo && (
+          <div
+            style={{
+              left: `${(twoX / 1000) * 100}%`,
+              top: `${(twoYSup / 420) * 100}%`,
+              transform: "translate(-50%, -50%)",
+            }}
+            className="absolute z-10 pointer-events-none transition-transform duration-75"
+          >
+            <div className="relative flex flex-col items-center select-none filter drop-shadow-sm">
+              <div className="relative w-11 sm:w-12 h-7 sm:h-8 bg-[#fdfbf7] border border-amber-300 rounded shadow-xs overflow-hidden flex items-center justify-center">
+                <svg className="absolute inset-0 w-full h-full text-amber-300/80 stroke-current fill-none" viewBox="0 0 56 36">
+                  <path d="M 0 0 L 28 18 L 56 0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M 0 36 L 20 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M 56 36 L 36 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <div className="relative z-10 h-2.5 w-2.5 rounded-full bg-blue-600 flex items-center justify-center shadow-2xs">
+                  <div className="h-0.8 w-0.8 rounded-full bg-white" />
                 </div>
-              ) : elapsedMs < STEP3_TIMELINE.duplicateStartMs ? (
-                // FASE 1: O Contrato desliza para dentro da carta e a carta se fecha
-                <div className="relative flex flex-col items-center justify-center w-full h-full">
-                  {/* Folhinha de contrato deslizando para dentro */}
-                  <div
-                    style={{
-                      transform: `translateY(${
-                        envelopingProgress < 0.65
-                          ? -16 + envelopingProgress * 20
-                          : 4
-                      }px) scale(${envelopingProgress < 0.65 ? 0.9 : 0.75})`,
-                      opacity: envelopingProgress < 0.85 ? 1 : 0,
-                    }}
-                    className="absolute z-10 w-7 h-9 bg-white border border-gray-300 rounded shadow-xs p-0.5 flex flex-col justify-between transition-transform duration-75 pointer-events-none"
-                  >
-                    <div className="flex justify-between items-center border-b border-gray-100 pb-0.5">
-                      <div className="h-0.5 w-2 bg-gray-400 rounded" />
-                      <div className="h-1 w-1 rounded-full bg-[var(--accent-primary)]" />
-                    </div>
-                    <div className="space-y-0.5">
-                      <div className="h-0.5 w-full bg-gray-200 rounded" />
-                      <div className="h-0.5 w-3/4 bg-gray-200 rounded" />
-                    </div>
-                    <div className="h-0.5 w-full bg-emerald-200 rounded" />
-                  </div>
-
-                  {/* Envelope */}
-                  <div className="relative w-12 h-7.5 bg-amber-50/90 border border-amber-300 rounded shadow-xs flex items-center justify-center overflow-hidden z-20">
-                    <svg
-                      className="absolute inset-0 w-full h-full text-amber-300/90 stroke-current fill-none"
-                      viewBox="0 0 48 30"
-                    >
-                      <path d="M 0 0 L 24 15 L 48 0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M 0 30 L 18 13" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M 48 30 L 30 13" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-
-                    {/* Selo no envelope fechado */}
-                    {envelopingProgress >= 0.65 && (
-                      <div className="relative z-30 h-3.5 w-3.5 rounded-full bg-[var(--accent-primary)] text-white flex items-center justify-center shadow-xs animate-in zoom-in-50 duration-200">
-                        <Check className="h-2 w-2 stroke-[3]" />
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ) : elapsedMs < STEP3_TIMELINE.travelStartMs ? (
-                // FASE 2: A carta se duplica em duas vias (uma para Download e uma para Assinatura Digital)
-                <div className="relative flex items-center justify-center w-full h-full">
-                  {/* Via 1: Download PDF */}
-                  <div
-                    style={{
-                      transform: `translate(${-duplicateProgress * 32}px, ${-duplicateProgress * 4}px) scale(0.9)`,
-                    }}
-                    className="absolute flex items-center gap-1 px-2 py-0.5 rounded bg-blue-50 border border-blue-300 text-blue-800 shadow-2xs font-mono text-[9px] font-bold transition-transform duration-75"
-                  >
-                    <Mail className="h-2.5 w-2.5 text-blue-600 shrink-0" />
-                    <span>Via 1: PDF</span>
-                  </div>
-
-                  {/* Via 2: Assinatura Digital */}
-                  <div
-                    style={{
-                      transform: `translate(${duplicateProgress * 32}px, ${duplicateProgress * 4}px) scale(0.9)`,
-                    }}
-                    className="absolute flex items-center gap-1 px-2 py-0.5 rounded bg-emerald-50 border border-emerald-300 text-emerald-800 shadow-2xs font-mono text-[9px] font-bold transition-transform duration-75"
-                  >
-                    <Mail className="h-2.5 w-2.5 text-emerald-600 shrink-0" />
-                    <span>Via 2: Digital</span>
-                  </div>
-                </div>
-              ) : (
-                // FASE 3: As vias foram despachadas para as plataformas simultâneas
-                <div className="flex items-center justify-between w-full px-2 text-[10px] font-mono">
-                  <div className="flex items-center gap-1 text-blue-700">
-                    <Mail className="h-3 w-3" />
-                    <span>Via PDF</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-[var(--accent-primary)] font-bold animate-pulse">
-                    <span>Enviadas</span>
-                    <ArrowRight className="h-3 w-3" />
-                  </div>
-                  <div className="flex items-center gap-1 text-emerald-700">
-                    <Mail className="h-3 w-3" />
-                    <span>Via Digital</span>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 2. CENTRO (lg:col-span-4): Os Dois Caminhos Simultâneos convergindo no Signatário */}
-      <div className="lg:col-span-4 flex flex-col items-center justify-between min-h-[355px] sm:min-h-[365px] py-1 relative w-full">
-        {/* CAMINHO SUPERIOR: Download (Modo Manual / Presencial) */}
-        <div className="w-full rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-2.5 sm:p-3 shadow-xs relative overflow-hidden">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <div className="h-7 w-7 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
-                <Download className="h-3.5 w-3.5" />
               </div>
-              <div className="text-left">
-                <span className="font-semibold block text-xs text-gray-900">
-                  Download PDF
-                </span>
-                <span className="text-[10px] font-mono text-[var(--text-muted)] block">
-                  Envio manual / presencial
-                </span>
-              </div>
+              <span className="mt-0.5 px-1.5 py-0.2 rounded font-mono text-[8px] font-bold uppercase tracking-wider bg-blue-600 text-white shadow-2xs">
+                Via 1: PDF
+              </span>
             </div>
           </div>
+        )}
 
-          {/* Trilho com linha pontilhada e mini-carta viajando simultaneamente */}
-          <div className="relative h-6 bg-[var(--bg-canvas)] rounded-md border border-[var(--border-subtle)] flex items-center px-2 overflow-hidden">
-            <div className="w-full border-b border-dashed border-[var(--border-strong)]/60 absolute left-0 right-0" />
+        {/* 2. Envelope Inferior (Caminho ZapSign / Clicksign): ativo de 2500ms até 4800ms */}
+        {isTravelingTwo && (
+          <div
+            style={{
+              left: `${(twoX / 1000) * 100}%`,
+              top: `${(twoYInf / 420) * 100}%`,
+              transform: "translate(-50%, -50%)",
+            }}
+            className="absolute z-10 pointer-events-none transition-transform duration-75"
+          >
+            <div className="relative flex flex-col items-center select-none filter drop-shadow-sm">
+              <div className="relative w-11 sm:w-12 h-7 sm:h-8 bg-[#fdfbf7] border border-amber-300 rounded shadow-xs overflow-hidden flex items-center justify-center">
+                <svg className="absolute inset-0 w-full h-full text-amber-300/80 stroke-current fill-none" viewBox="0 0 56 36">
+                  <path d="M 0 0 L 28 18 L 56 0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M 0 36 L 20 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M 56 36 L 36 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <div className="relative z-10 h-2.5 w-2.5 rounded-full bg-[var(--accent-primary)] flex items-center justify-center shadow-2xs">
+                  <div className="h-0.8 w-0.8 rounded-full bg-white" />
+                </div>
+              </div>
+              <span className="mt-0.5 px-1.5 py-0.2 rounded font-mono text-[8px] font-bold uppercase tracking-wider bg-[var(--accent-primary)] text-white shadow-2xs">
+                Via 2: Digital
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* 3. Envelope Único (Sai de trás do Signatário rumo ao Ponto 4): ativo de 5000ms até 5800ms */}
+        {isSingleTraveling && (
+          <div
+            style={{
+              left: `${(singleX / 1000) * 100}%`,
+              top: `${(singleY / 420) * 100}%`,
+              transform: "translate(-50%, -50%)",
+              opacity: singleDissolveOpacity,
+            }}
+            className="absolute z-10 pointer-events-none transition-all duration-75"
+          >
+            <div className="relative flex flex-col items-center select-none filter drop-shadow-md">
+              <div className="relative w-13 sm:w-14 h-8 sm:h-9 bg-[#fdfbf7] border border-amber-300 rounded shadow-sm overflow-hidden flex items-center justify-center">
+                <svg className="absolute inset-0 w-full h-full text-amber-300/80 stroke-current fill-none" viewBox="0 0 56 36">
+                  {singleIsOpen ? (
+                    <path d="M 0 16 L 28 0 L 56 16" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  ) : (
+                    <path d="M 0 0 L 28 18 L 56 0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  )}
+                  <path d="M 0 36 L 20 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M 56 36 L 36 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {!singleIsOpen && (
+                  <div className="relative z-10 h-3 w-3 rounded-full bg-emerald-600 flex items-center justify-center shadow-2xs">
+                    <Check className="h-2 w-2 text-white stroke-[3]" />
+                  </div>
+                )}
+              </div>
+              <span className="mt-0.5 px-1.5 py-0.2 rounded font-mono text-[8px] font-bold uppercase tracking-wider bg-emerald-700 text-white shadow-2xs">
+                {singleIsOpen ? "Abrindo..." : "Via Oficial"}
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* =================================================================== */}
+        {/* PONTO 1 (z-20): CONTRATO INICIAL -> DIMINUI -> ENTRA NA CARTA -> SE DUPLICA */}
+        {/* =================================================================== */}
+        <div className="relative z-20 w-[205px] sm:w-[215px] h-[315px] sm:h-[325px] flex items-center justify-center">
+          {/* Base fixa com status do Ponto 1 */}
+          <div className="w-full h-full rounded-md border border-gray-200 bg-white p-3 shadow-md flex flex-col justify-between text-left select-none relative overflow-hidden">
+            {/* O Contrato (diminui e desliza para a carta quando t >= 500ms) */}
             <div
               style={{
-                transform: `translateX(${travelProgress * 210}px)`,
-                opacity: isTraveling ? 1 : travelProgress === 1 ? 0 : 0.35,
+                transform: isShrinking
+                  ? `translateY(${shrinkProgress * 42}px) scale(${1 - shrinkProgress * 0.65})`
+                  : elapsedMs >= STEP3_TIMELINE.envelopeEnterMs
+                    ? "translateY(55px) scale(0.32)"
+                    : "translateY(0px) scale(1)",
+                opacity: elapsedMs >= STEP3_TIMELINE.envelopeCloseMs ? 0 : 1,
               }}
-              className="relative z-10 px-2 py-0.5 rounded bg-blue-600 text-white font-mono text-[9px] font-bold shadow-xs flex items-center gap-1 transition-transform duration-75"
+              className="origin-top transition-transform duration-75 relative z-10 w-full"
             >
-              <Mail className="h-2.5 w-2.5" />
-              <span>PDF</span>
+              {/* Cabeçalho limpo com a rubrica oficial Tratto no canto superior direito */}
+              <div className="flex items-center justify-between pb-1.5 border-b border-gray-100 mb-1.5 select-none">
+                <span className="font-mono text-[10px] uppercase tracking-wider font-semibold truncate text-gray-700">
+                  contrato_123456
+                </span>
+                <div className="flex items-center gap-1 shrink-0" title="Plataforma Tratto">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 50 50"
+                    className="h-4 w-4 text-gray-900 stroke-current fill-none"
+                    role="img"
+                    aria-label="Rubrica Tratto"
+                  >
+                    <g strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M 6 22 C 14 20, 26 17, 40 19 C 45 20, 48 21, 48 21" strokeWidth="4.2" />
+                      <path d="M 31 11 C 30 19, 24 31, 18 36 C 14 40, 15 44, 18 44 C 23 44, 28 37, 33 27 C 34 23, 35 17, 35 13" strokeWidth="3.6" />
+                    </g>
+                  </svg>
+                </div>
+              </div>
+
+              <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-1 text-[11px] border-b border-gray-100 mb-1 flex items-center justify-center">
+                Contrato de Prestação de Serviços
+              </div>
+
+              <div className="space-y-1 text-[10px] sm:text-[11px] text-gray-700 leading-relaxed font-sans">
+                <p>
+                  CONTRATANTE{" "}
+                  <span className="font-semibold text-gray-900 bg-gray-100 px-1 py-0.2 rounded">
+                    João da Silva
+                  </span>
+                  , sob doc{" "}
+                  <span className="font-mono text-[9px] text-gray-800 bg-gray-100 px-1 py-0.2 rounded">
+                    12.345.678/0001-90
+                  </span>
+                  .
+                </p>
+
+                <p>
+                  <strong>Cláusula 1ª:</strong> Serviço{" "}
+                  <span className="font-semibold text-gray-900">Plano XYZ</span>, vigência{" "}
+                  <span className="font-semibold text-gray-900">12 meses</span>.
+                </p>
+
+                <p>
+                  <strong>Cláusula 2ª:</strong> Mensalidade de{" "}
+                  <span className="font-semibold text-gray-900">R$ 1.200,00</span>.
+                </p>
+
+                <p>
+                  <strong>Cláusula 3ª:</strong> Reajuste por{" "}
+                  <span className="font-semibold text-gray-900">Índice Oficial (IPCA / Bacen)</span>.
+                </p>
+              </div>
+            </div>
+
+            {/* O Envelope que surge aberto e fecha com o contrato dentro */}
+            {isEnteringEnvelope && !isDuplicated && (
+              <div className="absolute inset-x-0 bottom-7 flex flex-col items-center justify-center z-20 animate-in fade-in duration-200 pointer-events-none">
+                <div className="relative w-14 h-9 bg-amber-50/95 border border-amber-300 rounded shadow-md overflow-hidden flex items-center justify-center">
+                  <svg className="absolute inset-0 w-full h-full text-amber-300 stroke-current fill-none" viewBox="0 0 56 36">
+                    {!isEnvelopeClosed ? (
+                      <path d="M 0 16 L 28 0 L 56 16" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    ) : (
+                      <path d="M 0 0 L 28 18 L 56 0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    )}
+                    <path d="M 0 36 L 20 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M 56 36 L 36 18" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  {isEnvelopeClosed && (
+                    <div className="relative z-10 h-3 w-3 rounded-full bg-[var(--accent-primary)] text-white flex items-center justify-center shadow-xs animate-in zoom-in-50">
+                      <Check className="h-2 w-2 stroke-[3]" />
+                    </div>
+                  )}
+                </div>
+                <span className="font-mono text-[9px] text-[var(--accent-primary)] font-semibold mt-1">
+                  {!isEnvelopeClosed ? "Entrando na carta..." : "Envelope selado"}
+                </span>
+              </div>
+            )}
+
+            {/* Momento em que se multiplica em 2 no Ponto 1 (1900ms -> 2500ms) */}
+            {isDuplicated && !isTravelingTwo && elapsedMs < STEP3_TIMELINE.travelCaminhosStartMs && (
+              <div className="absolute inset-x-0 bottom-6 flex items-center justify-center gap-2 z-20 animate-in zoom-in-95 duration-150">
+                <div className="px-1.5 py-0.5 rounded bg-blue-50 border border-blue-300 text-blue-700 font-mono text-[8px] font-bold shadow-2xs">
+                  Via 1: PDF
+                </div>
+                <div className="px-1.5 py-0.5 rounded bg-emerald-50 border border-emerald-300 text-emerald-700 font-mono text-[8px] font-bold shadow-2xs">
+                  Via 2: Digital
+                </div>
+              </div>
+            )}
+
+            {/* Rodapé informativo de status do Ponto 1 */}
+            <div className="mt-auto pt-1.5 border-t border-gray-100 flex items-center justify-between text-[9px] font-mono text-[var(--text-muted)]">
+              <span>Origem: Tratto</span>
+              <span className="font-semibold text-[var(--accent-primary)]">
+                {elapsedMs < STEP3_TIMELINE.shrinkStartMs
+                  ? "Contrato gerado"
+                  : elapsedMs < STEP3_TIMELINE.duplicateMs
+                    ? "Envelopando contrato..."
+                    : elapsedMs < STEP3_TIMELINE.travelCaminhosStartMs
+                      ? "Duplicando em 2 vias..."
+                      : isTravelingTwo
+                        ? "Duplicando em 2 vias..."
+                        : "Despachado ✓"}
+              </span>
             </div>
           </div>
         </div>
 
-        {/* NÓ CENTRAL DE CONVERGÊNCIA: O Signatário */}
-        <div className="my-1.5 flex flex-col items-center justify-center select-none z-20">
+        {/* =================================================================== */}
+        {/* PONTO 2 (z-20): OS 2 CAMINHOS (Superior: Download / Inferior: ZapSign) */}
+        {/* =================================================================== */}
+        <div className="relative z-20 flex flex-col justify-between h-[315px] sm:h-[325px] py-1 select-none">
+          {/* BLOCO SUPERIOR: Download PDF (Sem barra interna, envelope passa por trás) */}
           <div
             className={clsx(
-              "flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full border-2 transition-all duration-300 shadow-sm relative",
+              "w-44 sm:w-48 p-2.5 sm:p-3 rounded-xl bg-white border shadow-xs flex items-center gap-2.5 select-none transition-all duration-300 relative z-20",
+              isBehindDownload ? "border-blue-300 ring-2 ring-blue-400/30 scale-[1.02]" : "border-[var(--border-subtle)]"
+            )}
+          >
+            <div className="h-8 w-8 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
+              <Download className="h-4 w-4" />
+            </div>
+            <div className="text-left">
+              <span className="font-semibold block text-xs text-gray-900 leading-tight">
+                Download PDF
+              </span>
+              <span className="text-[10px] font-mono text-[var(--text-muted)] block">
+                Envio manual / presencial
+              </span>
+            </div>
+          </div>
+
+          {/* Indicador sutil de fluxo central */}
+          <div className="text-center font-mono text-[9px] text-[var(--text-muted)] tracking-wider uppercase opacity-60">
+            2 Caminhos Simultâneos
+          </div>
+
+          {/* BLOCO INFERIOR: ZapSign / Clicksign (Sem barra interna, envelope passa por trás) */}
+          <div
+            className={clsx(
+              "w-44 sm:w-48 p-2.5 sm:p-3 rounded-xl bg-white border shadow-xs flex items-center gap-2.5 select-none transition-all duration-300 relative z-20",
+              isBehindZapSign ? "border-emerald-300 ring-2 ring-emerald-400/30 scale-[1.02]" : "border-[var(--border-subtle)]"
+            )}
+          >
+            <div className="h-8 w-8 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0">
+              <Send className="h-4 w-4" />
+            </div>
+            <div className="text-left">
+              <span className="font-semibold block text-xs text-gray-900 leading-tight">
+                ZapSign / Clicksign
+              </span>
+              <span className="text-[10px] font-mono text-[var(--text-muted)] block">
+                Assinatura Eletrônica (API)
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* =================================================================== */}
+        {/* PONTO 3 (z-20): O SIGNATÁRIO (Envelopes entram por trás e sai 1 envelope) */}
+        {/* =================================================================== */}
+        <div className="relative z-20 flex flex-col items-center justify-center select-none">
+          <div
+            className={clsx(
+              "flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-full border-2 bg-white transition-all duration-300 shadow-sm relative",
               isSigned
-                ? "bg-emerald-50 text-emerald-700 border-emerald-300 ring-4 ring-emerald-400/20"
+                ? "text-emerald-700 border-emerald-300 ring-4 ring-emerald-400/20"
                 : isSigning
-                  ? "bg-[var(--accent-primary)] text-white border-[var(--accent-primary)] ring-4 ring-[var(--accent-primary)]/30 scale-105"
-                  : isTraveling
-                    ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--accent-primary)] animate-pulse"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)]"
+                  ? "text-[var(--accent-primary)] border-[var(--accent-primary)] ring-4 ring-[var(--accent-primary)]/30 scale-105"
+                  : "text-[var(--accent-primary)] border-[var(--border-strong)]"
             )}
           >
             <User className="h-7 w-7 sm:h-8 sm:w-8" />
@@ -1389,7 +1558,7 @@ function Step3SendingSigning() {
               </span>
             )}
           </div>
-          <span className="font-mono text-xs font-semibold text-[var(--text-main)] mt-1">
+          <span className="font-mono text-xs font-semibold text-[var(--text-main)] mt-1.5">
             Signatário
           </span>
           <span
@@ -1406,143 +1575,113 @@ function Step3SendingSigning() {
           </span>
         </div>
 
-        {/* CAMINHO INFERIOR: Assinatura Digital (ZapSign / Clicksign) */}
-        <div className="w-full rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-2.5 sm:p-3 shadow-xs relative overflow-hidden">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <div className="h-7 w-7 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center shrink-0">
-                <Send className="h-3.5 w-3.5" />
+        {/* =================================================================== */}
+        {/* PONTO 4 (z-20): O ENVELOPE ABRE E SOME -> CONTRATO SURGE ASSINADO */}
+        {/* =================================================================== */}
+        <div className="relative z-20 w-[205px] sm:w-[215px] h-[315px] sm:h-[325px] flex items-center justify-center">
+          {!isSigned ? (
+            <div className="w-full h-full rounded-md border-2 border-dashed border-[var(--border-subtle)] bg-[var(--bg-canvas)]/40 p-4 text-center flex flex-col items-center justify-center gap-2 select-none transition-all">
+              <div className="h-10 w-10 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400">
+                <ShieldCheck className="h-5 w-5 stroke-[1.8]" />
               </div>
-              <div className="text-left">
-                <span className="font-semibold block text-xs text-gray-900">
-                  ZapSign / Clicksign
-                </span>
-                <span className="text-[10px] font-mono text-[var(--text-muted)] block">
-                  Assinatura Eletrônica (API)
-                </span>
+              <div className="space-y-1">
+                <p className="font-semibold text-xs text-gray-700">
+                  Aguardando Assinatura
+                </p>
+                <p className="text-[10px] text-[var(--text-muted)] max-w-[160px] mx-auto leading-relaxed">
+                  O contrato oficializado surge assinado após a passagem pelo signatário.
+                </p>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="w-full h-full rounded-md border border-emerald-400 ring-2 ring-emerald-400/20 bg-white p-3 shadow-xl text-left select-none relative flex flex-col justify-between animate-metric-fade-in">
+              <div>
+                {/* Cabeçalho limpo com a rubrica oficial Tratto no canto superior direito */}
+                <div className="flex items-center justify-between pb-1.5 border-b border-gray-100 mb-1.5 select-none">
+                  <span className="font-mono text-[10px] uppercase tracking-wider font-semibold truncate text-emerald-800 font-bold">
+                    contrato_123456
+                  </span>
+                  <div className="flex items-center gap-1 shrink-0" title="Plataforma Tratto">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 50 50"
+                      className="h-4 w-4 text-gray-900 stroke-current fill-none"
+                      role="img"
+                      aria-label="Rubrica Tratto"
+                    >
+                      <g strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M 6 22 C 14 20, 26 17, 40 19 C 45 20, 48 21, 48 21" strokeWidth="4.2" />
+                        <path d="M 31 11 C 30 19, 24 31, 18 36 C 14 40, 15 44, 18 44 C 23 44, 28 37, 33 27 C 34 23, 35 17, 35 13" strokeWidth="3.6" />
+                      </g>
+                    </svg>
+                  </div>
+                </div>
 
-          {/* Trilho com linha pontilhada e mini-carta viajando simultaneamente */}
-          <div className="relative h-6 bg-[var(--bg-canvas)] rounded-md border border-[var(--border-subtle)] flex items-center px-2 overflow-hidden">
-            <div className="w-full border-b border-dashed border-[var(--border-strong)]/60 absolute left-0 right-0" />
-            <div
-              style={{
-                transform: `translateX(${travelProgress * 210}px)`,
-                opacity: isTraveling ? 1 : travelProgress === 1 ? 0 : 0.35,
-              }}
-              className="relative z-10 px-2 py-0.5 rounded bg-[var(--accent-primary)] text-white font-mono text-[9px] font-bold shadow-xs flex items-center gap-1 transition-transform duration-75"
-            >
-              <Mail className="h-2.5 w-2.5" />
-              <span>Digital</span>
+                <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-1 text-[11px] border-b border-gray-100 mb-1 flex items-center justify-center">
+                  Contrato de Prestação de Serviços
+                </div>
+
+                <div className="space-y-1 text-[10px] sm:text-[11px] text-gray-700 leading-relaxed font-sans">
+                  <p>
+                    CONTRATANTE{" "}
+                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded">
+                      João da Silva
+                    </span>
+                    , sob doc{" "}
+                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded font-mono text-[9px]">
+                      12.345.678/0001-90
+                    </span>
+                    .
+                  </p>
+
+                  <p>
+                    <strong>Cláusula 1ª:</strong> Serviço{" "}
+                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded">
+                      Plano XYZ
+                    </span>
+                    , vigência{" "}
+                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded">
+                      12 meses
+                    </span>
+                    .
+                  </p>
+
+                  <p>
+                    <strong>Cláusula 2ª:</strong> Mensalidade de{" "}
+                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded">
+                      R$ 1.200,00
+                    </span>
+                    .
+                  </p>
+
+                  <p>
+                    <strong>Cláusula 3ª:</strong> Reajuste por{" "}
+                    <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.2 rounded">
+                      Índice Oficial (IPCA / Bacen)
+                    </span>
+                    .
+                  </p>
+                </div>
+              </div>
+
+              {/* Carimbo ASSINADO sobreposto com rotação diagonal e check verde */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+                <div className="rotate-[-12deg] rounded-lg border-2 border-dotted border-emerald-600 bg-emerald-50/95 backdrop-blur-xs px-3 py-1 flex items-center gap-1.5 shadow-md animate-metric-fade-in select-none">
+                  <CheckCircle className="h-4 w-4 text-emerald-600 shrink-0" />
+                  <span className="font-mono text-sm font-black tracking-wider text-emerald-700 uppercase">
+                    Assinado
+                  </span>
+                </div>
+              </div>
+
+              {/* Rodapé oficial */}
+              <div className="mt-auto pt-1.5 border-t border-emerald-100 flex items-center justify-between text-[9px] font-mono text-emerald-800">
+                <span>Validade Jurídica</span>
+                <span className="font-bold">100% Concluído</span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      </div>
-
-      {/* 3. LADO DIREITO (lg:col-span-4): O Contrato que se torna Assinado após passar pelo Signatário */}
-      <div className="lg:col-span-4 flex justify-center w-full">
-        {!isSigned ? (
-          <div className="w-full max-w-[270px] sm:max-w-[290px] rounded-md border-2 border-dashed border-[var(--border-subtle)] bg-[var(--bg-canvas)]/40 p-5 text-center min-h-[355px] sm:min-h-[365px] flex flex-col items-center justify-center gap-2.5 select-none transition-all">
-            <div className="h-12 w-12 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400">
-              <ShieldCheck className="h-6 w-6 stroke-[1.8]" />
-            </div>
-            <div className="space-y-1">
-              <p className="font-semibold text-xs text-gray-700">
-                Aguardando Assinatura
-              </p>
-              <p className="text-[10px] sm:text-[11px] text-[var(--text-muted)] max-w-[190px] mx-auto leading-relaxed">
-                O contrato se torna oficial após a conclusão da assinatura.
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="w-full max-w-[270px] sm:max-w-[290px] rounded-md border border-emerald-400 ring-2 ring-emerald-400/20 bg-white p-3.5 sm:p-4 shadow-xl text-left select-none relative min-h-[355px] sm:min-h-[365px] flex flex-col justify-start animate-metric-fade-in">
-            {/* Cabeçalho limpo com a rubrica oficial Tratto no canto superior direito */}
-            <div className="flex items-center justify-between pb-2 border-b border-gray-100 mb-2 select-none">
-              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate text-emerald-800 font-bold">
-                contrato_123456
-              </span>
-              <div className="flex items-center gap-1 shrink-0" title="Plataforma Tratto">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 50 50"
-                  className="h-4 w-4 sm:h-4.5 sm:w-4.5 text-gray-900 stroke-current fill-none"
-                  role="img"
-                  aria-label="Rubrica Tratto"
-                >
-                  <g strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M 6 22 C 14 20, 26 17, 40 19 C 45 20, 48 21, 48 21" strokeWidth="4.2" />
-                    <path d="M 31 11 C 30 19, 24 31, 18 36 C 14 40, 15 44, 18 44 C 23 44, 28 37, 33 27 C 34 23, 35 17, 35 13" strokeWidth="3.6" />
-                  </g>
-                </svg>
-              </div>
-            </div>
-
-            <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-1.5 text-[11px] sm:text-xs border-b border-gray-100 mb-2 flex items-center justify-center">
-              Contrato de Prestação de Serviços
-            </div>
-
-            <div className="space-y-1.5 text-[11px] sm:text-xs text-gray-700 leading-relaxed font-sans">
-              <p>
-                CONTRATANTE{" "}
-                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded">
-                  João da Silva
-                </span>
-                , sob documento{" "}
-                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded font-mono text-[10px]">
-                  12.345.678/0001-90
-                </span>
-                .
-              </p>
-
-              <p>
-                <strong>Cláusula 1ª:</strong> Serviço{" "}
-                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded">
-                  Plano XYZ
-                </span>
-                , vigência de{" "}
-                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded">
-                  12 meses
-                </span>
-                .
-              </p>
-
-              <p>
-                <strong>Cláusula 2ª:</strong> Mensalidade de{" "}
-                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded">
-                  R$ 1.200,00
-                </span>
-                .
-              </p>
-
-              <p>
-                <strong>Cláusula 3ª:</strong> Reajuste por{" "}
-                <span className="bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold px-1 py-0.5 rounded">
-                  Índice Oficial (IPCA / Bacen)
-                </span>
-                .
-              </p>
-            </div>
-
-            {/* Carimbo ASSINADO sobreposto com rotação diagonal e check verde */}
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-              <div className="rotate-[-12deg] rounded-lg border-2 border-dotted border-emerald-600 bg-emerald-50/90 backdrop-blur-xs px-3.5 py-1.5 flex items-center gap-2 shadow-md animate-metric-fade-in select-none">
-                <CheckCircle className="h-5 w-5 text-emerald-600 shrink-0" />
-                <span className="font-mono text-base font-black tracking-wider text-emerald-700 uppercase">
-                  Assinado
-                </span>
-              </div>
-            </div>
-
-            {/* Rodapé oficial */}
-            <div className="mt-auto pt-2 border-t border-emerald-100 flex items-center justify-between text-[10px] font-mono text-emerald-800">
-              <span>Validade Jurídica</span>
-              <span className="font-bold">100% Concluído</span>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
