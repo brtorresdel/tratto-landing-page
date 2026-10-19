@@ -112,8 +112,8 @@ export function AudienceSection() {
         </div>
 
         {/* Bloco de Profissionais Individuais */}
-        <div className="mt-16 sm:mt-20 pt-12 sm:pt-14 border-t border-[var(--border-subtle)] text-center">
-          <p className="mx-auto max-w-2xl text-sm sm:text-base font-medium text-[var(--text-main)] leading-relaxed">
+        <div className="mt-14 sm:mt-18 text-center">
+          <p className="mx-auto max-w-2xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
             E aqui nós não nos resumimos a empresas, profissionais individuais também têm um espaço na Tratto, incluindo:
           </p>
 
