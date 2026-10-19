@@ -922,12 +922,12 @@ function Step3SendingSigning() {
           </p>
         </div>
 
-        {/* Carimbo ASSINADO na diagonal com rotação e cor verde esmeralda */}
+        {/* Carimbo ASSINADO na diagonal com rotação, borda pontilhada e fundo transparente estilo carimbo físico */}
         {isSigned && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
-            <div className="rotate-[-12deg] rounded-xl border-2 border-emerald-600 bg-white/95 sm:bg-emerald-50/95 px-5 py-2.5 shadow-xl flex items-center gap-2 animate-metric-fade-in ring-4 ring-emerald-500/20 backdrop-blur-xs">
+            <div className="rotate-[-12deg] rounded-lg border-2 border-dotted border-emerald-600 bg-transparent px-4 py-2 flex items-center gap-2 animate-metric-fade-in select-none">
               <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-600 shrink-0" />
-              <span className="font-mono text-base sm:text-lg font-black tracking-wider text-emerald-800 uppercase">
+              <span className="font-mono text-base sm:text-lg font-black tracking-wider text-emerald-700 uppercase">
                 Assinado
               </span>
             </div>
