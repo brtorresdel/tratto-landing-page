@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause } from "lucide-react";
+import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check } from "lucide-react";
 
 export const STORY_STEPS = [
   {
@@ -388,60 +388,29 @@ function Step1ModelMarkers() {
 }
 
 // =========================================================================
-// ETAPA 2: PREENCHIMENTO CAMPO A CAMPO E CONVERSÃO EM CONTRATO OFICIAL
+// ETAPA 2: PREENCHIMENTO CAMPO A CAMPO COM SELECTS CONFIGURÁVEIS E CONTRATO OFICIAL
 // =========================================================================
-const STEP2_FIELD_CONFIGS = [
-  {
-    id: "cliente_nome" as const,
-    label: "Cliente",
-    placeholder: "Nome do cliente...",
-    target: "João da Silva",
-    defaultMarker: "{{cliente_nome}}",
-    startMs: 400,
-    endMs: 1050,
-  },
-  {
-    id: "cliente_documento" as const,
-    label: "Documento Oficial",
-    placeholder: "CNPJ ou CPF...",
-    target: "12.345.678/0001-90",
-    defaultMarker: "{{cliente_documento}}",
-    startMs: 1300,
-    endMs: 2000,
-  },
-  {
-    id: "plano_nome" as const,
-    label: "Plano Selecionado",
-    placeholder: "Selecione o plano...",
-    target: "Plano Trimestral",
-    defaultMarker: "{{plano_nome}}",
-    startMs: 2250,
-    endMs: 2900,
-  },
-  {
-    id: "vigencia_meses" as const,
-    label: "Vigência",
-    placeholder: "Prazo...",
-    target: "12 meses",
-    defaultMarker: "{{vigencia_meses}}",
-    startMs: 3150,
-    endMs: 3550,
-  },
-  {
-    id: "valor_mensal" as const,
-    label: "Mensalidade",
-    placeholder: "R$ 0,00",
-    target: "R$ 1.200,00",
-    defaultMarker: "{{valor_mensal}}",
-    startMs: 3750,
-    endMs: 4250,
-  },
-];
+const PLANO_OPTIONS = ["Plano ABC", "Plano JKL", "Plano XYZ"] as const;
+const VIGENCIA_OPTIONS = ["3 meses", "6 meses", "12 meses", "24 meses"] as const;
 
-const STEP2_ALL_FILLED_MS = 4500;
-const STEP2_READING_PAUSE = 6000;
-const STEP2_FADE_DURATION = 600;
-const STEP2_TOTAL_CYCLE = STEP2_ALL_FILLED_MS + STEP2_READING_PAUSE + STEP2_FADE_DURATION;
+const TARGET_PLANO = "Plano XYZ";
+const TARGET_VIGENCIA = "12 meses";
+
+const STEP2_TIMELINE = {
+  cliente: { startMs: 350, endMs: 1150, target: "João da Silva" },
+  documento: { startMs: 1350, endMs: 2150, target: "12.345.678/0001-90" },
+  plano: { openMs: 2350, highlightMs: 2700, selectMs: 3050, target: TARGET_PLANO },
+  vigencia: { openMs: 3250, highlightMs: 3600, selectMs: 3950, target: TARGET_VIGENCIA },
+  mensalidade: { startMs: 4150, endMs: 4750, target: "R$ 1.200,00" },
+  allFilledMs: 5000,
+  readingPauseMs: 6000,
+  fadeMs: 600,
+};
+
+const STEP2_TOTAL_CYCLE =
+  STEP2_TIMELINE.allFilledMs +
+  STEP2_TIMELINE.readingPauseMs +
+  STEP2_TIMELINE.fadeMs;
 
 function Step2FillingCreation() {
   const [elapsedMs, setElapsedMs] = useState(0);
@@ -455,30 +424,42 @@ function Step2FillingCreation() {
     return () => clearInterval(interval);
   }, []);
 
-  const allFilled = elapsedMs >= STEP2_ALL_FILLED_MS && elapsedMs < (STEP2_ALL_FILLED_MS + STEP2_READING_PAUSE);
-  const isFading = elapsedMs >= (STEP2_ALL_FILLED_MS + STEP2_READING_PAUSE);
+  const allFilled =
+    elapsedMs >= STEP2_TIMELINE.allFilledMs &&
+    elapsedMs < (STEP2_TIMELINE.allFilledMs + STEP2_TIMELINE.readingPauseMs);
+  const isFading = elapsedMs >= (STEP2_TIMELINE.allFilledMs + STEP2_TIMELINE.readingPauseMs);
 
-  // Calcula valores e estado de digitação para cada campo
-  const fieldValues = STEP2_FIELD_CONFIGS.reduce((acc, field) => {
-    let value = "";
-    let isTyping = false;
-    let isFinished = false;
-
-    if (elapsedMs < field.startMs) {
-      value = "";
-    } else if (elapsedMs >= field.startMs && elapsedMs < field.endMs) {
-      const progress = (elapsedMs - field.startMs) / (field.endMs - field.startMs);
-      const chars = Math.min(Math.floor(progress * field.target.length) + 1, field.target.length);
-      value = field.target.slice(0, chars);
-      isTyping = true;
-    } else {
-      value = field.target;
-      isFinished = true;
+  // Helper para campos de texto digitado (Cliente, Documento e Mensalidade)
+  const getTypedFieldState = (config: { startMs: number; endMs: number; target: string }) => {
+    if (elapsedMs < config.startMs) {
+      return { value: "", isTyping: false, isFinished: false };
     }
+    if (elapsedMs >= config.startMs && elapsedMs < config.endMs) {
+      const progress = (elapsedMs - config.startMs) / (config.endMs - config.startMs);
+      const chars = Math.min(Math.floor(progress * config.target.length) + 1, config.target.length);
+      return { value: config.target.slice(0, chars), isTyping: true, isFinished: false };
+    }
+    return { value: config.target, isTyping: false, isFinished: true };
+  };
 
-    acc[field.id] = { value, isTyping, isFinished };
-    return acc;
-  }, {} as Record<string, { value: string; isTyping: boolean; isFinished: boolean }>);
+  const clienteState = getTypedFieldState(STEP2_TIMELINE.cliente);
+  const documentoState = getTypedFieldState(STEP2_TIMELINE.documento);
+  const mensalidadeState = getTypedFieldState(STEP2_TIMELINE.mensalidade);
+
+  // Estados dos selects interativos (Plano e Vigência)
+  const planoIsOpen =
+    elapsedMs >= STEP2_TIMELINE.plano.openMs && elapsedMs < STEP2_TIMELINE.plano.selectMs;
+  const planoHighlighted =
+    elapsedMs >= STEP2_TIMELINE.plano.highlightMs ? TARGET_PLANO : "Plano ABC";
+  const planoIsFinished = elapsedMs >= STEP2_TIMELINE.plano.selectMs;
+  const planoValue = planoIsFinished ? TARGET_PLANO : "";
+
+  const vigenciaIsOpen =
+    elapsedMs >= STEP2_TIMELINE.vigencia.openMs && elapsedMs < STEP2_TIMELINE.vigencia.selectMs;
+  const vigenciaHighlighted =
+    elapsedMs >= STEP2_TIMELINE.vigencia.highlightMs ? TARGET_VIGENCIA : "6 meses";
+  const vigenciaIsFinished = elapsedMs >= STEP2_TIMELINE.vigencia.selectMs;
+  const vigenciaValue = vigenciaIsFinished ? TARGET_VIGENCIA : "";
 
   return (
     <div
@@ -487,7 +468,7 @@ function Step2FillingCreation() {
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
-      {/* Painel Esquerdo: Campos de Preenchimento simulando digitação campo a campo */}
+      {/* Painel Esquerdo: Formulário com campos de texto e selects configuráveis */}
       <div className="lg:col-span-5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:p-5 shadow-xs text-left space-y-3">
         {/* Campo 1: Cliente */}
         <div>
@@ -497,17 +478,17 @@ function Step2FillingCreation() {
           <div
             className={clsx(
               "px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-300 flex items-center min-h-[38px]",
-              fieldValues.cliente_nome.isFinished
+              clienteState.isFinished
                 ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
-                : fieldValues.cliente_nome.isTyping
+                : clienteState.isTyping
                   ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
                   : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
             )}
           >
-            {fieldValues.cliente_nome.value || (
+            {clienteState.value || (
               <span className="text-gray-400">Nome do cliente...</span>
             )}
-            {fieldValues.cliente_nome.isTyping && (
+            {clienteState.isTyping && (
               <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5" />
             )}
           </div>
@@ -521,71 +502,149 @@ function Step2FillingCreation() {
           <div
             className={clsx(
               "px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-300 flex items-center min-h-[38px]",
-              fieldValues.cliente_documento.isFinished
+              documentoState.isFinished
                 ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
-                : fieldValues.cliente_documento.isTyping
+                : documentoState.isTyping
                   ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
                   : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
             )}
           >
-            {fieldValues.cliente_documento.value || (
+            {documentoState.value || (
               <span className="text-gray-400">CNPJ ou CPF...</span>
             )}
-            {fieldValues.cliente_documento.isTyping && (
+            {documentoState.isTyping && (
               <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5" />
             )}
           </div>
         </div>
 
-        {/* Campo 3: Plano Selecionado */}
-        <div>
+        {/* Campo 3: Plano Selecionado (Select Configurável) */}
+        <div className="relative">
           <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
             Plano Selecionado
           </label>
           <div
             className={clsx(
-              "px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-300 flex items-center min-h-[38px]",
-              fieldValues.plano_nome.isFinished
+              "w-full px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-200 flex items-center justify-between min-h-[38px] select-none cursor-default",
+              planoIsFinished
                 ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
-                : fieldValues.plano_nome.isTyping
+                : planoIsOpen
                   ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
                   : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
             )}
           >
-            {fieldValues.plano_nome.value || (
-              <span className="text-gray-400">Selecione o plano...</span>
-            )}
-            {fieldValues.plano_nome.isTyping && (
-              <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5" />
-            )}
+            <span className={clsx(!planoValue && "text-gray-400")}>
+              {planoValue || "Selecione o plano..."}
+            </span>
+            <ChevronDown
+              className={clsx(
+                "h-4 w-4 transition-transform duration-200 shrink-0",
+                planoIsOpen
+                  ? "rotate-180 text-[var(--accent-primary)]"
+                  : planoIsFinished
+                    ? "text-[var(--accent-primary)]"
+                    : "text-gray-400"
+              )}
+            />
           </div>
+
+          {/* Menu Dropdown de opções de Plano */}
+          {planoIsOpen && (
+            <div
+              role="listbox"
+              aria-label="Opções de plano"
+              className="absolute left-0 right-0 top-full mt-1.5 z-40 bg-white border border-[var(--border-subtle)] rounded-lg shadow-xl py-1 text-xs sm:text-[13px] font-sans overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150"
+            >
+              {PLANO_OPTIONS.map((opt) => {
+                const isHovered = opt === planoHighlighted;
+                return (
+                  <div
+                    key={opt}
+                    role="option"
+                    aria-selected={isHovered}
+                    className={clsx(
+                      "px-3 py-2 flex items-center justify-between transition-colors duration-150 cursor-default",
+                      isHovered
+                        ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] font-semibold"
+                        : "text-gray-700 hover:bg-gray-50"
+                    )}
+                  >
+                    <span>{opt}</span>
+                    {isHovered && (
+                      <Check className="h-3.5 w-3.5 text-[var(--accent-primary)] shrink-0" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
-        {/* Grid 2 colunas: Vigência e Mensalidade */}
+        {/* Grid 2 colunas: Vigência (Select Configurável) e Mensalidade */}
         <div className="grid grid-cols-2 gap-3">
-          <div>
+          {/* Campo 4: Vigência (Select Configurável) */}
+          <div className="relative">
             <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
               Vigência
             </label>
             <div
               className={clsx(
-                "px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-300 flex items-center min-h-[38px]",
-                fieldValues.vigencia_meses.isFinished
+                "w-full px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-200 flex items-center justify-between min-h-[38px] select-none cursor-default",
+                vigenciaIsFinished
                   ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
-                  : fieldValues.vigencia_meses.isTyping
+                  : vigenciaIsOpen
                     ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
                     : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
               )}
             >
-              {fieldValues.vigencia_meses.value || (
-                <span className="text-gray-400">Prazo...</span>
-              )}
-              {fieldValues.vigencia_meses.isTyping && (
-                <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5" />
-              )}
+              <span className={clsx(!vigenciaValue && "text-gray-400 truncate")}>
+                {vigenciaValue || "Prazo..."}
+              </span>
+              <ChevronDown
+                className={clsx(
+                  "h-4 w-4 transition-transform duration-200 shrink-0",
+                  vigenciaIsOpen
+                    ? "rotate-180 text-[var(--accent-primary)]"
+                    : vigenciaIsFinished
+                      ? "text-[var(--accent-primary)]"
+                      : "text-gray-400"
+                )}
+              />
             </div>
+
+            {/* Menu Dropdown de opções de Vigência */}
+            {vigenciaIsOpen && (
+              <div
+                role="listbox"
+                aria-label="Opções de vigência"
+                className="absolute left-0 right-0 top-full mt-1.5 z-40 bg-white border border-[var(--border-subtle)] rounded-lg shadow-xl py-1 text-xs sm:text-[13px] font-sans overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150"
+              >
+                {VIGENCIA_OPTIONS.map((opt) => {
+                  const isHovered = opt === vigenciaHighlighted;
+                  return (
+                    <div
+                      key={opt}
+                      role="option"
+                      aria-selected={isHovered}
+                      className={clsx(
+                        "px-3 py-1.5 flex items-center justify-between transition-colors duration-150 cursor-default",
+                        isHovered
+                          ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] font-semibold"
+                          : "text-gray-700 hover:bg-gray-50"
+                      )}
+                    >
+                      <span>{opt}</span>
+                      {isHovered && (
+                        <Check className="h-3.5 w-3.5 text-[var(--accent-primary)] shrink-0" />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
+          {/* Campo 5: Mensalidade */}
           <div>
             <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
               Mensalidade
@@ -593,17 +652,17 @@ function Step2FillingCreation() {
             <div
               className={clsx(
                 "px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-300 flex items-center min-h-[38px]",
-                fieldValues.valor_mensal.isFinished
+                mensalidadeState.isFinished
                   ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
-                  : fieldValues.valor_mensal.isTyping
+                  : mensalidadeState.isTyping
                     ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
                     : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
               )}
             >
-              {fieldValues.valor_mensal.value || (
+              {mensalidadeState.value || (
                 <span className="text-gray-400">R$ 0,00</span>
               )}
-              {fieldValues.valor_mensal.isTyping && (
+              {mensalidadeState.isTyping && (
                 <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5" />
               )}
             </div>
@@ -655,30 +714,30 @@ function Step2FillingCreation() {
               <span
                 className={clsx(
                   "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  fieldValues.cliente_nome.isFinished
+                  clienteState.isFinished
                     ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
                     : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
                 )}
               >
-                {fieldValues.cliente_nome.isFinished
-                  ? fieldValues.cliente_nome.value
-                  : fieldValues.cliente_nome.isTyping
-                    ? fieldValues.cliente_nome.value
+                {clienteState.isFinished
+                  ? clienteState.value
+                  : clienteState.isTyping
+                    ? clienteState.value
                     : "{{cliente_nome}}"}
               </span>
               , inscrito sob o documento oficial{" "}
               <span
                 className={clsx(
                   "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  fieldValues.cliente_documento.isFinished
+                  documentoState.isFinished
                     ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
                     : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
                 )}
               >
-                {fieldValues.cliente_documento.isFinished
-                  ? fieldValues.cliente_documento.value
-                  : fieldValues.cliente_documento.isTyping
-                    ? fieldValues.cliente_documento.value
+                {documentoState.isFinished
+                  ? documentoState.value
+                  : documentoState.isTyping
+                    ? documentoState.value
                     : "{{cliente_documento}}"}
               </span>
               .
@@ -689,31 +748,23 @@ function Step2FillingCreation() {
               <span
                 className={clsx(
                   "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  fieldValues.plano_nome.isFinished
+                  planoIsFinished
                     ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
                     : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
                 )}
               >
-                {fieldValues.plano_nome.isFinished
-                  ? fieldValues.plano_nome.value
-                  : fieldValues.plano_nome.isTyping
-                    ? fieldValues.plano_nome.value
-                    : "{{plano_nome}}"}
+                {planoIsFinished ? planoValue : "{{plano_nome}}"}
               </span>
               , com a vigência estipulada de{" "}
               <span
                 className={clsx(
                   "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  fieldValues.vigencia_meses.isFinished
+                  vigenciaIsFinished
                     ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
                     : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
                 )}
               >
-                {fieldValues.vigencia_meses.isFinished
-                  ? fieldValues.vigencia_meses.value
-                  : fieldValues.vigencia_meses.isTyping
-                    ? fieldValues.vigencia_meses.value
-                    : "{{vigencia_meses}}"}
+                {vigenciaIsFinished ? vigenciaValue : "{{vigencia_meses}}"}
               </span>
               .
             </p>
@@ -723,15 +774,15 @@ function Step2FillingCreation() {
               <span
                 className={clsx(
                   "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  fieldValues.valor_mensal.isFinished
+                  mensalidadeState.isFinished
                     ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
                     : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
                 )}
               >
-                {fieldValues.valor_mensal.isFinished
-                  ? fieldValues.valor_mensal.value
-                  : fieldValues.valor_mensal.isTyping
-                    ? fieldValues.valor_mensal.value
+                {mensalidadeState.isFinished
+                  ? mensalidadeState.value
+                  : mensalidadeState.isTyping
+                    ? mensalidadeState.value
                     : "{{valor_mensal}}"}
               </span>
               , reajustado anualmente pelo índice oficial.

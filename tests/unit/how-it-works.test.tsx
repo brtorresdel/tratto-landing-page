@@ -212,7 +212,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     vi.useRealTimers();
   });
 
-  it("deve simular o preenchimento campo a campo na Etapa 2, atualizar marcadores e mudar o título para contrato_123456.docx", () => {
+  it("deve simular o preenchimento campo a campo na Etapa 2, com dropdowns interativos de Plano e Vigência, atualizando marcadores e o título", () => {
     vi.useFakeTimers();
     render(<HowItWorksSection />);
 
@@ -228,20 +228,45 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     // No início da Etapa 2, o contrato mostra o template original modelo_prestacao_servicos.docx
     expect(screen.getByText(/modelo_prestacao_servicos\.docx/i)).toBeInTheDocument();
 
-    // Avança o tempo para digitar os campos
+    // Avança o tempo para digitar os campos de texto Cliente e Documento
     act(() => {
-      vi.advanceTimersByTime(2500);
+      vi.advanceTimersByTime(2200);
     });
-    // O campo João da Silva foi digitado e refletido no contrato
+    // O campo João da Silva e o Documento foram digitados e refletidos no contrato
     expect(screen.getAllByText(/João da Silva/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/12\.345\.678\/0001-90/i).length).toBeGreaterThan(0);
 
-    // Avança até o término do preenchimento de todos os campos
+    // Avança até o momento em que o select de Plano abre com as opções
     act(() => {
-      vi.advanceTimersByTime(4000);
+      vi.advanceTimersByTime(400); // 2600ms
     });
+    expect(screen.getByText(/Plano ABC/i)).toBeInTheDocument();
+    expect(screen.getByText(/Plano JKL/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Plano XYZ/i).length).toBeGreaterThan(0);
+
+    // Avança até o Plano ser selecionado e o select de Vigência abrir com as opções
+    act(() => {
+      vi.advanceTimersByTime(900); // 3500ms
+    });
+    // O menu de Plano fechou e o select de Vigência abriu com as 4 opções
+    expect(screen.queryByText(/Plano ABC/i)).toBeNull();
+    expect(screen.getByText(/3 meses/i)).toBeInTheDocument();
+    expect(screen.getByText(/6 meses/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/12 meses/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/24 meses/i)).toBeInTheDocument();
+
+    // Avança até a Vigência ser selecionada e todos os campos terminarem
+    act(() => {
+      vi.advanceTimersByTime(2000); // 5500ms
+    });
+    // Menus fechados, opções selecionadas refletidas no contrato e nos campos
+    expect(screen.queryByText(/3 meses/i)).toBeNull();
+    expect(screen.getAllByText(/Plano XYZ/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/12 meses/i).length).toBeGreaterThan(0);
 
     // Quando todos os dados são alterados, o título do arquivo muda para contrato_123456.docx
     expect(screen.getByText(/contrato_123456\.docx/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Snapshot Oficial/i).length).toBeGreaterThan(0);
 
     vi.useRealTimers();
   });
