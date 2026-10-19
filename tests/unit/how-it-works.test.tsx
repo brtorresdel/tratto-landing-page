@@ -243,7 +243,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     vi.useRealTimers();
   });
 
-  it("deve simular o preenchimento na Etapa 2, fluxo do botão Salvar & Gerar, atualização para verde após salvar e sem badges de snapshot", () => {
+  it("deve simular o preenchimento na Etapa 2 via selects de Cliente, Plano, Vigência e Reajuste, preenchendo automaticamente o contrato e a Cláusula 3ª", () => {
     vi.useFakeTimers();
     render(<HowItWorksSection />);
 
@@ -252,76 +252,96 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
       fireEvent.click(nextBtn);
     });
 
-    // Valida remoção do título 'ELABORAÇÃO RÁPIDA' e do pill 'preenchendo...'
+    // Valida remoção de elementos legados
     expect(screen.queryByText(/ELABORAÇÃO RÁPIDA/i)).toBeNull();
     expect(screen.queryByText(/preenchendo\.\.\./i)).toBeNull();
-
-    // No início da Etapa 2, o contrato mostra o template original modelo_prestacao_servicos.docx
-    expect(screen.getByText(/modelo_prestacao_servicos\.docx/i)).toBeInTheDocument();
-
-    // Valida presença do botão Salvar & Gerar
-    expect(screen.getByRole("button", { name: /Salvar & Gerar/i })).toBeInTheDocument();
-
-    // Valida que 'Snapshot Oficial' e 'Zero erros de digitação' foram removidos
     expect(screen.queryByText(/Snapshot Oficial/i)).toBeNull();
     expect(screen.queryByText(/Zero erros de digitação/i)).toBeNull();
 
-    // Avança o tempo para digitar os campos de texto Cliente e Documento
+    // No início da Etapa 2, o contrato mostra o template original modelo_prestacao_servicos.docx
+    expect(screen.getByText(/modelo_prestacao_servicos\.docx/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Salvar & Gerar/i })).toBeInTheDocument();
+
+    // 1. Abre select de Cliente (t = 500ms)
     act(() => {
-      vi.advanceTimersByTime(2200);
+      vi.advanceTimersByTime(500);
     });
-    // O campo João da Silva e o Documento foram digitados e refletidos no contrato
+    expect(screen.getByText(/Maria Fernandes/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tech Solutions Ltda/i)).toBeInTheDocument();
+    expect(screen.getByText(/Carlos Eduardo Pereira/i)).toBeInTheDocument();
+
+    // 2. Seleciona Cliente João da Silva (t = 1350ms) -> preenche nome e documento no contrato
+    act(() => {
+      vi.advanceTimersByTime(850);
+    });
+    expect(screen.queryByText(/Maria Fernandes/i)).toBeNull();
     expect(screen.getAllByText(/João da Silva/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/12\.345\.678\/0001-90/i).length).toBeGreaterThan(0);
 
-    // Avança até o momento em que o select de Plano abre com as opções
+    // 3. Abre select de Plano (t = 1800ms)
     act(() => {
-      vi.advanceTimersByTime(400); // 2600ms
+      vi.advanceTimersByTime(450);
     });
     expect(screen.getByText(/Plano ABC/i)).toBeInTheDocument();
     expect(screen.getByText(/Plano JKL/i)).toBeInTheDocument();
     expect(screen.getAllByText(/Plano XYZ/i).length).toBeGreaterThan(0);
 
-    // Avança até o Plano ser selecionado e o select de Vigência abrir com as opções
+    // 4. Seleciona Plano XYZ (t = 2500ms) -> preenche plano e mensalidade automaticamente no contrato
     act(() => {
-      vi.advanceTimersByTime(900); // 3500ms
+      vi.advanceTimersByTime(700);
     });
-    // O menu de Plano fechou e o select de Vigência abriu com as 4 opções
     expect(screen.queryByText(/Plano ABC/i)).toBeNull();
+    expect(screen.getAllByText(/Plano XYZ/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/R\$ 1\.200,00/i).length).toBeGreaterThan(0);
+
+    // 5. Abre select de Vigência (t = 2900ms)
+    act(() => {
+      vi.advanceTimersByTime(400);
+    });
     expect(screen.getByText(/3 meses/i)).toBeInTheDocument();
     expect(screen.getByText(/6 meses/i)).toBeInTheDocument();
     expect(screen.getAllByText(/12 meses/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/24 meses/i)).toBeInTheDocument();
 
-    // Avança até a Vigência ser selecionada e todos os campos terminarem
+    // 6. Seleciona Vigência 12 meses (t = 3650ms)
     act(() => {
-      vi.advanceTimersByTime(2000); // 5500ms
+      vi.advanceTimersByTime(750);
     });
-    // Menus fechados, opções selecionadas refletidas no contrato e nos campos
     expect(screen.queryByText(/3 meses/i)).toBeNull();
-    expect(screen.getAllByText(/Plano XYZ/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/12 meses/i).length).toBeGreaterThan(0);
 
-    // Antes de salvar: o botão ainda é Salvar & Gerar e o título do documento ainda é modelo_prestacao_servicos.docx
+    // 7. Abre select de Atualização / Reajuste (t = 4000ms)
+    act(() => {
+      vi.advanceTimersByTime(350);
+    });
+    expect(screen.getAllByText(/Índice Oficial \(IPCA \/ IGP-M\)/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Percentual Fixo Anual \(5%\)/i)).toBeInTheDocument();
+    expect(screen.getByText(/Sem Reajuste Periódico/i)).toBeInTheDocument();
+
+    // 8. Seleciona Reajuste (t = 4800ms) -> adiciona e preenche Cláusula 3ª no contrato
+    act(() => {
+      vi.advanceTimersByTime(800);
+    });
+    expect(screen.queryByText(/Percentual Fixo Anual \(5%\)/i)).toBeNull();
+    expect(screen.getByText(/Cláusula 3ª:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Índice Oficial \(IPCA \/ Bacen\)/i)).toBeInTheDocument();
+
+    // Antes de salvar: o botão ainda é Salvar & Gerar e o título ainda é modelo_prestacao_servicos.docx
     expect(screen.getByRole("button", { name: /Salvar & Gerar/i })).toBeInTheDocument();
     expect(screen.getByText(/modelo_prestacao_servicos\.docx/i)).toBeInTheDocument();
     expect(screen.queryByText(/contrato_123456\.docx/i)).toBeNull();
 
-    // Avança 1.5s após término dos campos para acionar o clique e spinner de salvando (t = 7000ms)
+    // 9. Avança até spinner de salvamento (t = 6600ms)
     act(() => {
-      vi.advanceTimersByTime(1500); // 7000ms
+      vi.advanceTimersByTime(1800);
     });
     expect(screen.getByText(/Salvando\.\.\./i)).toBeInTheDocument();
 
-    // Avança 2s de salvando até o contrato ser oficializado (t = 9000ms)
+    // 10. Conclui salvamento (t = 8600ms) -> vira Salvo e oficializa contrato_123456.docx
     act(() => {
-      vi.advanceTimersByTime(2000); // 9000ms
+      vi.advanceTimersByTime(2000);
     });
-
-    // O texto no botão muda para Salvo com ícone
     expect(screen.getByText(/^Salvo$/i)).toBeInTheDocument();
-
-    // Quando o contrato é salvo, o título do arquivo muda para contrato_123456.docx
     expect(screen.getByText(/contrato_123456\.docx/i)).toBeInTheDocument();
 
     vi.useRealTimers();
@@ -342,13 +362,15 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     });
     expect(screen.getByRole("heading", { name: /Envio & Assinatura/i })).toBeInTheDocument();
 
-    // 1. Contrato reutiliza o formato oficial do final da Etapa 2
+    // 1. Contrato reutiliza o formato oficial do final da Etapa 2 (com as 3 cláusulas)
     expect(screen.getByText(/contrato_123456\.docx/i)).toBeInTheDocument();
     expect(screen.getByText(/João da Silva/i)).toBeInTheDocument();
     expect(screen.getByText(/12\.345\.678\/0001-90/i)).toBeInTheDocument();
     expect(screen.getByText(/Plano XYZ/i)).toBeInTheDocument();
     expect(screen.getByText(/12 meses/i)).toBeInTheDocument();
     expect(screen.getByText(/R\$ 1\.200,00/i)).toBeInTheDocument();
+    expect(screen.getByText(/Cláusula 3ª:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Índice Oficial \(IPCA \/ Bacen\)/i)).toBeInTheDocument();
 
     // 2. Signatário presente
     expect(screen.getByText(/Signatário/i)).toBeInTheDocument();
