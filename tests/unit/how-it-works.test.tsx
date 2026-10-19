@@ -211,4 +211,38 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
 
     vi.useRealTimers();
   });
+
+  it("deve simular o preenchimento campo a campo na Etapa 2, atualizar marcadores e mudar o título para contrato_123456.docx", () => {
+    vi.useFakeTimers();
+    render(<HowItWorksSection />);
+
+    const nextBtn = screen.getByRole("button", { name: /Próxima etapa/i });
+    act(() => {
+      fireEvent.click(nextBtn);
+    });
+
+    // Valida remoção do título 'ELABORAÇÃO RÁPIDA' e do pill 'preenchendo...'
+    expect(screen.queryByText(/ELABORAÇÃO RÁPIDA/i)).toBeNull();
+    expect(screen.queryByText(/preenchendo\.\.\./i)).toBeNull();
+
+    // No início da Etapa 2, o contrato mostra o template original modelo_prestacao_servicos.docx
+    expect(screen.getByText(/modelo_prestacao_servicos\.docx/i)).toBeInTheDocument();
+
+    // Avança o tempo para digitar os campos
+    act(() => {
+      vi.advanceTimersByTime(2500);
+    });
+    // O campo João da Silva foi digitado e refletido no contrato
+    expect(screen.getAllByText(/João da Silva/i).length).toBeGreaterThan(0);
+
+    // Avança até o término do preenchimento de todos os campos
+    act(() => {
+      vi.advanceTimersByTime(4000);
+    });
+
+    // Quando todos os dados são alterados, o título do arquivo muda para contrato_123456.docx
+    expect(screen.getByText(/contrato_123456\.docx/i)).toBeInTheDocument();
+
+    vi.useRealTimers();
+  });
 });

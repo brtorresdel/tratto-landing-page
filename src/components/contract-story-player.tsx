@@ -388,119 +388,368 @@ function Step1ModelMarkers() {
 }
 
 // =========================================================================
-// ETAPA 2: SIMULAÇÃO DA SELEÇÃO DO USUÁRIO E SUBSTITUIÇÃO DOS MARCADORES
+// ETAPA 2: PREENCHIMENTO CAMPO A CAMPO E CONVERSÃO EM CONTRATO OFICIAL
 // =========================================================================
+const STEP2_FIELD_CONFIGS = [
+  {
+    id: "cliente_nome" as const,
+    label: "Cliente",
+    placeholder: "Nome do cliente...",
+    target: "João da Silva",
+    defaultMarker: "{{cliente_nome}}",
+    startMs: 400,
+    endMs: 1050,
+  },
+  {
+    id: "cliente_documento" as const,
+    label: "Documento Oficial",
+    placeholder: "CNPJ ou CPF...",
+    target: "12.345.678/0001-90",
+    defaultMarker: "{{cliente_documento}}",
+    startMs: 1300,
+    endMs: 2000,
+  },
+  {
+    id: "plano_nome" as const,
+    label: "Plano Selecionado",
+    placeholder: "Selecione o plano...",
+    target: "Plano Trimestral",
+    defaultMarker: "{{plano_nome}}",
+    startMs: 2250,
+    endMs: 2900,
+  },
+  {
+    id: "vigencia_meses" as const,
+    label: "Vigência",
+    placeholder: "Prazo...",
+    target: "12 meses",
+    defaultMarker: "{{vigencia_meses}}",
+    startMs: 3150,
+    endMs: 3550,
+  },
+  {
+    id: "valor_mensal" as const,
+    label: "Mensalidade",
+    placeholder: "R$ 0,00",
+    target: "R$ 1.200,00",
+    defaultMarker: "{{valor_mensal}}",
+    startMs: 3750,
+    endMs: 4250,
+  },
+];
+
+const STEP2_ALL_FILLED_MS = 4500;
+const STEP2_READING_PAUSE = 6000;
+const STEP2_FADE_DURATION = 600;
+const STEP2_TOTAL_CYCLE = STEP2_ALL_FILLED_MS + STEP2_READING_PAUSE + STEP2_FADE_DURATION;
+
 function Step2FillingCreation() {
-  const [filled, setFilled] = useState(false);
+  const [elapsedMs, setElapsedMs] = useState(0);
 
   useEffect(() => {
-    const cycle = setInterval(() => {
-      setFilled((f) => !f);
-    }, 3500);
-    return () => clearInterval(cycle);
+    const TICK_INTERVAL = 30;
+    const interval = setInterval(() => {
+      setElapsedMs((prev) => (prev + TICK_INTERVAL) % STEP2_TOTAL_CYCLE);
+    }, TICK_INTERVAL);
+
+    return () => clearInterval(interval);
   }, []);
 
+  const allFilled = elapsedMs >= STEP2_ALL_FILLED_MS && elapsedMs < (STEP2_ALL_FILLED_MS + STEP2_READING_PAUSE);
+  const isFading = elapsedMs >= (STEP2_ALL_FILLED_MS + STEP2_READING_PAUSE);
+
+  // Calcula valores e estado de digitação para cada campo
+  const fieldValues = STEP2_FIELD_CONFIGS.reduce((acc, field) => {
+    let value = "";
+    let isTyping = false;
+    let isFinished = false;
+
+    if (elapsedMs < field.startMs) {
+      value = "";
+    } else if (elapsedMs >= field.startMs && elapsedMs < field.endMs) {
+      const progress = (elapsedMs - field.startMs) / (field.endMs - field.startMs);
+      const chars = Math.min(Math.floor(progress * field.target.length) + 1, field.target.length);
+      value = field.target.slice(0, chars);
+      isTyping = true;
+    } else {
+      value = field.target;
+      isFinished = true;
+    }
+
+    acc[field.id] = { value, isTyping, isFinished };
+    return acc;
+  }, {} as Record<string, { value: string; isTyping: boolean; isFinished: boolean }>);
+
   return (
-    <div className="w-full max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
-      {/* Painel do Usuário: Seleção de dados */}
-      <div className="md:col-span-5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-xs text-left space-y-3">
-        <div className="font-mono text-xs uppercase tracking-wider text-[var(--accent-primary)] font-bold flex items-center justify-between">
-          <span>Elaboração Rápida</span>
-          <span className="text-[10px] bg-[var(--accent-surface)] px-1.5 py-0.5 rounded">
-            {filled ? "Pronto ✓" : "Preenchendo..."}
-          </span>
-        </div>
-
+    <div
+      className={clsx(
+        "w-full max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-center transition-opacity duration-500",
+        isFading ? "opacity-0" : "opacity-100"
+      )}
+    >
+      {/* Painel Esquerdo: Campos de Preenchimento simulando digitação campo a campo */}
+      <div className="lg:col-span-5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:p-5 shadow-xs text-left space-y-3">
+        {/* Campo 1: Cliente */}
         <div>
-          <label className="text-[11px] font-medium text-[var(--text-muted)] block">Cliente</label>
-          <div className={clsx(
-            "mt-1 px-2.5 py-1.5 rounded border text-xs font-medium transition-all duration-300",
-            filled ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)]" : "bg-[var(--bg-canvas)] text-gray-400 border-gray-200"
-          )}>
-            {filled ? "João da Silva" : "Selecionar cliente..."}
+          <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
+            Cliente
+          </label>
+          <div
+            className={clsx(
+              "px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-300 flex items-center min-h-[38px]",
+              fieldValues.cliente_nome.isFinished
+                ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
+                : fieldValues.cliente_nome.isTyping
+                  ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
+                  : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
+            )}
+          >
+            {fieldValues.cliente_nome.value || (
+              <span className="text-gray-400">Nome do cliente...</span>
+            )}
+            {fieldValues.cliente_nome.isTyping && (
+              <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5" />
+            )}
           </div>
         </div>
 
+        {/* Campo 2: Documento */}
         <div>
-          <label className="text-[11px] font-medium text-[var(--text-muted)] block">Plano Selecionado</label>
-          <div className={clsx(
-            "mt-1 px-2.5 py-1.5 rounded border text-xs font-medium transition-all duration-300",
-            filled ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)]" : "bg-[var(--bg-canvas)] text-gray-400 border-gray-200"
-          )}>
-            {filled ? "Plano Trimestral" : "Selecione o plano..."}
+          <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
+            Documento Oficial
+          </label>
+          <div
+            className={clsx(
+              "px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-300 flex items-center min-h-[38px]",
+              fieldValues.cliente_documento.isFinished
+                ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
+                : fieldValues.cliente_documento.isTyping
+                  ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
+                  : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
+            )}
+          >
+            {fieldValues.cliente_documento.value || (
+              <span className="text-gray-400">CNPJ ou CPF...</span>
+            )}
+            {fieldValues.cliente_documento.isTyping && (
+              <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5" />
+            )}
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
+        {/* Campo 3: Plano Selecionado */}
+        <div>
+          <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
+            Plano Selecionado
+          </label>
+          <div
+            className={clsx(
+              "px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-300 flex items-center min-h-[38px]",
+              fieldValues.plano_nome.isFinished
+                ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
+                : fieldValues.plano_nome.isTyping
+                  ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
+                  : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
+            )}
+          >
+            {fieldValues.plano_nome.value || (
+              <span className="text-gray-400">Selecione o plano...</span>
+            )}
+            {fieldValues.plano_nome.isTyping && (
+              <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5" />
+            )}
+          </div>
+        </div>
+
+        {/* Grid 2 colunas: Vigência e Mensalidade */}
+        <div className="grid grid-cols-2 gap-3">
           <div>
-            <label className="text-[11px] font-medium text-[var(--text-muted)] block">Vigência</label>
-            <div className={clsx(
-              "mt-1 px-2.5 py-1.5 rounded border text-xs font-medium transition-all duration-300",
-              filled ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)]" : "bg-[var(--bg-canvas)] text-gray-400 border-gray-200"
-            )}>
-              {filled ? "12 meses" : "Prazo..."}
+            <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
+              Vigência
+            </label>
+            <div
+              className={clsx(
+                "px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-300 flex items-center min-h-[38px]",
+                fieldValues.vigencia_meses.isFinished
+                  ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
+                  : fieldValues.vigencia_meses.isTyping
+                    ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
+                    : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
+              )}
+            >
+              {fieldValues.vigencia_meses.value || (
+                <span className="text-gray-400">Prazo...</span>
+              )}
+              {fieldValues.vigencia_meses.isTyping && (
+                <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5" />
+              )}
             </div>
           </div>
+
           <div>
-            <label className="text-[11px] font-medium text-[var(--text-muted)] block">Mensalidade</label>
-            <div className={clsx(
-              "mt-1 px-2.5 py-1.5 rounded border text-xs font-medium transition-all duration-300",
-              filled ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)]" : "bg-[var(--bg-canvas)] text-gray-400 border-gray-200"
-            )}>
-              {filled ? "R$ 1.200,00" : "R$ 0,00"}
+            <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
+              Mensalidade
+            </label>
+            <div
+              className={clsx(
+                "px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-300 flex items-center min-h-[38px]",
+                fieldValues.valor_mensal.isFinished
+                  ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
+                  : fieldValues.valor_mensal.isTyping
+                    ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
+                    : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
+              )}
+            >
+              {fieldValues.valor_mensal.value || (
+                <span className="text-gray-400">R$ 0,00</span>
+              )}
+              {fieldValues.valor_mensal.isTyping && (
+                <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5" />
+              )}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Contrato Atualizado em Tempo Real */}
-      <div className="md:col-span-7 rounded-lg border border-[var(--border-subtle)] bg-white p-5 shadow-md text-left text-xs text-gray-700 space-y-2.5 transition-all">
-        <div className="text-[11px] font-bold text-gray-900 border-b pb-2 flex items-center justify-between">
-          <span>Minuta Oficial Gerada</span>
-          <span className="text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded text-[10px] font-mono">
-            {filled ? "Snapshot Ativo" : "Aguardando..."}
-          </span>
-        </div>
+      {/* Painel Direito: Contrato idêntico à Etapa 1 com marcadores atualizados em tempo real */}
+      <div className="lg:col-span-7 flex justify-center">
+        <div className="w-full max-w-[380px] sm:max-w-[420px] rounded-md border border-gray-200 bg-white p-5 sm:p-6 shadow-xl shadow-black/8 ring-1 ring-black/5 transition-all text-left min-h-[440px] flex flex-col justify-start relative">
+          {/* Cabeçalho do documento: modelo_prestacao_servicos.docx -> contrato_123456.docx */}
+          <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4 select-none">
+            <div className="flex items-center gap-2">
+              <div
+                className={clsx(
+                  "h-2.5 w-2.5 rounded-full transition-colors duration-500",
+                  allFilled ? "bg-emerald-600" : "bg-blue-600"
+                )}
+              />
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate max-w-[210px] transition-all duration-500">
+                {allFilled ? (
+                  <span className="text-emerald-800 font-bold">contrato_123456.docx</span>
+                ) : (
+                  <span className="text-gray-500">modelo_prestacao_servicos.docx</span>
+                )}
+              </span>
+            </div>
+            <span
+              className={clsx(
+                "text-[9px] font-mono uppercase font-bold tracking-wider px-2 py-0.5 rounded border transition-colors duration-500",
+                allFilled
+                  ? "bg-emerald-50 text-emerald-800 border-emerald-200"
+                  : "bg-blue-50 text-blue-700 border-blue-100"
+              )}
+            >
+              {allFilled ? "Snapshot Oficial" : "Word DOCX"}
+            </span>
+          </div>
 
-        <p className="leading-relaxed">
-          Pelo presente instrumento, a CONTRATADA celebra com{" "}
-          <span className={clsx(
-            "font-semibold transition-all duration-500 px-1 py-0.5 rounded",
-            filled ? "bg-emerald-100 text-emerald-900" : "bg-amber-100 text-amber-900 font-mono text-[11px]"
-          )}>
-            {filled ? "João da Silva" : "{{cliente_nome}}"}
-          </span>
-          , a prestação do{" "}
-          <span className={clsx(
-            "font-semibold transition-all duration-500 px-1 py-0.5 rounded",
-            filled ? "bg-emerald-100 text-emerald-900" : "bg-amber-100 text-amber-900 font-mono text-[11px]"
-          )}>
-            {filled ? "Plano Trimestral" : "{{plano_nome}}"}
-          </span>
-          .
-        </p>
+          {/* Título do contrato idêntico à Etapa 1 */}
+          <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-100 mb-3 min-h-[32px] flex items-center justify-center">
+            Contrato de Prestação de Serviços
+          </div>
 
-        <p className="leading-relaxed">
-          O contrato terá vigência de{" "}
-          <span className={clsx(
-            "font-semibold transition-all duration-500 px-1 py-0.5 rounded",
-            filled ? "bg-emerald-100 text-emerald-900" : "bg-amber-100 text-amber-900 font-mono text-[11px]"
-          )}>
-            {filled ? "12 meses" : "{{vigencia_meses}}"}
-          </span>{" "}
-          com mensalidade fixada em{" "}
-          <span className={clsx(
-            "font-semibold transition-all duration-500 px-1 py-0.5 rounded",
-            filled ? "bg-emerald-100 text-emerald-900" : "bg-amber-100 text-amber-900 font-mono text-[11px]"
-          )}>
-            {filled ? "R$ 1.200,00 / mês" : "{{valor_mensal}}"}
-          </span>
-          .
-        </p>
+          {/* Parágrafos com marcadores atualizados suavemente */}
+          <div className="space-y-3.5 text-xs sm:text-[13px] text-gray-700 leading-relaxed font-sans">
+            <p>
+              Pelo presente instrumento particular, de um lado a CONTRATADA, e de outro lado como CONTRATANTE{" "}
+              <span
+                className={clsx(
+                  "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
+                  fieldValues.cliente_nome.isFinished
+                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
+                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
+                )}
+              >
+                {fieldValues.cliente_nome.isFinished
+                  ? fieldValues.cliente_nome.value
+                  : fieldValues.cliente_nome.isTyping
+                    ? fieldValues.cliente_nome.value
+                    : "{{cliente_nome}}"}
+              </span>
+              , inscrito sob o documento oficial{" "}
+              <span
+                className={clsx(
+                  "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
+                  fieldValues.cliente_documento.isFinished
+                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
+                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
+                )}
+              >
+                {fieldValues.cliente_documento.isFinished
+                  ? fieldValues.cliente_documento.value
+                  : fieldValues.cliente_documento.isTyping
+                    ? fieldValues.cliente_documento.value
+                    : "{{cliente_documento}}"}
+              </span>
+              .
+            </p>
 
-        <div className="pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] font-mono text-gray-500">
-          <span>Status: {filled ? "Pronto para Envio" : "Em Elaboração"}</span>
-          <span className="text-emerald-600 font-bold">{filled ? "Zero erros de digitação ✓" : "Preenchendo..."}</span>
+            <p>
+              <strong>Cláusula 1ª:</strong> O objeto deste contrato é a prestação do serviço correspondente ao{" "}
+              <span
+                className={clsx(
+                  "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
+                  fieldValues.plano_nome.isFinished
+                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
+                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
+                )}
+              >
+                {fieldValues.plano_nome.isFinished
+                  ? fieldValues.plano_nome.value
+                  : fieldValues.plano_nome.isTyping
+                    ? fieldValues.plano_nome.value
+                    : "{{plano_nome}}"}
+              </span>
+              , com a vigência estipulada de{" "}
+              <span
+                className={clsx(
+                  "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
+                  fieldValues.vigencia_meses.isFinished
+                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
+                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
+                )}
+              >
+                {fieldValues.vigencia_meses.isFinished
+                  ? fieldValues.vigencia_meses.value
+                  : fieldValues.vigencia_meses.isTyping
+                    ? fieldValues.vigencia_meses.value
+                    : "{{vigencia_meses}}"}
+              </span>
+              .
+            </p>
+
+            <p>
+              <strong>Cláusula 2ª:</strong> Pela execução dos serviços, o CONTRATANTE pagará o valor mensal de{" "}
+              <span
+                className={clsx(
+                  "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
+                  fieldValues.valor_mensal.isFinished
+                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
+                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-mono font-semibold"
+                )}
+              >
+                {fieldValues.valor_mensal.isFinished
+                  ? fieldValues.valor_mensal.value
+                  : fieldValues.valor_mensal.isTyping
+                    ? fieldValues.valor_mensal.value
+                    : "{{valor_mensal}}"}
+              </span>
+              , reajustado anualmente pelo índice oficial.
+            </p>
+          </div>
+
+          {/* Rodapé do documento indicando oficialização do contrato após preenchimento */}
+          {allFilled && (
+            <div className="mt-auto pt-3 border-t border-emerald-100 flex items-center justify-between text-[11px] font-mono text-emerald-800 animate-metric-fade-in">
+              <span className="font-semibold flex items-center gap-1.5">
+                <CheckCircle className="h-3.5 w-3.5 text-emerald-600" />
+                Snapshot Oficial Gerado
+              </span>
+              <span className="text-[10px] bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded font-mono font-bold">
+                Zero erros de digitação ✓
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>
