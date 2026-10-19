@@ -556,14 +556,14 @@ const REAJUSTE_OPTIONS: ReajusteOption[] = [
 const TARGET_REAJUSTE = REAJUSTE_OPTIONS[0];
 
 const STEP2_TIMELINE = {
-  cliente: { openMs: 350, highlightMs: 800, selectMs: 1250, target: TARGET_CLIENTE },
-  plano: { openMs: 1550, highlightMs: 1950, selectMs: 2400, target: TARGET_PLANO },
-  vigencia: { openMs: 2700, highlightMs: 3100, selectMs: 3550, target: TARGET_VIGENCIA },
-  reajuste: { openMs: 3850, highlightMs: 4250, selectMs: 4700, target: TARGET_REAJUSTE },
-  fieldsDoneMs: 4700,
-  clickMs: 6200,  // 1.5s após término dos campos (4700 + 1500)
-  savingMs: 6400, // início do spinner de salvamento
-  savedMs: 8400,  // 2s após início do salvamento (6400 + 2000)
+  plano: { openMs: 300, highlightMs: 700, selectMs: 1150, target: TARGET_PLANO },
+  cliente: { openMs: 1450, highlightMs: 1850, selectMs: 2300, target: TARGET_CLIENTE },
+  vigencia: { openMs: 2600, highlightMs: 3000, selectMs: 3450, target: TARGET_VIGENCIA },
+  reajuste: { openMs: 3750, highlightMs: 4150, selectMs: 4600, target: TARGET_REAJUSTE },
+  fieldsDoneMs: 4600,
+  clickMs: 6100,  // 1.5s após término dos campos (4600 + 1500)
+  savingMs: 6300, // início do spinner de salvamento
+  savedMs: 8300,  // 2s após início do salvamento (6300 + 2000)
   readingPauseMs: 6000,
   fadeMs: 600,
 };
@@ -592,7 +592,14 @@ function Step2FillingCreation() {
     elapsedMs < (STEP2_TIMELINE.savedMs + STEP2_TIMELINE.readingPauseMs);
   const isFading = elapsedMs >= (STEP2_TIMELINE.savedMs + STEP2_TIMELINE.readingPauseMs);
 
-  // Estados dos selects interativos (Cliente, Plano, Vigência e Reajuste)
+  // Estados dos selects interativos (Plano, Cliente, Vigência e Reajuste)
+  const planoIsOpen =
+    elapsedMs >= STEP2_TIMELINE.plano.openMs && elapsedMs < STEP2_TIMELINE.plano.selectMs;
+  const planoHighlighted =
+    elapsedMs >= STEP2_TIMELINE.plano.highlightMs ? TARGET_PLANO.nome : "Plano ABC";
+  const planoIsFinished = elapsedMs >= STEP2_TIMELINE.plano.selectMs;
+  const planoValue = planoIsFinished ? TARGET_PLANO.nome : "";
+
   const clienteIsOpen =
     elapsedMs >= STEP2_TIMELINE.cliente.openMs && elapsedMs < STEP2_TIMELINE.cliente.selectMs;
   const clienteHighlighted =
@@ -601,13 +608,6 @@ function Step2FillingCreation() {
   const clienteValue = clienteIsFinished
     ? `${TARGET_CLIENTE.nome} | ${TARGET_CLIENTE.documento}`
     : "";
-
-  const planoIsOpen =
-    elapsedMs >= STEP2_TIMELINE.plano.openMs && elapsedMs < STEP2_TIMELINE.plano.selectMs;
-  const planoHighlighted =
-    elapsedMs >= STEP2_TIMELINE.plano.highlightMs ? TARGET_PLANO.nome : "Plano ABC";
-  const planoIsFinished = elapsedMs >= STEP2_TIMELINE.plano.selectMs;
-  const planoValue = planoIsFinished ? TARGET_PLANO.nome : "";
 
   const vigenciaIsOpen =
     elapsedMs >= STEP2_TIMELINE.vigencia.openMs && elapsedMs < STEP2_TIMELINE.vigencia.selectMs;
@@ -630,9 +630,74 @@ function Step2FillingCreation() {
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
-      {/* Painel Esquerdo: Formulário com selects interativos de Cliente, Plano, Vigência e Reajuste */}
+      {/* Painel Esquerdo: Formulário ordenado com Plano no topo, Cliente, Vigência + Mensalidade e Reajuste */}
       <div className="lg:col-span-5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:p-5 shadow-xs text-left space-y-2.5">
-        {/* Campo 1: Cliente (Select) */}
+        {/* Campo 1: Plano Selecionado (Primeira opção vinculada ao modelo) */}
+        <div className="relative">
+          <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
+            Plano Selecionado
+          </label>
+          <div
+            className={clsx(
+              "w-full px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-200 flex items-center justify-between min-h-[38px] select-none cursor-default",
+              planoIsFinished
+                ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
+                : planoIsOpen
+                  ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
+                  : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
+            )}
+          >
+            <span className={clsx(!planoValue && "text-gray-400", "truncate")}>
+              {planoValue || "Selecione o plano..."}
+            </span>
+            <ChevronDown
+              className={clsx(
+                "h-4 w-4 transition-transform duration-200 shrink-0 ml-1.5",
+                planoIsOpen
+                  ? "rotate-180 text-[var(--accent-primary)]"
+                  : planoIsFinished
+                    ? "text-[var(--accent-primary)]"
+                    : "text-gray-400"
+              )}
+            />
+          </div>
+
+          {/* Menu Dropdown de opções de Plano */}
+          {planoIsOpen && (
+            <div
+              role="listbox"
+              aria-label="Opções de plano"
+              className="absolute left-0 right-0 top-full mt-1.5 z-40 bg-white border border-[var(--border-subtle)] rounded-lg shadow-xl py-1 text-xs sm:text-[13px] font-sans overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150"
+            >
+              {PLANO_OPTIONS.map((opt) => {
+                const isHovered = opt.nome === planoHighlighted;
+                return (
+                  <div
+                    key={opt.nome}
+                    role="option"
+                    aria-selected={isHovered}
+                    className={clsx(
+                      "px-3 py-1.5 sm:py-2 flex items-center justify-between transition-colors duration-150 cursor-default",
+                      isHovered
+                        ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] font-semibold"
+                        : "text-gray-700 hover:bg-gray-50"
+                    )}
+                  >
+                    <div className="flex items-center gap-1.5 truncate">
+                      <span className="truncate">{opt.nome}</span>
+                      <span className="text-[11px] font-mono text-gray-500">({opt.mensalidade}/mês)</span>
+                    </div>
+                    {isHovered && (
+                      <Check className="h-3.5 w-3.5 text-[var(--accent-primary)] shrink-0 ml-1.5" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* Campo 2: Cliente (Select) */}
         <div className="relative">
           <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
             Cliente
@@ -698,74 +763,9 @@ function Step2FillingCreation() {
           )}
         </div>
 
-        {/* Campo 2: Plano Selecionado (Select) */}
-        <div className="relative">
-          <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
-            Plano Selecionado
-          </label>
-          <div
-            className={clsx(
-              "w-full px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-200 flex items-center justify-between min-h-[38px] select-none cursor-default",
-              planoIsFinished
-                ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
-                : planoIsOpen
-                  ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
-                  : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
-            )}
-          >
-            <span className={clsx(!planoValue && "text-gray-400", "truncate")}>
-              {planoValue || "Selecione o plano..."}
-            </span>
-            <ChevronDown
-              className={clsx(
-                "h-4 w-4 transition-transform duration-200 shrink-0 ml-1.5",
-                planoIsOpen
-                  ? "rotate-180 text-[var(--accent-primary)]"
-                  : planoIsFinished
-                    ? "text-[var(--accent-primary)]"
-                    : "text-gray-400"
-              )}
-            />
-          </div>
-
-          {/* Menu Dropdown de opções de Plano */}
-          {planoIsOpen && (
-            <div
-              role="listbox"
-              aria-label="Opções de plano"
-              className="absolute left-0 right-0 top-full mt-1.5 z-40 bg-white border border-[var(--border-subtle)] rounded-lg shadow-xl py-1 text-xs sm:text-[13px] font-sans overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150"
-            >
-              {PLANO_OPTIONS.map((opt) => {
-                const isHovered = opt.nome === planoHighlighted;
-                return (
-                  <div
-                    key={opt.nome}
-                    role="option"
-                    aria-selected={isHovered}
-                    className={clsx(
-                      "px-3 py-1.5 sm:py-2 flex items-center justify-between transition-colors duration-150 cursor-default",
-                      isHovered
-                        ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] font-semibold"
-                        : "text-gray-700 hover:bg-gray-50"
-                    )}
-                  >
-                    <div className="flex items-center gap-1.5 truncate">
-                      <span className="truncate">{opt.nome}</span>
-                      <span className="text-[11px] font-mono text-gray-500">({opt.mensalidade}/mês)</span>
-                    </div>
-                    {isHovered && (
-                      <Check className="h-3.5 w-3.5 text-[var(--accent-primary)] shrink-0 ml-1.5" />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Grid 2 colunas: Vigência e Atualização Monetária */}
+        {/* Grid 2 colunas: Vigência e Mensalidade (Personalizável preenchida com base no plano) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          {/* Campo 3: Vigência (Select) */}
+          {/* Campo 3A: Vigência (Select) */}
           <div className="relative">
             <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
               Vigência
@@ -827,67 +827,93 @@ function Step2FillingCreation() {
             )}
           </div>
 
-          {/* Campo 4: Atualização Monetária (Select) */}
-          <div className="relative">
-            <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
-              Atualização
-            </label>
+          {/* Campo 3B: Mensalidade (Preenchida com base no plano escolhido, personalizável) */}
+          <div>
+            <div className="flex items-center justify-between mb-1">
+              <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block">
+                Mensalidade
+              </label>
+              {planoIsFinished && (
+                <span className="text-[10px] font-mono text-[var(--text-muted)]">
+                  Personalizável
+                </span>
+              )}
+            </div>
             <div
               className={clsx(
-                "w-full px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-200 flex items-center justify-between min-h-[38px] select-none cursor-default",
-                reajusteIsFinished
+                "w-full px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-200 flex items-center justify-between min-h-[38px] select-none",
+                planoIsFinished
                   ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
-                  : reajusteIsOpen
-                    ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
-                    : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
+                  : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
               )}
             >
-              <span className={clsx(!reajusteValue && "text-gray-400 truncate")}>
-                {reajusteValue || "Reajuste..."}
+              <span className={clsx(!planoIsFinished && "text-gray-400")}>
+                {planoIsFinished ? TARGET_PLANO.mensalidade : "R$ 0,00"}
               </span>
-              <ChevronDown
-                className={clsx(
-                  "h-4 w-4 transition-transform duration-200 shrink-0 ml-1",
-                  reajusteIsOpen
-                    ? "rotate-180 text-[var(--accent-primary)]"
-                    : reajusteIsFinished
-                      ? "text-[var(--accent-primary)]"
-                      : "text-gray-400"
-                )}
-              />
             </div>
-
-            {/* Menu Dropdown de opções de Reajuste */}
-            {reajusteIsOpen && (
-              <div
-                role="listbox"
-                aria-label="Opções de reajuste"
-                className="absolute left-0 right-0 top-full mt-1.5 z-40 bg-white border border-[var(--border-subtle)] rounded-lg shadow-xl py-1 text-xs sm:text-[13px] font-sans overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150"
-              >
-                {REAJUSTE_OPTIONS.map((opt) => {
-                  const isHovered = opt.label === reajusteHighlighted;
-                  return (
-                    <div
-                      key={opt.label}
-                      role="option"
-                      aria-selected={isHovered}
-                      className={clsx(
-                        "px-3 py-1.5 flex items-center justify-between transition-colors duration-150 cursor-default",
-                        isHovered
-                          ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] font-semibold"
-                          : "text-gray-700 hover:bg-gray-50"
-                      )}
-                    >
-                      <span className="truncate">{opt.label}</span>
-                      {isHovered && (
-                        <Check className="h-3.5 w-3.5 text-[var(--accent-primary)] shrink-0 ml-1" />
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            )}
           </div>
+        </div>
+
+        {/* Campo 4: Atualização Monetária (Select em linha inteira dedicada) */}
+        <div className="relative">
+          <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
+            Atualização Monetária
+          </label>
+          <div
+            className={clsx(
+              "w-full px-3 py-2 rounded-lg border text-xs sm:text-sm font-sans transition-all duration-200 flex items-center justify-between min-h-[38px] select-none cursor-default",
+              reajusteIsFinished
+                ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)] font-semibold"
+                : reajusteIsOpen
+                  ? "bg-white text-[var(--text-main)] border-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/20 shadow-xs"
+                  : "bg-[var(--bg-canvas)] text-[var(--text-muted)] border-[var(--border-subtle)]"
+            )}
+          >
+            <span className={clsx(!reajusteValue && "text-gray-400 truncate")}>
+              {reajusteValue || "Selecione o reajuste..."}
+            </span>
+            <ChevronDown
+              className={clsx(
+                "h-4 w-4 transition-transform duration-200 shrink-0 ml-1.5",
+                reajusteIsOpen
+                  ? "rotate-180 text-[var(--accent-primary)]"
+                  : reajusteIsFinished
+                    ? "text-[var(--accent-primary)]"
+                    : "text-gray-400"
+              )}
+            />
+          </div>
+
+          {/* Menu Dropdown de opções de Reajuste */}
+          {reajusteIsOpen && (
+            <div
+              role="listbox"
+              aria-label="Opções de reajuste"
+              className="absolute left-0 right-0 top-full mt-1.5 z-40 bg-white border border-[var(--border-subtle)] rounded-lg shadow-xl py-1 text-xs sm:text-[13px] font-sans overflow-hidden animate-in fade-in slide-in-from-top-1 duration-150"
+            >
+              {REAJUSTE_OPTIONS.map((opt) => {
+                const isHovered = opt.label === reajusteHighlighted;
+                return (
+                  <div
+                    key={opt.label}
+                    role="option"
+                    aria-selected={isHovered}
+                    className={clsx(
+                      "px-3 py-1.5 flex items-center justify-between transition-colors duration-150 cursor-default",
+                      isHovered
+                        ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] font-semibold"
+                        : "text-gray-700 hover:bg-gray-50"
+                    )}
+                  >
+                    <span className="truncate">{opt.label}</span>
+                    {isHovered && (
+                      <Check className="h-3.5 w-3.5 text-[var(--accent-primary)] shrink-0 ml-1" />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Botão Salvar & Gerar com feedback animado de clique, salvando e salvo */}
@@ -921,124 +947,130 @@ function Step2FillingCreation() {
         </div>
       </div>
 
-      {/* Painel Direito: Contrato com marcadores atualizados e nova Cláusula 3ª */}
+      {/* Painel Direito: O modelo vinculado aparece assim que o plano é escolhido */}
       <div className="lg:col-span-7 flex justify-center">
-        <div className="w-full max-w-[360px] sm:max-w-[400px] rounded-md border border-gray-200 bg-white p-4 sm:p-5 shadow-xl shadow-black/8 ring-1 ring-black/5 transition-all text-left min-h-[365px] sm:min-h-[375px] flex flex-col justify-start relative">
-          {/* Cabeçalho do documento: modelo_prestacao_servicos.docx -> contrato_123456.docx */}
-          <div className="flex items-center justify-between pb-2.5 border-b border-gray-100 mb-2.5 select-none">
-            <div className="flex items-center gap-2">
-              <div
-                className={clsx(
-                  "h-2.5 w-2.5 rounded-full transition-colors duration-500",
-                  isSaved ? "bg-emerald-600" : "bg-blue-600"
-                )}
-              />
-              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate max-w-[210px] transition-all duration-500">
+        {!planoIsFinished ? (
+          <div className="w-full max-w-[360px] sm:max-w-[400px] rounded-md border-2 border-dashed border-[var(--border-subtle)] bg-[var(--bg-canvas)]/40 p-6 text-center min-h-[365px] sm:min-h-[375px] flex flex-col items-center justify-center gap-3 select-none transition-all">
+            <div className="h-12 w-12 rounded-xl bg-[var(--accent-surface)] border border-[var(--border-strong)] flex items-center justify-center text-[var(--accent-primary)] animate-pulse">
+              <FileText className="h-6 w-6 stroke-[1.8]" />
+            </div>
+            <div className="space-y-1">
+              <p className="font-semibold text-xs sm:text-sm text-[var(--text-main)]">
+                Modelo de Contrato Vinculado
+              </p>
+              <p className="text-[11px] sm:text-xs text-[var(--text-muted)] max-w-[240px] mx-auto leading-relaxed">
+                Selecione o plano desejado para carregar automaticamente o modelo correspondente.
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="w-full max-w-[360px] sm:max-w-[400px] rounded-md border border-gray-200 bg-white p-4 sm:p-5 shadow-xl shadow-black/8 ring-1 ring-black/5 transition-all text-left min-h-[365px] sm:min-h-[375px] flex flex-col justify-start relative animate-metric-fade-in">
+            {/* Cabeçalho do documento: modelo_prestacao_servicos -> contrato_123456 (sem bolinha e sem .docx) */}
+            <div className="flex items-center justify-between pb-2.5 border-b border-gray-100 mb-2.5 select-none">
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate max-w-[260px] transition-all duration-500">
                 {isSaved ? (
-                  <span className="text-emerald-800 font-bold">contrato_123456.docx</span>
+                  <span className="text-emerald-800 font-bold">contrato_123456</span>
                 ) : (
-                  <span className="text-gray-500">modelo_prestacao_servicos.docx</span>
+                  <span className="text-gray-500">modelo_prestacao_servicos</span>
                 )}
               </span>
             </div>
+
+            {/* Título do contrato */}
+            <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-100 mb-2 min-h-[26px] flex items-center justify-center">
+              Contrato de Prestação de Serviços
+            </div>
+
+            {/* Parágrafos e Cláusulas com marcadores e Cláusula 3ª de reajuste */}
+            <div className="space-y-2.5 text-xs sm:text-[13px] text-gray-700 leading-relaxed font-sans">
+              <p>
+                Pelo presente instrumento particular, de um lado a CONTRATADA, e de outro lado como CONTRATANTE{" "}
+                <span
+                  className={clsx(
+                    "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
+                    isSaved
+                      ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
+                      : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
+                    !clienteIsFinished && "font-mono"
+                  )}
+                >
+                  {clienteIsFinished ? TARGET_CLIENTE.nome : "{{cliente_nome}}"}
+                </span>
+                , inscrito sob o documento oficial{" "}
+                <span
+                  className={clsx(
+                    "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
+                    isSaved
+                      ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
+                      : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
+                    !clienteIsFinished && "font-mono"
+                  )}
+                >
+                  {clienteIsFinished ? TARGET_CLIENTE.documento : "{{cliente_documento}}"}
+                </span>
+                .
+              </p>
+
+              <p>
+                <strong>Cláusula 1ª:</strong> O objeto deste contrato é a prestação do serviço correspondente ao{" "}
+                <span
+                  className={clsx(
+                    "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
+                    isSaved
+                      ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
+                      : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold"
+                  )}
+                >
+                  {TARGET_PLANO.nome}
+                </span>
+                , com a vigência estipulada de{" "}
+                <span
+                  className={clsx(
+                    "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
+                    isSaved
+                      ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
+                      : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
+                    !vigenciaIsFinished && "font-mono"
+                  )}
+                >
+                  {vigenciaIsFinished ? TARGET_VIGENCIA : "{{vigencia_meses}}"}
+                </span>
+                .
+              </p>
+
+              <p>
+                <strong>Cláusula 2ª:</strong> Pela execução dos serviços, o CONTRATANTE pagará o valor mensal de{" "}
+                <span
+                  className={clsx(
+                    "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
+                    isSaved
+                      ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
+                      : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold"
+                  )}
+                >
+                  {TARGET_PLANO.mensalidade}
+                </span>
+                .
+              </p>
+
+              <p>
+                <strong>Cláusula 3ª:</strong> O valor mensal será reajustado anualmente por{" "}
+                <span
+                  className={clsx(
+                    "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
+                    isSaved
+                      ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
+                      : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
+                    !reajusteIsFinished && "font-mono"
+                  )}
+                >
+                  {reajusteIsFinished ? TARGET_REAJUSTE.contratoText : "{{tipo_reajuste}}"}
+                </span>
+                .
+              </p>
+            </div>
           </div>
-
-          {/* Título do contrato */}
-          <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-100 mb-2 min-h-[26px] flex items-center justify-center">
-            Contrato de Prestação de Serviços
-          </div>
-
-          {/* Parágrafos e Cláusulas com marcadores e Cláusula 3ª de reajuste */}
-          <div className="space-y-2.5 text-xs sm:text-[13px] text-gray-700 leading-relaxed font-sans">
-            <p>
-              Pelo presente instrumento particular, de um lado a CONTRATADA, e de outro lado como CONTRATANTE{" "}
-              <span
-                className={clsx(
-                  "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  isSaved
-                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
-                  !clienteIsFinished && "font-mono"
-                )}
-              >
-                {clienteIsFinished ? TARGET_CLIENTE.nome : "{{cliente_nome}}"}
-              </span>
-              , inscrito sob o documento oficial{" "}
-              <span
-                className={clsx(
-                  "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  isSaved
-                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
-                  !clienteIsFinished && "font-mono"
-                )}
-              >
-                {clienteIsFinished ? TARGET_CLIENTE.documento : "{{cliente_documento}}"}
-              </span>
-              .
-            </p>
-
-            <p>
-              <strong>Cláusula 1ª:</strong> O objeto deste contrato é a prestação do serviço correspondente ao{" "}
-              <span
-                className={clsx(
-                  "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  isSaved
-                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
-                  !planoIsFinished && "font-mono"
-                )}
-              >
-                {planoIsFinished ? TARGET_PLANO.nome : "{{plano_nome}}"}
-              </span>
-              , com a vigência estipulada de{" "}
-              <span
-                className={clsx(
-                  "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  isSaved
-                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
-                  !vigenciaIsFinished && "font-mono"
-                )}
-              >
-                {vigenciaIsFinished ? TARGET_VIGENCIA : "{{vigencia_meses}}"}
-              </span>
-              .
-            </p>
-
-            <p>
-              <strong>Cláusula 2ª:</strong> Pela execução dos serviços, o CONTRATANTE pagará o valor mensal de{" "}
-              <span
-                className={clsx(
-                  "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  isSaved
-                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
-                  !planoIsFinished && "font-mono"
-                )}
-              >
-                {planoIsFinished ? TARGET_PLANO.mensalidade : "{{valor_mensal}}"}
-              </span>
-              .
-            </p>
-
-            <p>
-              <strong>Cláusula 3ª:</strong> O valor mensal será reajustado anualmente por{" "}
-              <span
-                className={clsx(
-                  "transition-all duration-300 px-1.5 py-0.5 rounded inline-block align-baseline",
-                  isSaved
-                    ? "bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold shadow-2xs"
-                    : "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] font-semibold",
-                  !reajusteIsFinished && "font-mono"
-                )}
-              >
-                {reajusteIsFinished ? TARGET_REAJUSTE.contratoText : "{{tipo_reajuste}}"}
-              </span>
-              .
-            </p>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
@@ -1091,14 +1123,11 @@ function Step3SendingSigning() {
           isSigned && "translate-x-[-35px] sm:translate-x-[-55px] opacity-100 scale-100 border-emerald-400 ring-2 ring-emerald-400/20"
         )}
       >
-        {/* Cabeçalho do documento idêntico ao final da Etapa 2 */}
+        {/* Cabeçalho do documento idêntico ao final da Etapa 2 (sem bolinha e sem .docx) */}
         <div className="flex items-center justify-between pb-2.5 border-b border-gray-100 mb-2.5 select-none">
-          <div className="flex items-center gap-2">
-            <div className="h-2.5 w-2.5 rounded-full bg-emerald-600" />
-            <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate max-w-[210px] text-emerald-800 font-bold">
-              contrato_123456.docx
-            </span>
-          </div>
+          <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold truncate max-w-[260px] text-emerald-800 font-bold">
+            contrato_123456
+          </span>
         </div>
 
         {/* Título do contrato idêntico à Etapa 2 */}
