@@ -863,9 +863,6 @@ function Step3SendingSigning() {
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
-      {/* Linha pontilhada / trajetória sutil de envio conectando o contrato ao signatário */}
-      <div className="absolute right-10 sm:right-16 top-1/2 -translate-y-1/2 w-28 sm:w-44 border-b-2 border-dashed border-[var(--border-subtle)] z-0 pointer-events-none" />
-
       {/* Contrato idêntico ao final da Etapa 2 */}
       <div
         className={clsx(
