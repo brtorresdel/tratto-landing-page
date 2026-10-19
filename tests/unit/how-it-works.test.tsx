@@ -43,12 +43,17 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     const storyIndicators = screen.getAllByRole("button", { name: /^Etapa \d:/i });
     expect(storyIndicators).toHaveLength(4);
 
-    // Valida botões de navegação anterior e próximo
-    expect(screen.getByRole("button", { name: /Etapa anterior/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /Próxima etapa/i })).toBeInTheDocument();
+    // Valida botões de navegação anterior e próximo centralizados na parte de baixo
+    const prevBtn = screen.getByRole("button", { name: /Etapa anterior/i });
+    const nextBtn = screen.getByRole("button", { name: /Próxima etapa/i });
+    expect(prevBtn).toBeInTheDocument();
+    expect(nextBtn).toBeInTheDocument();
+    expect(prevBtn.parentElement).toHaveClass("justify-center");
+
+    // Valida remoção do texto 'Etapa * - * de 4' acima do título
+    expect(screen.queryByText(/\d de 4/i)).toBeNull();
 
     // Etapa 1 ativa inicialmente: Modelo & Marcadores
-    expect(screen.getByText(/1 de 4/i)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
 
     // Avança animação para preencher o primeiro marcador
@@ -72,7 +77,6 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     act(() => {
       fireEvent.click(nextBtn);
     });
-    expect(screen.getByText(/2 de 4/i)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Preenchimento & Criação/i })).toBeInTheDocument();
 
     act(() => {
@@ -84,7 +88,6 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     act(() => {
       fireEvent.click(nextBtn);
     });
-    expect(screen.getByText(/3 de 4/i)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Envio & Assinatura/i })).toBeInTheDocument();
 
     act(() => {
@@ -96,7 +99,6 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     act(() => {
       fireEvent.click(nextBtn);
     });
-    expect(screen.getByText(/4 de 4/i)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Vigência & Reajuste/i })).toBeInTheDocument();
 
     act(() => {
@@ -108,7 +110,6 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     act(() => {
       fireEvent.click(storyIndicators[0]);
     });
-    expect(screen.getByText(/1 de 4/i)).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: /Modelo & Marcadores/i })).toBeInTheDocument();
 
     act(() => {
@@ -120,7 +121,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     act(() => {
       fireEvent.click(prevBtn);
     });
-    expect(screen.getByText(/4 de 4/i)).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Vigência & Reajuste/i })).toBeInTheDocument();
 
     act(() => {
       vi.advanceTimersByTime(2000);

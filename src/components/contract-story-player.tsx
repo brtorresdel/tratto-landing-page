@@ -65,7 +65,7 @@ export function ContractStoryPlayer() {
   };
 
   return (
-    <div className="mt-12 rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-5 sm:p-8 shadow-sm text-left">
+    <div className="mt-12 rounded-2xl bg-[var(--bg-card)] p-5 sm:p-8 shadow-sm text-left">
       {/* 1. Barras segmentadas estilo Stories no topo */}
       <div
         className="grid grid-cols-4 gap-2"
@@ -108,41 +108,14 @@ export function ContractStoryPlayer() {
         })}
       </div>
 
-      {/* 2. Cabeçalho da Etapa: Título, Descrição e Navegação */}
-      <div className="mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-[var(--border-subtle)]">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-xs uppercase tracking-wider text-[var(--accent-primary)] font-bold">
-              Etapa {activeStep.number} · {activeStepIndex + 1} de {STORY_STEPS.length}
-            </span>
-          </div>
-          <h3 className="mt-1 font-serif text-2xl sm:text-3xl italic font-semibold text-[var(--text-main)]">
-            {activeStep.title}
-          </h3>
-          <p className="mt-2 text-sm sm:text-base text-[var(--text-muted)] max-w-2xl leading-relaxed">
-            {activeStep.description}
-          </p>
-        </div>
-
-        {/* Botões de navegação anterior e próximo */}
-        <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
-          <button
-            type="button"
-            onClick={handlePrevStep}
-            aria-label="Etapa anterior"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--bg-canvas)] hover:border-[var(--accent-primary)] text-[var(--text-main)] transition-colors cursor-pointer text-base"
-          >
-            ‹
-          </button>
-          <button
-            type="button"
-            onClick={handleNextStep}
-            aria-label="Próxima etapa"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--bg-canvas)] hover:border-[var(--accent-primary)] text-[var(--text-main)] transition-colors cursor-pointer text-base"
-          >
-            ›
-          </button>
-        </div>
+      {/* 2. Cabeçalho da Etapa: Título e Descrição */}
+      <div className="mt-6 pb-5 border-b border-[var(--border-subtle)]">
+        <h3 className="font-serif text-2xl sm:text-3xl italic font-semibold text-[var(--text-main)]">
+          {activeStep.title}
+        </h3>
+        <p className="mt-2 text-sm sm:text-base text-[var(--text-muted)] max-w-2xl leading-relaxed">
+          {activeStep.description}
+        </p>
       </div>
 
       {/* 3. Palco Visual Interativo com Animações Específicas por Etapa */}
@@ -151,6 +124,26 @@ export function ContractStoryPlayer() {
         {activeStepIndex === 1 && <Step2FillingCreation />}
         {activeStepIndex === 2 && <Step3SendingSigning />}
         {activeStepIndex === 3 && <Step4TimelineAdjustment />}
+      </div>
+
+      {/* 4. Controles de navegação centralizados na parte de baixo */}
+      <div className="mt-8 flex items-center justify-center gap-8 sm:gap-12">
+        <button
+          type="button"
+          onClick={handlePrevStep}
+          aria-label="Etapa anterior"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--bg-canvas)] hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] text-[var(--text-main)] transition-colors cursor-pointer text-xl shadow-xs"
+        >
+          ‹
+        </button>
+        <button
+          type="button"
+          onClick={handleNextStep}
+          aria-label="Próxima etapa"
+          className="flex h-11 w-11 items-center justify-center rounded-full border border-[var(--border-subtle)] bg-[var(--bg-canvas)] hover:border-[var(--accent-primary)] hover:text-[var(--accent-primary)] text-[var(--text-main)] transition-colors cursor-pointer text-xl shadow-xs"
+        >
+          ›
+        </button>
       </div>
     </div>
   );
