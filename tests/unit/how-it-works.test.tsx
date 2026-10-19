@@ -118,11 +118,11 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     const prevBtn = screen.getByRole("button", { name: /Etapa anterior/i });
     const storyIndicators = screen.getAllByRole("button", { name: /^Etapa \d:/i });
 
-    // Avança para Etapa 2: Preenchimento & Criação Oficial
+    // Avança para Etapa 2: Gerando os contratos
     act(() => {
       fireEvent.click(nextBtn);
     });
-    expect(screen.getByRole("heading", { name: /Preenchimento & Criação/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Gerando os contratos/i })).toBeInTheDocument();
 
     act(() => {
       vi.advanceTimersByTime(3500);
@@ -189,11 +189,11 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     });
     expect(screen.getByRole("heading", { name: /Modelos? & Marcadores/i })).toBeInTheDocument();
 
-    // Ao completar os 25 segundos (mais 5s), transita para a Etapa 2: Preenchimento & Criação
+    // Ao completar os 25 segundos (mais 5s), transita para a Etapa 2: Gerando os contratos
     act(() => {
       vi.advanceTimersByTime(5000);
     });
-    expect(screen.getByRole("heading", { name: /Preenchimento & Criação/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Gerando os contratos/i })).toBeInTheDocument();
 
     vi.useRealTimers();
   });
@@ -224,7 +224,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
 
     // Deve permanecer na Etapa 1 sem avançar automaticamente
     expect(screen.getByRole("heading", { name: /Modelos? & Marcadores/i })).toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: /Preenchimento & Criação/i })).toBeNull();
+    expect(screen.queryByRole("heading", { name: /Gerando os contratos/i })).toBeNull();
 
     // Clica para retomar a reprodução automática
     act(() => {
@@ -238,7 +238,7 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     });
 
     // Agora deve ter avançado para a Etapa 2
-    expect(screen.getByRole("heading", { name: /Preenchimento & Criação/i })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: /Gerando os contratos/i })).toBeInTheDocument();
 
     vi.useRealTimers();
   });

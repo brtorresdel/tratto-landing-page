@@ -15,9 +15,9 @@ export const STORY_STEPS = [
   {
     id: "preenchimento-criacao",
     number: "02",
-    title: "Preenchimento & Criação",
+    title: "Gerando os contratos",
     description:
-      "Simulação de elaboração: você seleciona o cliente, o plano e a vigência, e os marcadores mudam de forma leve e instantânea para os dados oficiais.",
+      "Uma vez que o modelo esteja salvo, você pode selecionar as informações relacionadas àquele contrato, como nome do contratante, plano escolhido, vigência, cláusulas adicionais, e a Tratto se encarrega de gerar e guardar os contratos, usando como base os modelos que você mesmo definiu; sem erros de digitação, sem perder seu modelo acidentamente, simples assim!",
   },
   {
     id: "envio-assinatura",
@@ -115,7 +115,7 @@ export function ContractStoryPlayer() {
       </div>
 
       {/* 2. Cabeçalho da Etapa: Título e Descrição com altura fixa padronizada para eliminar qualquer deslocamento de layout */}
-      <div className="mt-6 pb-4 sm:pb-5 border-b border-[var(--border-subtle)] h-[175px] sm:h-[140px] lg:h-[120px] flex flex-col justify-start overflow-hidden">
+      <div className="mt-6 pb-4 sm:pb-5 border-b border-[var(--border-subtle)] h-[250px] sm:h-[185px] lg:h-[140px] flex flex-col justify-start overflow-hidden">
         <h3 className="font-serif text-2xl sm:text-3xl italic font-semibold text-[var(--text-main)] shrink-0">
           {activeStep.title}
         </h3>
