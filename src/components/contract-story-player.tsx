@@ -261,19 +261,21 @@ function Step1ModelMarkers() {
       }
 
       const isMarker = seg.isMarker;
+      const isCompleteMarker = isMarker && textSlice.length === seg.text.length;
 
       return (
         <React.Fragment key={`seg-${pIdx}-${sIdx}`}>
-          {isMarker ? (
+          {isCompleteMarker ? (
             <span
               className={clsx(
-                "font-mono px-1.5 py-0.5 rounded font-semibold transition-all duration-200 inline-block align-baseline",
-                "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)]",
-                textSlice.length === seg.text.length && "shadow-xs"
+                "font-mono px-1.5 py-0.5 rounded font-semibold transition-all duration-300 inline-block align-baseline",
+                "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)] shadow-xs animate-metric-fade-in"
               )}
             >
               {textSlice}
             </span>
+          ) : isMarker ? (
+            <span className="font-mono text-gray-900">{textSlice}</span>
           ) : (
             <span>{textSlice}</span>
           )}
