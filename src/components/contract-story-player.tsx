@@ -10,7 +10,7 @@ export const STORY_STEPS = [
     number: "01",
     title: "Modelos & Marcadores",
     description:
-      "Você manda os seus modelos de contrato para a Tratto, utilizando seus layouts e logos, e utilizando os marcadores disponíveis na plataforma. Você pode redigir os contratos diretamente no nosso editor, ou pode mandar os seus modelos prontos, no formado .doc!",
+      "Você manda os seus modelos de contrato para a Tratto, utilizando seus layouts e logos, e utilizando os marcadores disponíveis na plataforma. Você pode redigir os contratos diretamente no nosso editor, ou pode mandar os seus modelos prontos!",
   },
   {
     id: "preenchimento-criacao",
@@ -356,43 +356,48 @@ function Step1ModelMarkers() {
     >
       {/* Lado Esquerdo (lg:col-span-7): Computador redigindo o contrato dentro do editor Tratto */}
       <div className="lg:col-span-7 flex flex-col items-center justify-center">
-        {/* Mockup do Computador (Tela / Monitor do Laptop) */}
-        <div className="w-full max-w-[370px] sm:max-w-[430px] rounded-t-xl bg-slate-900 p-2 sm:p-2.5 shadow-2xl border border-slate-700/80 text-left">
+        {/* Mockup do Computador (Tela / Monitor do Laptop com a cor do tema) */}
+        <div className="w-full max-w-[370px] sm:max-w-[430px] rounded-t-xl bg-[var(--accent-primary)] p-2 sm:p-2.5 shadow-xl border-2 border-[var(--border-strong)] text-left">
           {/* Câmera central */}
-          <div className="h-1 w-1 rounded-full bg-slate-700 mx-auto mb-1.5 ring-1 ring-slate-800" />
+          <div className="h-1 w-1 rounded-full bg-white/40 mx-auto mb-1.5 ring-1 ring-black/10" />
 
-          {/* Barra superior da janela do editor */}
-          <div className="flex items-center justify-between px-2.5 py-1.5 bg-slate-800/90 rounded-t border-b border-slate-700/60 text-[10px] font-mono text-slate-300 select-none">
-            <div className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-red-400/80" />
-              <span className="h-2 w-2 rounded-full bg-amber-400/80" />
-              <span className="h-2 w-2 rounded-full bg-emerald-400/80" />
+          {/* Tela interna com proporção compacta e rubrica no canto superior esquerdo */}
+          <div className="bg-[#FAF9F6] p-3 sm:p-3.5 rounded-b text-left min-h-[220px] sm:min-h-[235px] max-h-[250px] font-sans text-xs sm:text-[13px] text-gray-800 leading-relaxed overflow-hidden">
+            {/* Topo da tela: Rubrica da Tratto no canto superior esquerdo e Título do documento */}
+            <div className="relative mb-2 pb-1.5 border-b border-gray-200 flex items-center justify-between">
+              <div className="flex items-center gap-1.5 shrink-0" title="Plataforma Tratto">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 50 50"
+                  className="h-4 w-4 sm:h-5 sm:w-5 text-[var(--accent-primary)] stroke-current fill-none"
+                  role="img"
+                  aria-label="Rubrica Tratto"
+                >
+                  <g strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M 6 22 C 14 20, 26 17, 40 19 C 45 20, 48 21, 48 21" strokeWidth="4.2" />
+                    <path d="M 31 11 C 30 19, 24 31, 18 36 C 14 40, 15 44, 18 44 C 23 44, 28 37, 33 27 C 34 23, 35 17, 35 13" strokeWidth="3.6" />
+                  </g>
+                </svg>
+              </div>
+
+              <div className="text-center font-bold uppercase tracking-wider text-gray-900 text-[11px] sm:text-xs truncate flex-1 px-2">
+                {renderedTitle && (
+                  <span>
+                    {renderedTitle}
+                    {cursorAtTitle && (
+                      <span className="inline-block w-0.5 h-3 bg-[var(--accent-primary)] animate-pulse ml-0.5 align-middle" />
+                    )}
+                  </span>
+                )}
+              </div>
+
+              {/* Espaçador para balancear a rubrica e manter o título centralizado */}
+              <div className="w-5 shrink-0" />
             </div>
-            <span className="text-[10px] text-slate-400 flex items-center gap-1 font-mono">
-              <FileText className="h-3 w-3 text-slate-400" />
-              editor.tratto.app
-            </span>
-            <span className="text-[9px] bg-slate-700/80 text-emerald-400 px-1.5 py-0.5 rounded font-mono font-bold">
-              ● Redigindo
-            </span>
-          </div>
 
-          {/* Tela interna com o texto sendo redigido progressivamente */}
-          <div className="bg-[#FAF9F6] p-4 sm:p-5 rounded-b text-left min-h-[300px] sm:min-h-[330px] font-sans text-xs sm:text-[13px] text-gray-800 leading-relaxed overflow-hidden">
-            <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-2 text-xs sm:text-sm border-b border-gray-200 mb-3 min-h-[28px] flex items-center justify-center">
-              {renderedTitle && (
-                <span>
-                  {renderedTitle}
-                  {cursorAtTitle && (
-                    <span className="inline-block w-0.5 h-3.5 bg-[var(--accent-primary)] animate-pulse ml-0.5 align-middle" />
-                  )}
-                </span>
-              )}
-            </div>
-
-            <div className="space-y-3 font-sans">
+            <div className="space-y-2 font-sans">
               {renderedParagraphs.map((para, idx) => (
-                <p key={`p-${idx}`} className="min-h-[18px]">
+                <p key={`p-${idx}`} className="min-h-[16px]">
                   {para}
                 </p>
               ))}
@@ -400,21 +405,21 @@ function Step1ModelMarkers() {
           </div>
         </div>
 
-        {/* Base do Laptop */}
-        <div className="w-full max-w-[400px] sm:max-w-[460px] h-3 sm:h-3.5 bg-gradient-to-b from-slate-700 to-slate-800 rounded-b-xl border-t border-slate-600/50 shadow-md flex items-center justify-center relative -mt-0.5">
-          <div className="w-14 sm:w-16 h-1 bg-slate-500/60 rounded-full" />
+        {/* Base do Laptop com a cor do tema */}
+        <div className="w-full max-w-[400px] sm:max-w-[460px] h-3 sm:h-3.5 bg-[var(--accent-primary)] brightness-95 rounded-b-xl border-t border-[var(--border-strong)]/40 shadow-md flex items-center justify-center relative -mt-0.5">
+          <div className="w-14 sm:w-16 h-1 bg-black/15 rounded-full" />
         </div>
       </div>
 
       {/* Lado Direito (lg:col-span-5): Tratto Rubrica e os 3 modelos subindo e sendo salvos */}
       <div className="lg:col-span-5 flex flex-col items-center justify-center relative min-h-[360px]">
-        {/* Logo Rubrica da Tratto com ponto de selo reativo */}
+        {/* Logo Rubrica da Tratto maior e sem texto 'Plataforma Tratto' */}
         <div className="relative flex flex-col items-center select-none z-20">
-          <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl border-2 border-[var(--border-strong)] bg-white shadow-md p-2.5 transition-transform">
+          <div className="relative flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-2xl border-2 border-[var(--border-strong)] bg-white shadow-md p-3 transition-transform">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 50 50"
-              className="w-10 h-10 sm:w-12 sm:h-12 text-[var(--text-main)] stroke-current fill-none"
+              className="w-12 h-12 sm:w-16 sm:h-16 text-[var(--text-main)] stroke-current fill-none"
               role="img"
               aria-label="Rubrica Tratto"
             >
@@ -425,19 +430,40 @@ function Step1ModelMarkers() {
             </svg>
             <span className="absolute -top-1 -right-1 h-3.5 w-3.5 rounded-full bg-[var(--accent-primary)] ring-2 ring-white animate-pulse" />
           </div>
-          <span className="mt-2 font-mono text-[10px] sm:text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-            Plataforma Tratto
-          </span>
+        </div>
+
+        {/* Seta apontando para cima com animação float e traço pontilhado com riscos */}
+        <div className="my-2 flex items-center justify-center animate-float-gentle text-[var(--accent-primary)] z-15" aria-hidden="true">
+          <svg
+            viewBox="0 0 24 36"
+            className="w-5 h-8 sm:w-6 sm:h-9 stroke-current fill-none"
+          >
+            <path
+              d="M 6 12 L 12 5 L 18 12"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <line
+              x1="12"
+              y1="6"
+              x2="12"
+              y2="33"
+              strokeWidth="2.2"
+              strokeDasharray="3 3"
+              strokeLinecap="round"
+            />
+          </svg>
         </div>
 
         {/* Câmara de fluxo ascendente: Modelos 1, 2 e 3 subindo em direção à logo */}
-        <div className="relative w-full max-w-[260px] h-[220px] flex justify-center items-center overflow-hidden z-10 mt-1">
+        <div className="relative w-full max-w-[260px] h-[200px] flex justify-center items-center overflow-hidden z-10">
           {UPLOAD_MODELS.map((model, i) => {
             const cardOffset = i * 1500;
             const cardTime = (elapsedMs + cardOffset) % 4500;
             const p = cardTime / 4500;
 
-            let translateY = 105 - p * 165;
+            let translateY = 100 - p * 160;
             let opacity = 1;
             let scale = 1;
 
@@ -456,23 +482,13 @@ function Step1ModelMarkers() {
                   transform: `translateY(${translateY}px) scale(${scale})`,
                   opacity,
                 }}
-                className="absolute w-48 sm:w-52 rounded-lg border border-[var(--border-subtle)] bg-white px-3.5 py-2 shadow-md flex items-center justify-between text-left select-none pointer-events-none transition-transform duration-75"
+                className="absolute w-44 sm:w-48 rounded-lg border border-[var(--border-subtle)] bg-white px-3 py-2 shadow-md flex items-center gap-2.5 text-left select-none pointer-events-none transition-transform duration-75"
               >
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-7 w-7 items-center justify-center rounded bg-blue-50 text-blue-600 border border-blue-100 shrink-0">
-                    <FileText className="h-4 w-4" />
-                  </div>
-                  <div className="truncate">
-                    <div className="font-sans font-semibold text-xs text-gray-900 leading-tight">
-                      {model.name}
-                    </div>
-                    <div className="font-mono text-[9px] text-gray-400">
-                      formato .doc
-                    </div>
-                  </div>
+                <div className="flex h-7 w-7 items-center justify-center rounded bg-blue-50 text-blue-600 border border-blue-100 shrink-0">
+                  <FileText className="h-4 w-4" />
                 </div>
-                <span className="text-[9px] font-mono font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 shrink-0">
-                  Salvo
+                <span className="font-sans font-semibold text-xs text-gray-900 truncate">
+                  {model.name}
                 </span>
               </div>
             );

@@ -60,12 +60,18 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
     expect(
       screen.getByText(/Você manda os seus modelos de contrato para a Tratto/i)
     ).toBeInTheDocument();
+    // Valida remoção do trecho final ", no formato .doc"
+    expect(screen.queryByText(/no formato \.doc/i)).toBeNull();
 
-    // Valida o editor de texto no computador à esquerda e os 3 modelos à direita
-    expect(screen.getByText(/editor\.tratto\.app/i)).toBeInTheDocument();
+    // Valida que a barra antiga do editor (editor.tratto.app e Redigindo) foi removida
+    expect(screen.queryByText(/editor\.tratto\.app/i)).toBeNull();
+    expect(screen.queryByText(/● Redigindo/i)).toBeNull();
+
+    // Valida presença dos 3 modelos e remoção de 'Plataforma Tratto' e badges
     expect(screen.getByText(/Modelo 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Modelo 2/i)).toBeInTheDocument();
     expect(screen.getByText(/Modelo 3/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Plataforma Tratto/i)).toBeNull();
 
     // No início imediato (t=0), o corpo com marcadores ainda não foi digitado
     expect(screen.queryByText(/\{\{cliente_nome\}\}/i)).toBeNull();
