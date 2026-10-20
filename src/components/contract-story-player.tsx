@@ -1781,7 +1781,7 @@ function Step4TimelineAdjustment() {
       {/* =================================================================== */}
       {/* 2. PAINÉIS DE AUTOMAÇÃO (Lado Direito) */}
       {/* =================================================================== */}
-      <div className="flex flex-col gap-3.5 w-full max-w-[340px] sm:max-w-[370px] shrink-0">
+      <div className="flex flex-col justify-between gap-3.5 w-full max-w-[340px] sm:max-w-[370px] shrink-0 h-[330px] sm:h-[355px]">
         {/* Painel da Linha do Tempo com Mini-Calendários */}
         <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-xs text-left">
           {/* Cabeçalho limpo sem o texto em cinza à direita */}
@@ -1838,16 +1838,16 @@ function Step4TimelineAdjustment() {
           </div>
         </div>
 
-        {/* Card da Consulta Oficial ao Banco Central (SGS) - Escondido por completo antes de finalizar o ciclo */}
+        {/* Card da Consulta Oficial ao Banco Central (SGS) - Espaço de altura fixa sem colapsar o layout */}
         <div
           className={clsx(
-            "rounded-xl border transition-all duration-500 p-4 text-left shadow-xs",
+            "rounded-xl border transition-all duration-500 p-4 text-left shadow-xs h-[72px] flex items-center",
             isAtDatabase || isAdjusted
               ? "border-[var(--border-strong)] bg-[var(--accent-surface)] opacity-100 scale-100 pointer-events-auto"
-              : "opacity-0 scale-95 pointer-events-none h-0 p-0 border-transparent overflow-hidden my-0"
+              : "opacity-0 scale-95 pointer-events-none border-transparent bg-transparent"
           )}
         >
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-2.5">
               <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--accent-primary)] text-white shrink-0 shadow-2xs">
                 <Landmark className="h-4 w-4" />
@@ -1871,8 +1871,10 @@ function Step4TimelineAdjustment() {
         {/* Notificação Flutuante de Envio & AuditLog (sem '... por índice Bacen') */}
         <div
           className={clsx(
-            "rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-2.5 text-left text-xs transition-all duration-400 flex items-center gap-2.5 shadow-2xs",
-            isAdjusted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1 pointer-events-none"
+            "rounded-lg border transition-all duration-400 p-2.5 text-left text-xs flex items-center gap-2.5 shadow-2xs h-[52px]",
+            isAdjusted
+              ? "border-[var(--border-subtle)] bg-[var(--bg-card)] opacity-100 translate-y-0 pointer-events-auto"
+              : "opacity-0 translate-y-1 pointer-events-none border-transparent bg-transparent"
           )}
         >
           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-surface)] text-[var(--accent-primary)] shrink-0">
