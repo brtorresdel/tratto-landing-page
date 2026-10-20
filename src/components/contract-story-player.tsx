@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2, FileText, Download, Send, ArrowRight, Mail, Copy, Landmark } from "lucide-react";
+import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2, FileText, Download, Send, ArrowRight, Mail, Copy, Landmark, Calendar } from "lucide-react";
 
 export const STORY_STEPS = [
   {
@@ -1630,6 +1630,11 @@ function Step3SendingSigning() {
   );
 }
 
+// Função de Bézier (easeInOutCubic) para evolução natural da barra
+function easeInOutCubic(t: number): number {
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
 // =========================================================================
 // ETAPA 4: LINHA DO TEMPO, ANIVERSÁRIO DO CONTRATO E REAJUSTE BACEN
 // =========================================================================
@@ -1638,25 +1643,34 @@ function Step4TimelineAdjustment() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setElapsedMs((prev) => (prev >= 7000 ? 0 : prev + 50));
+      setElapsedMs((prev) => (prev >= 8200 ? 0 : prev + 50));
     }, 50);
 
     return () => clearInterval(interval);
   }, []);
 
   // Fases cronológicas:
-  // 0ms a 1400ms: vigência ativa, timeline avançando pelos 12 meses
-  // 1400ms a 2000ms: marco 12 alcançado, data-base ativada, API Bacen consultada
-  // 2000ms a 6500ms: reajuste aplicado (+4,50%), mensalidade R$ 1.254,00, renovado até 2026
-  // 6500ms a 7000ms: reinício suave
-  const isAtDatabase = elapsedMs >= 1400 && elapsedMs < 2000;
-  const isAdjusted = elapsedMs >= 2000;
+  // 0ms a 2400ms: vigência ativa, timeline avançando em curva de Bézier (Mês 1 ao 12)
+  // 2400ms a 3300ms: marco 12 alcançado, data-base ativada, API Bacen surge
+  // 3300ms a 4100ms: risca em cima do valor antigo (line-through) e fadeout suave
+  // 4100ms a 7500ms: surge o valor atualizado (R$ 1.254,00) no tom do tema, Ano 2 e AuditLog
+  // 7500ms a 8200ms: leitura e reinício suave
+  const isAtDatabase = elapsedMs >= 2400 && elapsedMs < 4100;
+  const isStriking = elapsedMs >= 3300 && elapsedMs < 4100;
+  const isAdjusted = elapsedMs >= 4100;
 
-  // Progresso percentual da linha do tempo até 1400ms (0% a 100%)
-  const progress = Math.min(100, Math.round((elapsedMs / 1400) * 100));
+  // Progresso em curva de Bézier de 0% a 100% até 2400ms
+  const t = Math.min(1, Math.max(0, elapsedMs / 2400));
+  const progress = Math.round(easeInOutCubic(t) * 100);
 
-  // Mês exibido no contador de vigência:
-  const currentMonthNumber = Math.min(12, Math.floor((elapsedMs / 1400) * 12) + 1);
+  // Marcos dos meses com mini-calendários:
+  const timelineMilestones = [
+    { month: 1, percent: 0 },
+    { month: 3, percent: 25 },
+    { month: 6, percent: 50 },
+    { month: 9, percent: 75 },
+    { month: 12, percent: 100 },
+  ];
 
   return (
     <div className="w-full h-full max-w-4xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8 select-none py-2 px-2 overflow-hidden">
@@ -1709,20 +1723,33 @@ function Step4TimelineAdjustment() {
               <span className="font-semibold text-gray-900">12 meses</span>.
             </p>
 
-            <p className="transition-all duration-300">
-              <strong>Cláusula 2ª:</strong> Mensalidade de{" "}
-              {isAdjusted ? (
-                <span className="inline-flex items-center gap-1 font-mono">
-                  <span className="line-through text-gray-400 text-[10px]">R$ 1.200,00</span>
-                  <span className="font-bold text-[var(--accent-primary)] bg-[var(--accent-surface)] px-1 rounded shadow-2xs">
+            {/* Cláusula 2ª com animação de risca, fadeout e surgimento sem quebra de linha */}
+            <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-gray-700 leading-normal">
+              <span><strong>Cláusula 2ª:</strong> Mensalidade de</span>
+              <span className="relative inline-flex items-center min-w-[80px] h-4.5 font-mono">
+                {/* 1. Valor inicial / tachado com fadeout */}
+                {!isAdjusted && (
+                  <span
+                    className={clsx(
+                      "absolute left-0 transition-all duration-400 whitespace-nowrap",
+                      isStriking
+                        ? "line-through text-gray-400 opacity-40 translate-y-[-1px]"
+                        : "text-gray-900 font-semibold opacity-100"
+                    )}
+                  >
+                    R$ 1.200,00
+                  </span>
+                )}
+
+                {/* 2. Valor novo que surge no mesmo lugar com a cor do tema */}
+                {isAdjusted && (
+                  <span className="absolute left-0 font-bold text-[var(--accent-primary)] bg-[var(--accent-surface)] px-1 rounded shadow-2xs whitespace-nowrap animate-metric-fade-in">
                     R$ 1.254,00
                   </span>
-                </span>
-              ) : (
-                <span className="font-mono font-semibold text-gray-900">R$ 1.200,00</span>
-              )}
-              .
-            </p>
+                )}
+              </span>
+              <span>.</span>
+            </div>
 
             <p>
               <strong>Cláusula 3ª:</strong> Reajuste por{" "}
@@ -1731,10 +1758,10 @@ function Step4TimelineAdjustment() {
           </div>
         </div>
 
-        {/* Rodapé com badge reativa de vigência */}
+        {/* Rodapé com Ano 1 -> Ano 2 e badge reativa de vigência */}
         <div className="mt-auto pt-2 border-t border-gray-100 flex items-center justify-between text-[10px]">
-          <span className="font-mono text-[9px] text-gray-500">
-            {isAdjusted ? "Ano 2 (2025/2026)" : "Ano 1 (2024/2025)"}
+          <span className="font-mono text-[9px] text-gray-500 font-medium">
+            {isAdjusted ? "Ano 2" : "Ano 1"}
           </span>
           <span
             className={clsx(
@@ -1754,77 +1781,76 @@ function Step4TimelineAdjustment() {
       {/* =================================================================== */}
       {/* 2. PAINÉIS DE AUTOMAÇÃO (Lado Direito) */}
       {/* =================================================================== */}
-      <div className="flex flex-col gap-3.5 w-full max-w-[330px] sm:max-w-[360px] shrink-0">
-        {/* Painel da Linha do Tempo de Vigência */}
+      <div className="flex flex-col gap-3.5 w-full max-w-[340px] sm:max-w-[370px] shrink-0">
+        {/* Painel da Linha do Tempo com Mini-Calendários */}
         <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-xs text-left">
-          <div className="flex items-center justify-between text-xs pb-2 border-b border-[var(--border-subtle)]">
+          {/* Cabeçalho limpo sem o texto em cinza à direita */}
+          <div className="flex items-center text-xs pb-2 border-b border-[var(--border-subtle)]">
             <div className="flex items-center gap-1.5 text-[var(--text-main)] font-semibold font-sans">
               <Clock className="h-4 w-4 text-[var(--accent-primary)]" />
               <span>Ciclo Anual de Vigência</span>
             </div>
-            <span className="font-mono text-[11px] text-[var(--text-muted)] font-medium">
-              {isAdjusted ? "Ciclo renovado" : `Mês ${currentMonthNumber} de 12`}
-            </span>
           </div>
 
-          {/* Barra horizontal com progresso e 3 marcos */}
+          {/* Barra horizontal com curva Bézier e os 5 mini-calendários */}
           <div className="mt-4 relative">
             {/* Trilho base */}
-            <div className="h-2 w-full rounded-full bg-[var(--border-subtle)] overflow-hidden">
+            <div className="h-1.5 w-full rounded-full bg-[var(--border-subtle)] overflow-hidden">
               <div
                 style={{ width: `${progress}%` }}
-                className="h-full bg-[var(--accent-primary)] rounded-full transition-all duration-100 ease-linear"
+                className="h-full bg-[var(--accent-primary)] rounded-full transition-all duration-75 ease-out"
               />
             </div>
 
-            {/* 3 Marcos da Timeline */}
-            <div className="mt-2.5 flex items-center justify-between text-[10px] font-mono text-[var(--text-muted)]">
-              <div className="flex flex-col items-center">
-                <div className="h-2.5 w-2.5 rounded-full bg-[var(--accent-primary)] border-2 border-white shadow-2xs" />
-                <span className="mt-1 font-semibold text-[var(--text-main)]">Mês 1</span>
-                <span className="text-[9px] text-[var(--text-muted)]">Início</span>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <div
-                  className={clsx(
-                    "h-2.5 w-2.5 rounded-full border-2 border-white shadow-2xs transition-colors",
-                    progress >= 50 ? "bg-[var(--accent-primary)]" : "bg-gray-300"
-                  )}
-                />
-                <span className="mt-1 font-semibold text-[var(--text-main)]">Mês 6</span>
-                <span className="text-[9px] text-[var(--text-muted)]">Semestre</span>
-              </div>
-
-              <div className="flex flex-col items-center">
-                <div
-                  className={clsx(
-                    "h-3 w-3 rounded-full border-2 border-white shadow-2xs transition-all",
-                    progress >= 100
-                      ? "bg-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/30 scale-125"
-                      : "bg-gray-300"
-                  )}
-                />
-                <span className="mt-1 font-semibold text-[var(--text-main)]">Mês 12</span>
-                <span className="text-[9px] text-[var(--accent-primary)] font-bold">Aniversário</span>
-              </div>
+            {/* 5 Marcos da Timeline (Mês 1, Mês 3, Mês 6, Mês 9, Mês 12) */}
+            <div className="mt-3 flex items-center justify-between text-[10px] font-mono">
+              {timelineMilestones.map((item) => {
+                const isPassed = progress >= item.percent;
+                const isFinal = item.month === 12;
+                return (
+                  <div key={item.month} className="flex flex-col items-center">
+                    <div
+                      className={clsx(
+                        "flex h-6 w-6 items-center justify-center rounded-md border shadow-2xs transition-all duration-300",
+                        isFinal && isAtDatabase
+                          ? "bg-[var(--accent-primary)] text-white border-[var(--accent-primary)] scale-110 ring-2 ring-[var(--accent-primary)]/20"
+                          : isPassed
+                            ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border-[var(--border-strong)]"
+                            : "bg-white text-gray-400 border-gray-200"
+                      )}
+                    >
+                      <Calendar className="h-3 w-3" />
+                    </div>
+                    <span
+                      className={clsx(
+                        "mt-1 font-mono text-[9px] transition-colors duration-200",
+                        isPassed
+                          ? "font-bold text-[var(--accent-primary)]"
+                          : "text-[var(--text-muted)] font-medium"
+                      )}
+                    >
+                      Mês {item.month}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
 
-        {/* Card da Consulta Oficial ao Banco Central (SGS) */}
+        {/* Card da Consulta Oficial ao Banco Central (SGS) - Escondido por completo antes de finalizar o ciclo */}
         <div
           className={clsx(
             "rounded-xl border transition-all duration-500 p-4 text-left shadow-xs",
             isAtDatabase || isAdjusted
-              ? "border-[var(--border-strong)] bg-[var(--accent-surface)] opacity-100 scale-100"
-              : "border-[var(--border-subtle)] bg-[var(--bg-card)] opacity-40 scale-98 pointer-events-none"
+              ? "border-[var(--border-strong)] bg-[var(--accent-surface)] opacity-100 scale-100 pointer-events-auto"
+              : "opacity-0 scale-95 pointer-events-none h-0 p-0 border-transparent overflow-hidden my-0"
           )}
         >
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--accent-primary)] text-white shrink-0">
-                <Landmark className="h-3.5 w-3.5" />
+            <div className="flex items-center gap-2.5">
+              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[var(--accent-primary)] text-white shrink-0 shadow-2xs">
+                <Landmark className="h-4 w-4" />
               </div>
               <div>
                 <h4 className="font-sans text-xs font-bold text-[var(--text-main)] leading-tight">
@@ -1840,14 +1866,9 @@ function Step4TimelineAdjustment() {
               +4,50%
             </span>
           </div>
-
-          <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-[9px] font-mono text-[var(--text-muted)]">
-            <span>Piso de deflação zero (Lei 10.192/2001)</span>
-            <span className="font-semibold text-[var(--accent-primary)]">Automático ✓</span>
-          </div>
         </div>
 
-        {/* Notificação Flutuante de Envio & AuditLog */}
+        {/* Notificação Flutuante de Envio & AuditLog (sem '... por índice Bacen') */}
         <div
           className={clsx(
             "rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-2.5 text-left text-xs transition-all duration-400 flex items-center gap-2.5 shadow-2xs",
@@ -1862,7 +1883,7 @@ function Step4TimelineAdjustment() {
               Demonstrativo de cálculo enviado por e-mail
             </p>
             <p className="font-mono text-[9px] text-[var(--text-muted)] truncate">
-              AuditLog #8491: Reajuste anual aplicado por índice Bacen
+              AuditLog #8491: Reajuste anual aplicado
             </p>
           </div>
         </div>
