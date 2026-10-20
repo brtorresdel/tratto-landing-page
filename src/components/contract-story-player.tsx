@@ -1781,7 +1781,7 @@ function Step4TimelineAdjustment() {
       {/* =================================================================== */}
       {/* 2. PAINÉIS DE AUTOMAÇÃO (Lado Direito) */}
       {/* =================================================================== */}
-      <div className="flex flex-col justify-between gap-3.5 w-full max-w-[340px] sm:max-w-[370px] shrink-0 h-[330px] sm:h-[355px]">
+      <div className="flex flex-col justify-start gap-3.5 w-full max-w-[340px] sm:max-w-[370px] shrink-0 h-[330px] sm:h-[355px]">
         {/* Painel da Linha do Tempo com Mini-Calendários */}
         <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-xs text-left">
           {/* Cabeçalho limpo sem o texto em cinza à direita */}
