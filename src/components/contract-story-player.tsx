@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import clsx from "clsx";
-import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2, FileText, Download, Send, ArrowRight, Mail, Copy } from "lucide-react";
+import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2, FileText, Download, Send, ArrowRight, Mail, Copy, Landmark } from "lucide-react";
 
 export const STORY_STEPS = [
   {
@@ -1631,124 +1631,241 @@ function Step3SendingSigning() {
 }
 
 // =========================================================================
-// ETAPA 4: LINHA DO TEMPO, ANIVERSÁRIO DO CONTRATO E VALOR ATUALIZADO
+// ETAPA 4: LINHA DO TEMPO, ANIVERSÁRIO DO CONTRATO E REAJUSTE BACEN
 // =========================================================================
 function Step4TimelineAdjustment() {
-  const [stage, setStage] = useState<"approaching" | "updated" | "yellow" | "red">("approaching");
+  const [elapsedMs, setElapsedMs] = useState(0);
 
   useEffect(() => {
-    let t1: NodeJS.Timeout;
-    let t2: NodeJS.Timeout;
-    let t3: NodeJS.Timeout;
-    let t4: NodeJS.Timeout;
+    const interval = setInterval(() => {
+      setElapsedMs((prev) => (prev >= 7000 ? 0 : prev + 50));
+    }, 50);
 
-    const runCycle = () => {
-      setStage("approaching");
-      t1 = setTimeout(() => {
-        setStage("updated");
-        t2 = setTimeout(() => {
-          setStage("yellow");
-          t3 = setTimeout(() => {
-            setStage("red");
-            t4 = setTimeout(() => {
-              runCycle();
-            }, 2500);
-          }, 2500);
-        }, 2500);
-      }, 2000);
-    };
-
-    runCycle();
-
-    return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
-    };
+    return () => clearInterval(interval);
   }, []);
 
+  // Fases cronológicas:
+  // 0ms a 1400ms: vigência ativa, timeline avançando pelos 12 meses
+  // 1400ms a 2000ms: marco 12 alcançado, data-base ativada, API Bacen consultada
+  // 2000ms a 6500ms: reajuste aplicado (+4,50%), mensalidade R$ 1.254,00, renovado até 2026
+  // 6500ms a 7000ms: reinício suave
+  const isAtDatabase = elapsedMs >= 1400 && elapsedMs < 2000;
+  const isAdjusted = elapsedMs >= 2000;
+
+  // Progresso percentual da linha do tempo até 1400ms (0% a 100%)
+  const progress = Math.min(100, Math.round((elapsedMs / 1400) * 100));
+
+  // Mês exibido no contador de vigência:
+  const currentMonthNumber = Math.min(12, Math.floor((elapsedMs / 1400) * 12) + 1);
+
   return (
-    <div className="w-full max-w-lg mx-auto flex flex-col items-center justify-center relative min-h-[300px]">
-      {/* Linha horizontal atrás do contrato com fade gradiente nas pontas */}
-      <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1 bg-gradient-to-r from-transparent via-[var(--border-strong)] to-transparent z-0 pointer-events-none" />
+    <div className="w-full h-full max-w-4xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8 select-none py-2 px-2 overflow-hidden">
+      {/* =================================================================== */}
+      {/* 1. O CONTRATO (Lado Esquerdo / Centro) */}
+      {/* =================================================================== */}
+      <div className="relative w-[235px] sm:w-[265px] h-[330px] sm:h-[355px] rounded-md border border-gray-200 bg-white p-3.5 shadow-md flex flex-col justify-between text-left shrink-0 transition-all duration-300">
+        <div>
+          {/* Cabeçalho limpo com a rubrica oficial Tratto no canto superior direito */}
+          <div className="flex items-center justify-between pb-1.5 border-b border-gray-100 mb-1.5 select-none">
+            <span className="font-mono text-[10px] uppercase tracking-wider font-semibold truncate text-gray-700">
+              contrato_123456
+            </span>
+            <div className="flex items-center gap-1 shrink-0" title="Plataforma Tratto">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 50 50"
+                className="h-4 w-4 text-gray-900 stroke-current fill-none"
+                role="img"
+                aria-label="Rubrica Tratto"
+              >
+                <g strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M 6 22 C 14 20, 26 17, 40 19 C 45 20, 48 21, 48 21" strokeWidth="4.2" />
+                  <path d="M 31 11 C 30 19, 24 31, 18 36 C 14 40, 15 44, 18 44 C 23 44, 28 37, 33 27 C 34 23, 35 17, 35 13" strokeWidth="3.6" />
+                </g>
+              </svg>
+            </div>
+          </div>
 
-      {/* Ponto / Partícula de Aniversário que desliza pela linha em direção ao contrato */}
-      <div
-        className={clsx(
-          "absolute top-1/2 -translate-y-1/2 z-10 transition-all duration-1000",
-          stage === "approaching" && "left-[15%] opacity-100 scale-125",
-          stage === "updated" && "left-[50%] -translate-x-1/2 opacity-0 scale-150",
-          (stage === "yellow" || stage === "red") && "left-[10%] opacity-0 scale-50"
-        )}
-      >
-        <div className="h-4 w-4 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.8)] border-2 border-white animate-ping" />
-      </div>
+          <div className="text-center font-bold uppercase tracking-wider text-gray-900 pb-1 text-[11px] border-b border-gray-100 mb-1.5">
+            Contrato de Prestação de Serviços
+          </div>
 
-      {/* Tooltip / Notificação Flutuante de Atualização */}
-      <div
-        className={clsx(
-          "absolute -top-3 z-30 transition-all duration-500",
-          stage === "updated" ? "opacity-100 -translate-y-1 scale-100" : "opacity-0 translate-y-2 scale-90 pointer-events-none"
-        )}
-      >
-        <div className="rounded-full bg-emerald-600 text-white font-mono text-xs px-3 py-1 shadow-lg flex items-center gap-1.5 font-semibold">
-          <Sparkles className="h-3.5 w-3.5 text-emerald-200" />
-          <span>Valor atualizado (+4,5% IPCA via Bacen)</span>
+          <div className="space-y-1.5 text-[10px] sm:text-[11px] text-gray-700 leading-relaxed font-sans">
+            <p>
+              CONTRATANTE{" "}
+              <span className="font-semibold text-gray-900 bg-gray-100 px-1 py-0.2 rounded">
+                João da Silva
+              </span>
+              , sob doc{" "}
+              <span className="font-mono text-[9px] text-gray-800 bg-gray-100 px-1 py-0.2 rounded">
+                12.345.678/0001-90
+              </span>
+              .
+            </p>
+
+            <p>
+              <strong>Cláusula 1ª:</strong> Serviço{" "}
+              <span className="font-semibold text-gray-900">Plano XYZ</span>, vigência{" "}
+              <span className="font-semibold text-gray-900">12 meses</span>.
+            </p>
+
+            <p className="transition-all duration-300">
+              <strong>Cláusula 2ª:</strong> Mensalidade de{" "}
+              {isAdjusted ? (
+                <span className="inline-flex items-center gap-1 font-mono">
+                  <span className="line-through text-gray-400 text-[10px]">R$ 1.200,00</span>
+                  <span className="font-bold text-[var(--accent-primary)] bg-[var(--accent-surface)] px-1 rounded shadow-2xs">
+                    R$ 1.254,00
+                  </span>
+                </span>
+              ) : (
+                <span className="font-mono font-semibold text-gray-900">R$ 1.200,00</span>
+              )}
+              .
+            </p>
+
+            <p>
+              <strong>Cláusula 3ª:</strong> Reajuste por{" "}
+              <span className="font-semibold text-gray-900">Índice Oficial (IPCA / Bacen)</span>.
+            </p>
+          </div>
         </div>
-      </div>
 
-      {/* Contrato Centralizado com bordas reativas ao status temporal */}
-      <div
-        className={clsx(
-          "relative z-20 w-64 rounded-lg bg-white p-5 shadow-lg border-2 transition-all duration-700 text-left",
-          stage === "updated" && "border-emerald-500 ring-4 ring-emerald-400/20 bg-emerald-50/20 scale-105",
-          stage === "approaching" && "border-emerald-400 bg-white scale-100",
-          stage === "yellow" && "border-amber-400 ring-2 ring-amber-400/20 bg-amber-50/10 scale-100",
-          stage === "red" && "border-rose-400 ring-2 ring-rose-400/20 bg-rose-50/10 scale-100"
-        )}
-      >
-        <div className="flex items-center justify-between pb-2 border-b border-gray-100 text-[11px] font-mono">
-          <span className="text-gray-500">Contrato #1042</span>
+        {/* Rodapé com badge reativa de vigência */}
+        <div className="mt-auto pt-2 border-t border-gray-100 flex items-center justify-between text-[10px]">
+          <span className="font-mono text-[9px] text-gray-500">
+            {isAdjusted ? "Ano 2 (2025/2026)" : "Ano 1 (2024/2025)"}
+          </span>
           <span
             className={clsx(
-              "font-bold text-[10px] px-2 py-0.5 rounded",
-              (stage === "updated" || stage === "approaching") && "bg-emerald-100 text-emerald-800",
-              stage === "yellow" && "bg-amber-100 text-amber-800",
-              stage === "red" && "bg-rose-100 text-rose-800"
+              "font-mono text-[9px] font-bold px-2 py-0.5 rounded transition-all duration-300",
+              isAdjusted
+                ? "bg-[var(--accent-surface)] text-[var(--accent-primary)] border border-[var(--border-strong)]"
+                : isAtDatabase
+                  ? "bg-amber-100 text-amber-800 border border-amber-300 animate-pulse"
+                  : "bg-gray-100 text-gray-700"
             )}
           >
-            {stage === "updated" && "Valor atualizado ✓"}
-            {stage === "approaching" && "Vigência Ativa"}
-            {stage === "yellow" && "Aviso de Aniversário"}
-            {stage === "red" && "Reajuste Pendente"}
+            {isAdjusted ? "Valor atualizado ✓" : isAtDatabase ? "Data-base de Reajuste" : "Vigência Ativa"}
           </span>
-        </div>
-
-        <div className="mt-3 space-y-1.5 text-xs text-gray-700">
-          <div className="font-semibold text-gray-900">João da Silva</div>
-          <div className="flex items-center justify-between">
-            <span className="text-gray-500">Mensalidade:</span>
-            <span className={clsx("font-mono font-bold transition-colors", stage === "updated" ? "text-emerald-700 text-sm" : "text-gray-900")}>
-              {stage === "updated" ? "R$ 1.254,00 / mês" : "R$ 1.200,00 / mês"}
-            </span>
-          </div>
-          <div className="flex items-center justify-between text-[11px] text-gray-500">
-            <span>Índice Oficial:</span>
-            <span className="font-mono font-semibold">IPCA (Bacen)</span>
-          </div>
         </div>
       </div>
 
-      {/* Legenda de vigência */}
-      <div className="mt-6 text-xs font-mono text-[var(--text-muted)] flex items-center gap-2">
-        <TrendingUp className="h-4 w-4 text-[var(--accent-primary)]" />
-        <span>
-          {stage === "approaching" && "Aniversário anual se aproximando na linha do tempo..."}
-          {stage === "updated" && "Reajuste aplicado e valor atualizado automaticamente!"}
-          {stage === "yellow" && "Aviso preventivo aos gestores sobre a data-base"}
-          {stage === "red" && "Varredura contínua garantindo que nenhum reajuste passe em branco"}
-        </span>
+      {/* =================================================================== */}
+      {/* 2. PAINÉIS DE AUTOMAÇÃO (Lado Direito) */}
+      {/* =================================================================== */}
+      <div className="flex flex-col gap-3.5 w-full max-w-[330px] sm:max-w-[360px] shrink-0">
+        {/* Painel da Linha do Tempo de Vigência */}
+        <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-xs text-left">
+          <div className="flex items-center justify-between text-xs pb-2 border-b border-[var(--border-subtle)]">
+            <div className="flex items-center gap-1.5 text-[var(--text-main)] font-semibold font-sans">
+              <Clock className="h-4 w-4 text-[var(--accent-primary)]" />
+              <span>Ciclo Anual de Vigência</span>
+            </div>
+            <span className="font-mono text-[11px] text-[var(--text-muted)] font-medium">
+              {isAdjusted ? "Ciclo renovado" : `Mês ${currentMonthNumber} de 12`}
+            </span>
+          </div>
+
+          {/* Barra horizontal com progresso e 3 marcos */}
+          <div className="mt-4 relative">
+            {/* Trilho base */}
+            <div className="h-2 w-full rounded-full bg-[var(--border-subtle)] overflow-hidden">
+              <div
+                style={{ width: `${progress}%` }}
+                className="h-full bg-[var(--accent-primary)] rounded-full transition-all duration-100 ease-linear"
+              />
+            </div>
+
+            {/* 3 Marcos da Timeline */}
+            <div className="mt-2.5 flex items-center justify-between text-[10px] font-mono text-[var(--text-muted)]">
+              <div className="flex flex-col items-center">
+                <div className="h-2.5 w-2.5 rounded-full bg-[var(--accent-primary)] border-2 border-white shadow-2xs" />
+                <span className="mt-1 font-semibold text-[var(--text-main)]">Mês 1</span>
+                <span className="text-[9px] text-[var(--text-muted)]">Início</span>
+              </div>
+
+              <div className="flex flex-col items-center">
+                <div
+                  className={clsx(
+                    "h-2.5 w-2.5 rounded-full border-2 border-white shadow-2xs transition-colors",
+                    progress >= 50 ? "bg-[var(--accent-primary)]" : "bg-gray-300"
+                  )}
+                />
+                <span className="mt-1 font-semibold text-[var(--text-main)]">Mês 6</span>
+                <span className="text-[9px] text-[var(--text-muted)]">Semestre</span>
+              </div>
+
+              <div className="flex flex-col items-center">
+                <div
+                  className={clsx(
+                    "h-3 w-3 rounded-full border-2 border-white shadow-2xs transition-all",
+                    progress >= 100
+                      ? "bg-[var(--accent-primary)] ring-2 ring-[var(--accent-primary)]/30 scale-125"
+                      : "bg-gray-300"
+                  )}
+                />
+                <span className="mt-1 font-semibold text-[var(--text-main)]">Mês 12</span>
+                <span className="text-[9px] text-[var(--accent-primary)] font-bold">Aniversário</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Card da Consulta Oficial ao Banco Central (SGS) */}
+        <div
+          className={clsx(
+            "rounded-xl border transition-all duration-500 p-4 text-left shadow-xs",
+            isAtDatabase || isAdjusted
+              ? "border-[var(--border-strong)] bg-[var(--accent-surface)] opacity-100 scale-100"
+              : "border-[var(--border-subtle)] bg-[var(--bg-card)] opacity-40 scale-98 pointer-events-none"
+          )}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--accent-primary)] text-white shrink-0">
+                <Landmark className="h-3.5 w-3.5" />
+              </div>
+              <div>
+                <h4 className="font-sans text-xs font-bold text-[var(--text-main)] leading-tight">
+                  Banco Central do Brasil
+                </h4>
+                <p className="font-mono text-[10px] text-[var(--text-muted)]">
+                  API SGS · Série 433 (IPCA Oficial)
+                </p>
+              </div>
+            </div>
+
+            <span className="font-mono text-xs font-bold text-[var(--accent-primary)] bg-white px-2 py-0.5 rounded shadow-2xs border border-[var(--border-subtle)]">
+              +4,50%
+            </span>
+          </div>
+
+          <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)] flex items-center justify-between text-[9px] font-mono text-[var(--text-muted)]">
+            <span>Piso de deflação zero (Lei 10.192/2001)</span>
+            <span className="font-semibold text-[var(--accent-primary)]">Automático ✓</span>
+          </div>
+        </div>
+
+        {/* Notificação Flutuante de Envio & AuditLog */}
+        <div
+          className={clsx(
+            "rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-2.5 text-left text-xs transition-all duration-400 flex items-center gap-2.5 shadow-2xs",
+            isAdjusted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1 pointer-events-none"
+          )}
+        >
+          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[var(--accent-surface)] text-[var(--accent-primary)] shrink-0">
+            <Check className="h-3.5 w-3.5 stroke-[2.5]" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="font-sans text-[11px] font-semibold text-[var(--text-main)] truncate">
+              Demonstrativo de cálculo enviado por e-mail
+            </p>
+            <p className="font-mono text-[9px] text-[var(--text-muted)] truncate">
+              AuditLog #8491: Reajuste anual aplicado por índice Bacen
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

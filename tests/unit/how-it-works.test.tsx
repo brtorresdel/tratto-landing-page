@@ -417,4 +417,58 @@ describe("HowItWorksSection (Spec 0002 - CA3: Apresentação da Tratto e Como Fu
 
     vi.useRealTimers();
   });
+
+  it("deve simular o fluxo de Vigência & Reajuste na Etapa 4 com linha do tempo de 12 meses, injeção da API do Banco Central e renovação automática", () => {
+    vi.useFakeTimers();
+    render(<HowItWorksSection />);
+
+    const nextBtn = screen.getByRole("button", { name: /Próxima etapa/i });
+    // Navega para Etapa 2
+    act(() => {
+      fireEvent.click(nextBtn);
+    });
+    // Navega para Etapa 3
+    act(() => {
+      fireEvent.click(nextBtn);
+    });
+    // Navega para Etapa 4: Vigência & Reajuste
+    act(() => {
+      fireEvent.click(nextBtn);
+    });
+
+    // 1. Valida cabeçalho da Etapa 4
+    expect(
+      screen.getByRole("heading", { name: /Vigência & Reajuste/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Linha do tempo contínua: no aniversário do contrato/i)
+    ).toBeInTheDocument();
+
+    // 2. Contrato presente com dados iniciais
+    expect(screen.getByText(/contrato_123456/i)).toBeInTheDocument();
+    expect(screen.getByText(/João da Silva/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/R\$ 1\.200,00/i).length).toBeGreaterThan(0);
+
+    // 3. Linha do tempo presente com os marcos do ciclo anual
+    expect(screen.getAllByText(/Mês 1/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Mês 6/i)).toBeInTheDocument();
+    expect(screen.getByText(/Mês 12/i)).toBeInTheDocument();
+
+    // 4. Avança o tempo até a data-base de reajuste (Mês 12 / consulta Bacen)
+    act(() => {
+      vi.advanceTimersByTime(1600);
+    });
+    expect(screen.getByText(/Banco Central/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/IPCA/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/\+4,50%/i)).toBeInTheDocument();
+
+    // 5. Avança o tempo até a aplicação automática do reajuste
+    act(() => {
+      vi.advanceTimersByTime(800);
+    });
+    expect(screen.getByText(/R\$ 1\.254,00/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/Valor atualizado/i).length).toBeGreaterThan(0);
+
+    vi.useRealTimers();
+  });
 });
