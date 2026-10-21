@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import clsx from "clsx";
 
 export function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -51,44 +52,57 @@ export function FaqSection() {
           A Tratto ainda está na fase inicial de desenvolvimento, mas tem algumas perguntas que já posso adiantar aqui pra vocês:
         </p>
 
-        {/* Lista Accordion do FAQ */}
-        <div className="mt-12 space-y-4 text-left">
+        {/* Lista Unificada do FAQ estilo Framer (com divisórias limpas e sem cards isolados) */}
+        <div className="mt-12 sm:mt-16 divide-y divide-[var(--border-subtle)] border-y border-[var(--border-subtle)] text-left">
           {faqs.map((faq, index) => {
             const isOpen = openIndex === index;
             const contentId = `faq-answer-${index}`;
             return (
-              <div
-                key={faq.question}
-                className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] overflow-hidden transition-all duration-200 shadow-2xs"
-              >
+              <div key={faq.question} className="transition-colors duration-200">
                 <button
                   type="button"
                   aria-expanded={isOpen}
                   aria-controls={contentId}
                   onClick={() => toggleFaq(index)}
-                  className="flex w-full items-center justify-between gap-4 p-5 sm:p-6 text-left cursor-pointer transition-colors hover:bg-black/[0.015] focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)]"
+                  className="flex w-full items-center justify-between gap-6 py-5 sm:py-6 text-left cursor-pointer group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] rounded-lg"
                 >
-                  <span className="font-sans text-base sm:text-lg font-semibold text-[var(--text-main)] tracking-tight">
+                  <span
+                    className={clsx(
+                      "font-sans text-base sm:text-lg font-medium tracking-tight transition-colors duration-200",
+                      isOpen
+                        ? "text-[var(--accent-primary)]"
+                        : "text-[var(--text-main)] group-hover:text-[var(--accent-primary)]"
+                    )}
+                  >
                     {faq.question}
                   </span>
-                  <div
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--accent-surface)] text-[var(--accent-primary)] transition-transform duration-300 ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
-                  >
-                    <ChevronDown className="h-4 w-4" />
-                  </div>
+
+                  {/* Setinha sem background, mais grossinha e com a cor do tema */}
+                  <ChevronDown
+                    className={clsx(
+                      "h-5 w-5 shrink-0 text-[var(--accent-primary)] transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                      isOpen ? "rotate-180" : "rotate-0"
+                    )}
+                    strokeWidth={2.6}
+                    aria-hidden="true"
+                  />
                 </button>
 
-                {isOpen && (
-                  <div
-                    id={contentId}
-                    role="region"
-                    className="border-t border-[var(--border-subtle)]/60 px-5 pt-3.5 pb-5 sm:px-6 sm:pb-6 text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed bg-[var(--accent-surface)]/20"
-                  >
-                    <p>{faq.answer}</p>
+                {/* Resposta com animação suave de abertura e fechamento em Bézier (grid-template-rows) */}
+                <div
+                  id={contentId}
+                  role="region"
+                  className={clsx(
+                    "grid transition-[grid-template-rows,opacity] duration-350 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  )}
+                >
+                  <div className="overflow-hidden">
+                    <div className="pb-6 sm:pb-7 text-sm sm:text-base text-[var(--text-muted)] leading-relaxed max-w-3xl pr-6 sm:pr-10">
+                      <p>{faq.answer}</p>
+                    </div>
                   </div>
-                )}
+                </div>
               </div>
             );
           })}
