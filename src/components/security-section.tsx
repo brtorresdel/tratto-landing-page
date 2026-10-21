@@ -64,7 +64,7 @@ export function SecuritySection() {
   ];
 
   return (
-    <section id="seguranca" className="py-20 sm:py-28 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300 overflow-hidden">
+    <section id="seguranca" className="pt-14 sm:pt-18 pb-10 sm:pb-14 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300 overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 sm:px-8 text-center">
         {/* Título Principal */}
         <h2 className="font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">
@@ -72,14 +72,14 @@ export function SecuritySection() {
         </h2>
 
         {/* Subtítulo */}
-        <p className="mt-4 mx-auto max-w-3xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
+        <p className="mt-3.5 mx-auto max-w-3xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
           Tendo tanta funcionalidade e controle dos contratos, é natural se preocupar com a segurança deles, e a Tratto também pensa seriamente nisso. E essa parte é tratada de forma especial aqui:
         </p>
 
         {/* =================================================================== */}
         {/* PALCO CENTRALIZADO DO GRÁFICO COM BALÕES FLUTUANTES SOBREPOSTOS */}
         {/* =================================================================== */}
-        <div className="mt-14 sm:mt-20 relative flex flex-col items-center justify-center min-h-[500px] lg:min-h-[580px]">
+        <div className="mt-6 sm:mt-8 relative flex flex-col items-center justify-center">
           {/* Container Relativo do Gráfico + Balões */}
           <div
             className="relative w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] md:w-[460px] md:h-[460px] lg:w-[500px] lg:h-[500px] xl:w-[540px] xl:h-[540px] select-none flex items-center justify-center"
@@ -211,7 +211,12 @@ export function SecuritySection() {
           </div>
 
           {/* Versão Mobile dos Balões (Aparece abaixo do gráfico ao toque, z-40) */}
-          <div className="lg:hidden w-full max-w-sm mx-auto mt-6 min-h-[140px] relative">
+          <div
+            className={clsx(
+              "lg:hidden w-full max-w-sm mx-auto relative transition-all duration-300",
+              activeSlice !== null ? "mt-5 min-h-[130px]" : "mt-0 min-h-0"
+            )}
+          >
             {pillars.map((pillar) => {
               const isActive = activeSlice === pillar.id;
               if (!isActive) return null;
