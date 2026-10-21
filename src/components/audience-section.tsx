@@ -117,18 +117,18 @@ export function AudienceSection() {
             E aqui nós não nos resumimos a empresas, profissionais individuais também têm um espaço na Tratto, incluindo:
           </p>
 
-          <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4 text-left">
+          <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 text-left">
             {individualProfessionals.map((pro) => {
               const Icon = pro.icon;
               return (
                 <div
                   key={pro.name}
-                  className="flex items-center gap-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3 py-2.5 shadow-2xs transition duration-200 hover:border-[var(--accent-primary)]/40 hover:bg-[var(--accent-surface)]/50"
+                  className="flex items-center gap-2.5 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3 py-2.5 shadow-2xs transition duration-200 hover:border-[var(--accent-primary)]/40 hover:bg-[var(--accent-surface)]/50 min-h-[48px]"
                 >
                   <div className="flex h-7 w-7 items-center justify-center rounded-md bg-[var(--accent-surface)] text-[var(--accent-primary)] shrink-0">
                     <Icon className="h-3.5 w-3.5" />
                   </div>
-                  <span className="font-sans text-xs sm:text-sm font-medium text-[var(--text-main)] leading-tight">
+                  <span className="font-sans text-xs xl:text-sm font-medium text-[var(--text-main)] leading-tight break-words">
                     {pro.name}
                   </span>
                 </div>
