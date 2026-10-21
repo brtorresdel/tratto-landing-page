@@ -28,10 +28,10 @@ describe("FaqSection (Spec 0002 - CA6 e CA7: FAQ Editorial em Accordion)", () =>
     });
 
     expect(screen.getByText(/Preciso trocar meus modelos de contrato em \.docx/i)).toBeInTheDocument();
-    expect(screen.getByText(/A Tratto é uma plataforma de assinatura eletrônica/i)).toBeInTheDocument();
-    expect(screen.getByText(/Como funciona o cálculo de reajuste por inflação/i)).toBeInTheDocument();
-    expect(screen.getByText(/Quanto vai custar a Tratto quando for lançada/i)).toBeInTheDocument();
-    expect(screen.getByText(/Quando os convites da lista de espera serão liberados/i)).toBeInTheDocument();
+    expect(screen.getByText(/A Tratto é uma plataforma de assinatura eletrônica própria\?/i)).toBeInTheDocument();
+    expect(screen.getByText(/Como funciona o cálculo de reajuste\?/i)).toBeInTheDocument();
+    expect(screen.getByText(/Já tem uma data de lançamento\?/i)).toBeInTheDocument();
+    expect(screen.getByText(/E quanto vai custar uma assinatura da Tratto\?/i)).toBeInTheDocument();
   });
 
   it("deve alternar a visibilidade da resposta ao clicar na pergunta e sincronizar aria-expanded", () => {
@@ -45,7 +45,7 @@ describe("FaqSection (Spec 0002 - CA6 e CA7: FAQ Editorial em Accordion)", () =>
     fireEvent.click(firstQuestionBtn);
     expect(firstQuestionBtn).toHaveAttribute("aria-expanded", "true");
     expect(
-      screen.getByText(/Você continua usando exatamente os arquivos do Word/i)
+      screen.getByText(/Você pode utilizar os arquivos de modelos que a sua empresa já possui/i)
     ).toBeInTheDocument();
 
     // Clica novamente para fechar
@@ -57,7 +57,7 @@ describe("FaqSection (Spec 0002 - CA6 e CA7: FAQ Editorial em Accordion)", () =>
     render(<FaqSection />);
 
     const secondQuestionBtn = screen.getByRole("button", {
-      name: /A Tratto é uma plataforma de assinatura eletrônica/i,
+      name: /A Tratto é uma plataforma de assinatura eletrônica própria\?/i,
     });
 
     // Abre com Enter
@@ -65,7 +65,7 @@ describe("FaqSection (Spec 0002 - CA6 e CA7: FAQ Editorial em Accordion)", () =>
     fireEvent.click(secondQuestionBtn);
     expect(secondQuestionBtn).toHaveAttribute("aria-expanded", "true");
     expect(
-      screen.getByText(/Não somos uma certificadora própria/i)
+      screen.getByText(/A Tratto é apenas um lugar para gerar e gerenciar seus contratos/i)
     ).toBeInTheDocument();
   });
 });

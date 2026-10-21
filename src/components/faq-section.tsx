@@ -11,27 +11,27 @@ export function FaqSection() {
     {
       question: "Preciso trocar meus modelos de contrato em .docx por outro formato?",
       answer:
-        "Não. Você continua usando exatamente os arquivos do Word que sua empresa já possui. Basta adicionar os marcadores entre chaves duplas, como {{cliente_nome}} ou {{valor_mensal}}. A Tratto processa o .docx preservando 100% da sua tipografia, logotipos, cabeçalhos e formatações originais.",
+        "Não! Você pode utilizar os arquivos de modelos que a sua empresa já possui; basta somente posicionar os marcadores entre chaves duplas, como {{cliente_nome}} ou {{valor_mensal}}. A Tratto processa o seu documento preservando 100% da sua tipografia, logotipos, cabeçalhos e formatações originais.",
     },
     {
       question: "A Tratto é uma plataforma de assinatura eletrônica própria?",
       answer:
-        "Não somos uma certificadora própria. A Tratto se integra via API com as plataformas líderes do mercado brasileiro (ZapSign e Clicksign) no modelo BYOT (Bring Your Own Token), onde você informa sua chave e os custos ocorrem na sua conta sem margem extra nossa. Além disso, você sempre pode utilizar o modo manual com upload da via física assinada e escaneada.",
+        "Não. A Tratto é apenas um lugar para gerar e gerenciar seus contratos. Entretanto, teremos integração com as plataformas de assinatura mais utilizadas do mercado (inicialmente com a ZapSign e a Clicksign, que já permitem essa integração) no modelo BYOT (Bring Your Own Token). E fique tranquilo: teremos manuais para ajudar a fazer essa integração acontecer, de forma simples e rápida. E claro, você sempre terá a opção de usar o modo manual, pra baixar a via física e depois subir a via assinada para a plataforma.",
     },
     {
-      question: "Como funciona o cálculo de reajuste por inflação?",
+      question: "Como funciona o cálculo de reajuste?",
       answer:
-        "A Tratto conecta-se diretamente à API pública oficial do Banco Central (SGS) para obter as séries temporais dos índices oficiais (IPCA, IGP-M e INPC). O sistema aplica a fórmula de cálculo composto exato no mês de aniversário do contrato, com piso zero obrigatório em caso de deflação (em conformidade com a Lei 10.192/2001).",
+        "Você poderá utilizar uma integração para calcular com base em índices oficiais (de forma gratuita — o Banco Central fornece esses dados abertamente para todos) ou também poderá configurar suas porcentagens de ajuste personalizadas. E também poderá configurar para não ter nenhum reajuste, se o contrato for temporário ou sobre um produto ou serviço com tempo determinado e sem renovação.",
     },
     {
-      question: "Quanto vai custar a Tratto quando for lançada?",
+      question: "Já tem uma data de lançamento?",
       answer:
-        "A Tratto está atualmente em fase de pré-lançamento e validação. O produto terá planos acessíveis pensados para a realidade de PMEs brasileiras, muito abaixo do custo de ERPs complexos. Quem entrar na lista de espera terá acesso antecipado prioritário e condições fundadoras permanentes.",
+        "A Tratto ainda está na sua fase inicial de desenvolvimento. Atualmente estou conciliando seu desenvolvimento ao meu trabalho, já que sou o único desenvolvedor dela, e não estou recebendo nada por isso. Mas vou manter uma janela constante de atualizações quanto ao seu desenvolvimento, e assim que tivermos uma data, eu anuncio nas minhas redes sociais, pode me acompanhar por lá (links no rodapé dessa página).",
     },
     {
-      question: "Quando os convites da lista de espera serão liberados?",
+      question: "E quanto vai custar uma assinatura da Tratto?",
       answer:
-        "O desenvolvimento da Tratto está acontecendo em ritmo acelerado e com arquitetura validada. Os primeiros lotes de convites serão liberados em ondas graduais nas próximas semanas para os inscritos da lista de espera que participarem da validação.",
+        "Por enquanto ainda não tenho valores exatos, mas posso garantir que a plataforma será acessível e pensada para a realidade das PMEs brasileiras, bem abaixo do custo de outros ERPs complexos. E você terá condições exclusivas se participar da lista de espera e da pesquisa de mercado!",
     },
   ];
 
