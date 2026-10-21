@@ -50,18 +50,41 @@ export class SupabaseWaitlistRepository implements WaitlistRepository {
       updated_at: now,
     };
 
-    const { data: record, error } = await supabase
+    // Tenta inserção direta
+    const { error: insertError } = await supabase
       .from('waitlist_leads')
-      .upsert(payload, { onConflict: 'email' })
-      .select()
-      .single();
+      .insert(payload);
 
-    if (error) {
-      console.error('[SupabaseWaitlistRepository] Erro ao persistir lead:', error);
-      throw new Error(`Falha ao salvar no banco de dados: ${error.message}`);
+    // Se o e-mail já existe (código PostgreSQL 23505 - unique_violation), atualiza os dados
+    if (insertError && insertError.code === '23505') {
+      const { error: updateError } = await supabase
+        .from('waitlist_leads')
+        .update(payload)
+        .eq('email', data.email);
+
+      if (updateError) {
+        console.error('[SupabaseWaitlistRepository] Erro ao atualizar lead existente:', updateError);
+        throw new Error(`Falha ao atualizar no banco de dados: ${updateError.message}`);
+      }
+    } else if (insertError) {
+      console.error('[SupabaseWaitlistRepository] Erro ao inserir lead:', insertError);
+      throw new Error(`Falha ao salvar no banco de dados: ${insertError.message}`);
     }
 
-    return record as LeadRecord;
+    return {
+      id: `lead-${Date.now()}`,
+      email: data.email,
+      consent: data.consent ?? true,
+      pain_points: data.pain_points ?? null,
+      suggestions: data.suggestions ?? null,
+      segment: data.segment ?? null,
+      contracts_volume: data.contracts_volume ?? null,
+      current_tool: data.current_tool ?? null,
+      interview_opt_in: data.interview_opt_in ?? false,
+      status: data.status ?? 'lead_capturado',
+      created_at: now,
+      updated_at: now,
+    };
   }
 
   async findLeadByEmail(email: string): Promise<LeadRecord | null> {
