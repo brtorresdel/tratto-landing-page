@@ -21,20 +21,20 @@ describe("SecuritySection (Spec 0002 - CA5: Segurança e Rastreabilidade)", () =
   it("deve renderizar os 4 pilares de integridade e segurança técnica", () => {
     render(<SecuritySection />);
 
-    // Pilar 1: Isolamento Multi-tenant
-    expect(screen.getByText(/Isolamento Multi-tenant/i)).toBeInTheDocument();
-    expect(screen.getByText(/organizationId validado no servidor/i)).toBeInTheDocument();
+    // Pilar 1: Individualidade (Superior Esquerdo)
+    expect(screen.getByText(/Individualidade/i)).toBeInTheDocument();
+    expect(screen.getByText(/identificação única/i)).toBeInTheDocument();
 
-    // Pilar 2: AuditLog Imutável
-    expect(screen.getByText(/Rastreabilidade Imutável/i)).toBeInTheDocument();
-    expect(screen.getByText(/AuditLog/i)).toBeInTheDocument();
+    // Pilar 2: Conformidade (Superior Direito)
+    expect(screen.getByText(/Conformidade/i)).toBeInTheDocument();
+    expect(screen.getByText(/Seguindo a LGPD a risca/i)).toBeInTheDocument();
 
-    // Pilar 3: Conformidade LGPD
-    expect(screen.getByText(/Conformidade com a LGPD/i)).toBeInTheDocument();
-    expect(screen.getByText(/sem rastreadores invasivos/i)).toBeInTheDocument();
+    // Pilar 3: Rastreabilidade (Inferior Esquerdo)
+    expect(screen.getByText(/Rastreabilidade/i)).toBeInTheDocument();
+    expect(screen.getByText(/histórico que pode ser consultado/i)).toBeInTheDocument();
 
-    // Pilar 4: Portabilidade sem Lock-in
-    expect(screen.getByText(/Portabilidade sem Lock-in/i)).toBeInTheDocument();
-    expect(screen.getByText(/CSV e XLSX/i)).toBeInTheDocument();
+    // Pilar 4: Portabilidade (Inferior Direito)
+    expect(screen.getByText(/Portabilidade/i)).toBeInTheDocument();
+    expect(screen.getByText(/exportar cadastros, contratos, vigências/i)).toBeInTheDocument();
   });
 });

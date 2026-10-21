@@ -11,10 +11,10 @@ export function SecuritySection() {
   const pillars = [
     {
       id: 0,
-      icon: ShieldCheck,
-      title: "Isolamento Multi-tenant",
+      icon: Lock,
+      title: "Conformidade",
       description:
-        "O identificador da sua empresa nunca é confiado a partir do navegador. Toda requisição valida a sessão (organizationId validado no servidor) e isola os dados estritamente através da camada db.forOrg.",
+        "Tanto os dados da sua empresa quanto os dados dos seus clientes estão seguros na Tratto. Seguindo a LGPD a risca e mantendo a integridade dos seus documentos. Sempre!",
       // Quadrante 0: Superior Direito (0° a 90°)
       path: "M 220 12 A 208 208 0 0 1 428 220 L 292 220 A 72 72 0 0 0 220 148 Z",
       translate: "translate(3.5, -3.5)",
@@ -24,10 +24,10 @@ export function SecuritySection() {
     },
     {
       id: 1,
-      icon: History,
-      title: "Rastreabilidade Imutável",
+      icon: FileSpreadsheet,
+      title: "Portabilidade",
       description:
-        "Toda ação relevante — emissão de contrato, aprovação formal de desconto por supervisor ou alteração de status — gera um registro somente-leitura em AuditLog com autoria, data/hora e IP.",
+        "Você poderá exportar cadastros, contratos, vigências e relatórios analíticos a qualquer momento em planilha, para tratar da forma que preferir.",
       // Quadrante 1: Inferior Direito (90° a 180°)
       path: "M 428 220 A 208 208 0 0 1 220 428 L 220 292 A 72 72 0 0 0 292 220 Z",
       translate: "translate(3.5, 3.5)",
@@ -37,10 +37,10 @@ export function SecuritySection() {
     },
     {
       id: 2,
-      icon: Lock,
-      title: "Conformidade com a LGPD",
+      icon: History,
+      title: "Rastreabilidade",
       description:
-        "Respeito integral à privacidade dos seus clientes e signatários, sem rastreadores invasivos de publicidade e com soft delete universal para resguardar a integridade jurídica.",
+        "Todas as ações relevantes — emissão de contrato, aprovações, assinaturas, aplicações de descontos e cláusulas adicionais — geram registros e um histórico que pode ser consultado, quando precisar.",
       // Quadrante 2: Inferior Esquerdo (180° a 270°)
       path: "M 220 428 A 208 208 0 0 1 12 220 L 148 220 A 72 72 0 0 0 220 292 Z",
       translate: "translate(-3.5, 3.5)",
@@ -50,10 +50,10 @@ export function SecuritySection() {
     },
     {
       id: 3,
-      icon: FileSpreadsheet,
-      title: "Portabilidade sem Lock-in",
+      icon: ShieldCheck,
+      title: "Individualidade",
       description:
-        "Seus contratos pertencem exclusivamente a você. Exporte cadastros, vigências e relatórios analíticos a qualquer instante em planilhas abertas (CSV e XLSX nativo).",
+        "Sua empresa tem uma identificação única e a Tratto respeita seus contratos. Todas as funcionalidades validam você e seus funcionários para que somente você e eles tenham acesso aos contratos da sua empresa.",
       // Quadrante 3: Superior Esquerdo (270° a 360°)
       path: "M 12 220 A 208 208 0 0 1 220 12 L 220 148 A 72 72 0 0 0 148 220 Z",
       translate: "translate(-3.5, -3.5)",
@@ -80,7 +80,7 @@ export function SecuritySection() {
         {/* PALCO CENTRALIZADO DO GRÁFICO COM BALÕES FLUTUANTES SOBREPOSTOS */}
         {/* =================================================================== */}
         <div className="mt-14 sm:mt-20 relative flex flex-col items-center justify-center min-h-[500px] lg:min-h-[580px]">
-          {/* Container Relativo do Gráfico + Balões (Ampliado para 500px / 540px) */}
+          {/* Container Relativo do Gráfico + Balões */}
           <div
             className="relative w-[340px] h-[340px] sm:w-[400px] sm:h-[400px] md:w-[460px] md:h-[460px] lg:w-[500px] lg:h-[500px] xl:w-[540px] xl:h-[540px] select-none flex items-center justify-center"
             onMouseLeave={() => setActiveSlice(null)}
@@ -111,7 +111,7 @@ export function SecuritySection() {
                       )}
                     />
 
-                    {/* Ícone com tamanho generoso, rigorosamente centralizado no quadrante */}
+                    {/* Ícone correspondente à posição, rigorosamente centralizado no quadrante */}
                     <foreignObject
                       x={pillar.iconCenter.x - 27}
                       y={pillar.iconCenter.y - 27}
