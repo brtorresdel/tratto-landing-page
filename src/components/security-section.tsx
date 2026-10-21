@@ -1,12 +1,33 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ShieldCheck, History, Lock, FileSpreadsheet } from "lucide-react";
 import clsx from "clsx";
 
 export function SecuritySection() {
   // Os balões começam escondidos (null) e aparecem no hover/toque do módulo
   const [activeSlice, setActiveSlice] = useState<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Fecha o balão automaticamente quando a seção de segurança sumir por completo da tela (ao rolar)
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+
+    if (typeof IntersectionObserver !== "undefined") {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (!entry.isIntersecting) {
+            setActiveSlice(null);
+          }
+        },
+        { threshold: 0 }
+      );
+
+      observer.observe(el);
+      return () => observer.disconnect();
+    }
+  }, []);
 
   const pillars = [
     {
@@ -64,7 +85,7 @@ export function SecuritySection() {
   ];
 
   return (
-    <section id="seguranca" className="pt-14 sm:pt-18 pb-10 sm:pb-14 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300 overflow-hidden">
+    <section ref={sectionRef} id="seguranca" className="pt-14 sm:pt-18 pb-10 sm:pb-14 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300 overflow-x-clip relative">
       <div className="mx-auto max-w-6xl px-4 sm:px-8 text-center">
         {/* Título Principal */}
         <h2 className="font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">
@@ -210,13 +231,8 @@ export function SecuritySection() {
             })}
           </div>
 
-          {/* Versão Mobile dos Balões (Aparece abaixo do gráfico ao toque, z-40) */}
-          <div
-            className={clsx(
-              "lg:hidden w-full max-w-sm mx-auto relative transition-all duration-300",
-              activeSlice !== null ? "mt-5 min-h-[130px]" : "mt-0 min-h-0"
-            )}
-          >
+          {/* Versão Mobile dos Balões (Aparece sobreposta abaixo do gráfico ao toque, z-40, sem empurrar a página) */}
+          <div className="lg:hidden absolute top-[94%] left-1/2 -translate-x-1/2 w-[calc(100vw-32px)] max-w-sm pointer-events-none z-40">
             {pillars.map((pillar) => {
               const isActive = activeSlice === pillar.id;
               if (!isActive) return null;
@@ -224,7 +240,7 @@ export function SecuritySection() {
               return (
                 <div
                   key={`mobile-${pillar.id}`}
-                  className="rounded-2xl border border-[var(--accent-primary)] bg-[var(--bg-card)] p-5 shadow-2xl ring-1 ring-[var(--accent-primary)]/20 text-left relative z-40 transition-all duration-300 animate-in fade-in slide-in-from-top-3"
+                  className="rounded-2xl border border-[var(--accent-primary)] bg-[var(--bg-card)] p-5 shadow-2xl ring-1 ring-[var(--accent-primary)]/20 text-left relative pointer-events-auto transition-all duration-300 animate-in fade-in slide-in-from-top-3"
                 >
                   {/* Pontinha do balão no mobile (apontando para cima em direção ao gráfico) */}
                   <div
