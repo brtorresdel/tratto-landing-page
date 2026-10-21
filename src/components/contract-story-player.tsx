@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import clsx from "clsx";
 import { User, CheckCircle, Clock, ShieldCheck, Sparkles, TrendingUp, Play, Pause, ChevronDown, Check, Loader2, FileText, Download, Send, ArrowRight, Mail, Copy, Landmark, Calendar } from "lucide-react";
 
@@ -40,6 +40,35 @@ export function ContractStoryPlayer() {
   const [resetKey, setResetKey] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const activeStep = STORY_STEPS[activeStepIndex];
+
+  const stageRef = useRef<HTMLDivElement>(null);
+  const [stageScale, setStageScale] = useState(1);
+
+  // Escala proporcional dinâmica para manter exatamente o layout desktop em tablet e mobile
+  useEffect(() => {
+    const el = stageRef.current;
+    if (!el) return;
+
+    const handleResize = () => {
+      const w = el.clientWidth;
+      if (w > 0) {
+        // Base do design desktop: 880px
+        const nextScale = Math.min(1, Math.max(0.25, (w - 16) / 880));
+        setStageScale(nextScale);
+      }
+    };
+
+    handleResize();
+
+    if (typeof ResizeObserver !== "undefined") {
+      const ro = new ResizeObserver(handleResize);
+      ro.observe(el);
+      return () => ro.disconnect();
+    } else {
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   // Temporizador de 25 segundos por etapa do Story (pausável)
   useEffect(() => {
@@ -124,15 +153,21 @@ export function ContractStoryPlayer() {
         </p>
       </div>
 
-      {/* 3. Palco Visual Interativo com Animações Específicas por Etapa em Tamanho Padronizado */}
-      <div className="mt-5 sm:mt-6 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-canvas)] p-4 sm:p-6 lg:p-8 h-[740px] sm:h-[720px] lg:h-[500px] flex items-center justify-center overflow-hidden relative">
+      {/* 3. Palco Visual Interativo com Animações Específicas por Etapa em Escala Proporcional */}
+      <div
+        ref={stageRef}
+        style={{
+          height: `${Math.round(470 * stageScale + 16)}px`,
+        }}
+        className="mt-5 sm:mt-6 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-canvas)] flex items-center justify-center overflow-hidden relative transition-[height] duration-200"
+      >
         {/* Botão de Controle de Pausa/Reprodução no Canto Superior Direito na cor do tema */}
         <button
           type="button"
           onClick={() => setIsPaused((prev) => !prev)}
           aria-label={isPaused ? "Retomar reprodução automática" : "Pausar reprodução automática"}
           title={isPaused ? "Retomar reprodução automática" : "Pausar reprodução automática"}
-          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg border border-[var(--border-strong)] bg-[var(--accent-surface)] text-[var(--accent-primary)] hover:opacity-85 active:scale-95 transition-all cursor-pointer shadow-xs"
+          className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 z-30 flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-lg border border-[var(--border-strong)] bg-[var(--accent-surface)] text-[var(--accent-primary)] hover:opacity-85 active:scale-95 transition-all cursor-pointer shadow-xs"
         >
           {isPaused ? (
             <Play className="h-4 w-4 fill-current ml-0.5" />
@@ -141,10 +176,21 @@ export function ContractStoryPlayer() {
           )}
         </button>
 
-        {activeStepIndex === 0 && <Step1ModelMarkers />}
-        {activeStepIndex === 1 && <Step2FillingCreation />}
-        {activeStepIndex === 2 && <Step3SendingSigning />}
-        {activeStepIndex === 3 && <Step4TimelineAdjustment />}
+        {/* Canvas de Layout Desktop com Escala Dinâmica Proporcional (880x470) */}
+        <div
+          style={{
+            width: "880px",
+            height: "470px",
+            transform: `scale(${stageScale})`,
+            transformOrigin: "center center",
+          }}
+          className="shrink-0 flex items-center justify-center select-none"
+        >
+          {activeStepIndex === 0 && <Step1ModelMarkers />}
+          {activeStepIndex === 1 && <Step2FillingCreation />}
+          {activeStepIndex === 2 && <Step3SendingSigning />}
+          {activeStepIndex === 3 && <Step4TimelineAdjustment />}
+        </div>
       </div>
 
       {/* 4. Controles de navegação centralizados na parte de baixo */}
@@ -357,26 +403,26 @@ function Step1ModelMarkers() {
   return (
     <div
       className={clsx(
-        "w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center transition-opacity duration-500 py-2",
+        "w-full max-w-5xl mx-auto grid grid-cols-12 gap-8 items-center transition-opacity duration-500 py-2",
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
-      {/* Lado Esquerdo (lg:col-span-7): Computador redigindo o contrato dentro do editor Tratto com linha divisória */}
-      <div className="lg:col-span-7 flex flex-col items-center justify-center border-b border-[var(--accent-primary)]/20 pb-6 lg:pb-0 lg:border-b-0 lg:border-r lg:border-[var(--accent-primary)]/30 lg:pr-8">
+      {/* Lado Esquerdo (col-span-7): Computador redigindo o contrato dentro do editor Tratto com linha divisória */}
+      <div className="col-span-7 flex flex-col items-center justify-center border-r border-[var(--accent-primary)]/30 pr-8">
         {/* Mockup do Computador (Tela / Monitor do Laptop com a cor do tema) */}
-        <div className="w-full max-w-[370px] sm:max-w-[430px] rounded-t-xl bg-[var(--accent-primary)] p-2 sm:p-2.5 shadow-xl border-2 border-[var(--border-strong)] text-left">
+        <div className="w-full max-w-[430px] rounded-t-xl bg-[var(--accent-primary)] p-2.5 shadow-xl border-2 border-[var(--border-strong)] text-left">
           {/* Câmera central */}
           <div className="h-1 w-1 rounded-full bg-white/40 mx-auto mb-1.5 ring-1 ring-black/10" />
 
           {/* Tela interna com altura fixa e rubrica fixa em preto no canto superior esquerdo */}
-          <div className="bg-[#FAF9F6] p-3 sm:p-3.5 rounded-b text-left h-[235px] sm:h-[240px] font-sans text-xs sm:text-[13px] text-gray-800 leading-relaxed overflow-hidden">
+          <div className="bg-[#FAF9F6] p-3.5 rounded-b text-left h-[240px] font-sans text-[13px] text-gray-800 leading-relaxed overflow-hidden">
             {/* Topo da tela: Rubrica da Tratto no canto superior esquerdo (fixa em preto) e Título do documento */}
             <div className="relative mb-2 pb-1.5 border-b border-gray-200 flex items-center justify-between">
               <div className="flex items-center gap-1.5 shrink-0" title="Plataforma Tratto">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 50 50"
-                  className="h-4 w-4 sm:h-5 sm:w-5 text-gray-900 stroke-current fill-none"
+                  className="h-5 w-5 text-gray-900 stroke-current fill-none"
                   role="img"
                   aria-label="Rubrica Tratto"
                 >
@@ -387,7 +433,7 @@ function Step1ModelMarkers() {
                 </svg>
               </div>
 
-              <div className="text-center font-bold uppercase tracking-wider text-gray-900 text-[11px] sm:text-xs truncate flex-1 px-2">
+              <div className="text-center font-bold uppercase tracking-wider text-gray-900 text-xs truncate flex-1 px-2">
                 {renderedTitle && (
                   <span>
                     {renderedTitle}
@@ -413,13 +459,13 @@ function Step1ModelMarkers() {
         </div>
 
         {/* Base do Laptop com a cor do tema */}
-        <div className="w-full max-w-[400px] sm:max-w-[460px] h-3 sm:h-3.5 bg-[var(--accent-primary)] brightness-95 rounded-b-xl border-t border-[var(--border-strong)]/40 shadow-md flex items-center justify-center relative -mt-0.5">
-          <div className="w-14 sm:w-16 h-1 bg-black/15 rounded-full" />
+        <div className="w-full max-w-[460px] h-3.5 bg-[var(--accent-primary)] brightness-95 rounded-b-xl border-t border-[var(--border-strong)]/40 shadow-md flex items-center justify-center relative -mt-0.5">
+          <div className="w-16 h-1 bg-black/15 rounded-full" />
         </div>
       </div>
 
-      {/* Lado Direito (lg:col-span-5): Tratto Rubrica e os modelos subindo sequencialmente */}
-      <div className="lg:col-span-5 flex flex-col items-center justify-center relative min-h-[350px] lg:pl-4">
+      {/* Lado Direito (col-span-5): Tratto Rubrica e os modelos subindo sequencialmente */}
+      <div className="col-span-5 flex flex-col items-center justify-center relative min-h-[350px] pl-4">
         {/* Logo Rubrica da Tratto maior e sem texto 'Plataforma Tratto' */}
         <div className="relative flex flex-col items-center select-none z-20">
           <div className="relative flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-2xl border-2 border-[var(--border-strong)] bg-white shadow-md p-3 transition-transform">
@@ -626,12 +672,12 @@ function Step2FillingCreation() {
   return (
     <div
       className={clsx(
-        "w-full max-w-4xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-center transition-opacity duration-500",
+        "w-full max-w-4xl mx-auto grid grid-cols-12 gap-6 items-center transition-opacity duration-500",
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
       {/* Painel Esquerdo: Formulário ordenado com Plano no topo, Cliente, Vigência + Mensalidade e Reajuste */}
-      <div className="lg:col-span-5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:p-5 shadow-xs text-left space-y-2.5">
+      <div className="col-span-5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:p-5 shadow-xs text-left space-y-2.5">
         {/* Campo 1: Plano Selecionado (Primeira opção vinculada ao modelo) */}
         <div className="relative">
           <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
@@ -764,7 +810,7 @@ function Step2FillingCreation() {
         </div>
 
         {/* Grid 2 colunas: Vigência e Mensalidade (Personalizável preenchida com base no plano) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <div className="grid grid-cols-2 gap-2.5">
           {/* Campo 3A: Vigência (Select) */}
           <div className="relative">
             <label className="text-[11px] font-mono uppercase tracking-wider text-[var(--text-muted)] font-semibold block mb-1">
@@ -941,7 +987,7 @@ function Step2FillingCreation() {
       </div>
 
       {/* Painel Direito: O modelo vinculado aparece assim que o plano é escolhido */}
-      <div className="lg:col-span-7 flex justify-center">
+      <div className="col-span-7 flex justify-center">
         {!planoIsFinished ? (
           <div className="w-full max-w-[360px] sm:max-w-[400px] rounded-md border-2 border-dashed border-[var(--border-subtle)] bg-[var(--bg-canvas)]/40 p-6 text-center min-h-[365px] sm:min-h-[375px] flex flex-col items-center justify-center gap-3 select-none transition-all">
             <div className="h-12 w-12 rounded-xl bg-[var(--accent-surface)] border border-[var(--border-strong)] flex items-center justify-center text-[var(--accent-primary)] animate-pulse">
@@ -1254,11 +1300,11 @@ function Step3SendingSigning() {
   return (
     <div
       className={clsx(
-        "w-full max-w-5xl mx-auto overflow-x-auto pb-2 custom-scrollbar transition-opacity duration-500 py-1",
+        "w-full h-full max-w-5xl mx-auto transition-opacity duration-500 overflow-hidden flex items-center justify-center",
         isFading ? "opacity-0" : "opacity-100"
       )}
     >
-      <div className="min-w-[880px] lg:min-w-full h-[400px] sm:h-[420px] relative flex items-center justify-between px-3 select-none">
+      <div className="w-[880px] h-[420px] relative flex items-center justify-between px-3 select-none">
         {/* =================================================================== */}
         {/* CAMADA 0 (z-0): LINHA DASHED EM MOVIMENTO PASSANDO POR TODOS OS PONTOS */}
         {/* =================================================================== */}
@@ -1673,11 +1719,11 @@ function Step4TimelineAdjustment() {
   ];
 
   return (
-    <div className="w-full h-full max-w-4xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-8 select-none py-2 px-2 overflow-hidden">
+    <div className="w-full h-full max-w-4xl mx-auto flex flex-row items-center justify-center gap-8 select-none py-2 px-2 overflow-hidden">
       {/* =================================================================== */}
       {/* 1. O CONTRATO (Lado Esquerdo / Centro) */}
       {/* =================================================================== */}
-      <div className="relative w-[235px] sm:w-[265px] h-[330px] sm:h-[355px] rounded-md border border-gray-200 bg-white p-3.5 shadow-md flex flex-col justify-between text-left shrink-0 transition-all duration-300">
+      <div className="relative w-[265px] h-[355px] rounded-md border border-gray-200 bg-white p-3.5 shadow-md flex flex-col justify-between text-left shrink-0 transition-all duration-300">
         <div>
           {/* Cabeçalho limpo com a rubrica oficial Tratto no canto superior direito */}
           <div className="flex items-center justify-between pb-1.5 border-b border-gray-100 mb-1.5 select-none">
@@ -1781,7 +1827,7 @@ function Step4TimelineAdjustment() {
       {/* =================================================================== */}
       {/* 2. PAINÉIS DE AUTOMAÇÃO (Lado Direito) */}
       {/* =================================================================== */}
-      <div className="flex flex-col justify-start gap-3.5 w-full max-w-[340px] sm:max-w-[370px] shrink-0 h-[330px] sm:h-[355px]">
+      <div className="flex flex-col justify-start gap-3.5 w-[370px] shrink-0 h-[355px]">
         {/* Painel da Linha do Tempo com Mini-Calendários */}
         <div className="rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 shadow-xs text-left">
           {/* Cabeçalho limpo sem o texto em cinza à direita */}
