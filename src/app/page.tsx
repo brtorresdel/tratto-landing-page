@@ -6,7 +6,6 @@ import { HowItWorksSection } from "@/components/how-it-works-section";
 import { AudienceSection } from "@/components/audience-section";
 import { SecuritySection } from "@/components/security-section";
 import { FaqSection } from "@/components/faq-section";
-import { PreWaitlistCta } from "@/components/pre-waitlist-cta";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function HomePage() {
@@ -20,7 +19,6 @@ export default function HomePage() {
         <AudienceSection />
         <SecuritySection />
         <FaqSection />
-        <PreWaitlistCta />
 
         {/* Marcador de destino suave para a lista de espera (será expandido na Spec 0003) */}
         <section id="lista-de-espera" className="py-12 text-center bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)]">

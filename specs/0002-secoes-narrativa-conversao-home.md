@@ -78,7 +78,7 @@ Apresentar a narrativa completa de valor da Tratto antes da captura de leads, de
 - **CA6.** A seção de FAQ (`#faq`) deve renderizar 5 perguntas frequentes em formato de accordion. Ao clicar em uma pergunta ou pressionar `Enter`/`Space`, o conteúdo da resposta deve expandir/recolher e o atributo `aria-expanded` deve alternar corretamente entre `true` e `false`.
 - **CA7.** Apenas um item do FAQ deve permanecer expandido por vez (comportamento accordion padrão), ou permitir alternância independente sem quebras de layout.
 - **CA8.** Todos os blocos com valores monetários ou numéricos devem utilizar a classe `tabular-nums` (`font-mono`).
-- **CA9.** No final da narrativa, deve existir um banner CTA de fechamento com botão que realiza scroll suave até `#lista-de-espera`.
+- **CA9.** Transição direta da narrativa: após a seção de FAQ (`#faq`), a página transita diretamente para o marcador do formulário da lista de espera (`#lista-de-espera`), eliminando blocos redundantes intermediários.
 
 ---
 
@@ -109,9 +109,8 @@ Apresentar a narrativa completa de valor da Tratto antes da captura de leads, de
 - `src/components/how-it-works-section.tsx`: Componente dos 4 passos sequenciais do ciclo contratual.
 - `src/components/audience-section.tsx`: Componente "Para quem é a Tratto" com exemplos de segmentos e dores resolvidas.
 - `src/components/security-section.tsx`: Componente institucional de segurança, auditoria e LGPD.
-- `src/components/faq-section.tsx`: Componente de FAQ interativo em accordion acessível.
-- `src/components/pre-waitlist-cta.tsx`: Banner de transição e fechamento da narrativa que aponta para `#lista-de-espera`.
-- `src/app/page.tsx`: Composição de todas as seções na ordem lógica da narrativa.
+- `src/components/faq-section.tsx`: Componente de FAQ interativo em accordion acessível no estilo lista unificada.
+- `src/app/page.tsx`: Composição de todas as seções na ordem lógica da narrativa com transição direta para `#lista-de-espera`.
 - `tests/unit/problem-banner.test.tsx`: Testes unitários da Carta do Dev, das métricas e card de ROI.
 - `tests/unit/how-it-works.test.tsx`: Testes unitários dos 4 passos do ciclo.
 - `tests/unit/faq-section.test.tsx`: Testes de interação do accordion (clique, teclado, aria-expanded).
