@@ -9,7 +9,7 @@ export function HowItWorksSection() {
         {/* Apresentação Oficial da Tratto: Logo com escala calibrada, ponto dinâmico e efeito flutuante leve */}
         <div className="flex justify-center">
           <h2 aria-label="Tratto" className="animate-float-gentle">
-            <TrattoWordmark className="inline-block h-16 w-auto sm:h-20 md:h-24 lg:h-28" />
+            <TrattoWordmark className="inline-block h-20 w-auto sm:h-24 md:h-26 lg:h-28" />
           </h2>
         </div>
 
