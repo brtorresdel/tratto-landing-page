@@ -24,6 +24,11 @@ export function FaqSection() {
         "Você poderá utilizar uma integração para calcular com base em índices oficiais (de forma gratuita — o Banco Central fornece esses dados abertamente para todos) ou também poderá configurar suas porcentagens de ajuste personalizadas. E também poderá configurar para não ter nenhum reajuste, se o contrato for temporário ou sobre um produto ou serviço com tempo determinado e sem renovação.",
     },
     {
+      question: "Preciso instalar algum aplicativo ou programa no meu computador?",
+      answer:
+        "Não! A Tratto roda 100% no seu navegador e na nuvem. Você só precisa acessar com o seu login para criar, aprovar e acompanhar seus contratos de qualquer lugar, seja no computador, tablet ou celular.",
+    },
+    {
       question: "Já tem uma data de lançamento?",
       answer:
         "A Tratto ainda está na sua fase inicial de desenvolvimento. Atualmente estou conciliando seu desenvolvimento ao meu trabalho, já que sou o único desenvolvedor dela, e não estou recebendo nada por isso. Mas vou manter uma janela constante de atualizações quanto ao seu desenvolvimento, e assim que tivermos uma data, eu anuncio nas minhas redes sociais, pode me acompanhar por lá (links no rodapé dessa página).",

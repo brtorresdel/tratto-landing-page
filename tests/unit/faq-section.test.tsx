@@ -16,11 +16,11 @@ describe("FaqSection (Spec 0002 - CA6 e CA7: FAQ Editorial em Accordion)", () =>
     ).toBeInTheDocument();
   });
 
-  it("deve renderizar 5 perguntas frequentes com botões acessíveis e aria-expanded inicial", () => {
+  it("deve renderizar as perguntas frequentes com botões acessíveis e aria-expanded inicial", () => {
     render(<FaqSection />);
 
     const buttons = screen.getAllByRole("button");
-    expect(buttons).toHaveLength(5);
+    expect(buttons).toHaveLength(6);
 
     // Verifica que todas iniciam recolhidas
     buttons.forEach((btn) => {
@@ -30,6 +30,7 @@ describe("FaqSection (Spec 0002 - CA6 e CA7: FAQ Editorial em Accordion)", () =>
     expect(screen.getByText(/Preciso trocar meus modelos de contrato em \.docx/i)).toBeInTheDocument();
     expect(screen.getByText(/A Tratto é uma plataforma de assinatura eletrônica própria\?/i)).toBeInTheDocument();
     expect(screen.getByText(/Como funciona o cálculo de reajuste\?/i)).toBeInTheDocument();
+    expect(screen.getByText(/Preciso instalar algum aplicativo ou programa no meu computador\?/i)).toBeInTheDocument();
     expect(screen.getByText(/Já tem uma data de lançamento\?/i)).toBeInTheDocument();
     expect(screen.getByText(/E quanto vai custar uma assinatura da Tratto\?/i)).toBeInTheDocument();
   });
