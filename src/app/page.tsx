@@ -6,6 +6,7 @@ import { HowItWorksSection } from "@/components/how-it-works-section";
 import { AudienceSection } from "@/components/audience-section";
 import { SecuritySection } from "@/components/security-section";
 import { FaqSection } from "@/components/faq-section";
+import { WaitlistSection } from "@/components/waitlist-section";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function HomePage() {
@@ -19,13 +20,7 @@ export default function HomePage() {
         <AudienceSection />
         <SecuritySection />
         <FaqSection />
-
-        {/* Marcador de destino suave para a lista de espera (será expandido na Spec 0003) */}
-        <section id="lista-de-espera" className="py-12 text-center bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)]">
-          <div className="mx-auto max-w-xl px-4 text-xs font-mono text-[var(--text-muted)]">
-            <span>● Formulário da Lista de Espera em Preparação (Spec 0003) ●</span>
-          </div>
-        </section>
+        <WaitlistSection />
       </main>
 
       {/* Seletor flutuante de temas pastéis (Sage Paper) */}
