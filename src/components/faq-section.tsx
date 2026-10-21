@@ -39,22 +39,16 @@ export function FaqSection() {
   };
 
   return (
-    <section id="faq" className="py-20 sm:py-28 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300">
+    <section id="faq" className="pt-14 sm:pt-18 pb-20 sm:pb-28 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300">
       <div className="mx-auto max-w-4xl px-4 sm:px-8 text-center">
-        {/* Eyebrow / Chapéu Editorial */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3.5 py-1 text-xs font-mono uppercase tracking-widest text-[var(--accent-primary)] shadow-2xs">
-          <span>●</span>
-          <span>Perguntas Frequentes</span>
-        </div>
-
         {/* Título Principal */}
-        <h2 className="mt-5 font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">
-          Respostas claras para quem quer entender como a Tratto funciona
+        <h2 className="font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">
+          Perguntas & Respostas
         </h2>
 
         {/* Subtítulo */}
         <p className="mt-4 mx-auto max-w-2xl text-sm sm:text-base text-[var(--text-muted)] leading-relaxed">
-          Tudo o que você precisa saber sobre o pré-lançamento, modelos de contrato, validade jurídica e funcionamento.
+          A Tratto ainda está na fase inicial de desenvolvimento, mas tem algumas perguntas que já posso adiantar aqui pra vocês:
         </p>
 
         {/* Lista Accordion do FAQ */}
