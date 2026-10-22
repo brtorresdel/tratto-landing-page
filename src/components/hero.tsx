@@ -7,10 +7,8 @@ import { HeroChaosPapers } from "./hero-chaos-papers";
 export function Hero() {
   return (
     <section className="relative overflow-hidden bg-[var(--bg-canvas)] transition-colors duration-300 min-h-[500px] sm:min-h-[620px] md:min-h-[660px] lg:min-h-[740px] xl:min-h-[840px] pt-28 sm:pt-32 md:pt-32 lg:pt-28 xl:pt-36 pb-20 sm:pb-32 md:pb-36 lg:pb-12 xl:pb-24 flex flex-col justify-start lg:justify-center">
-      {/* Artefatos Visuais de Contratos Aglomerados nos Cantos Inferiores */}
-      <HeroChaosPapers />
-
-      <div className="relative z-30 mx-auto max-w-4xl lg:max-w-3xl xl:max-w-5xl px-4 text-center sm:px-8">
+      {/* Conteúdo Central do Hero */}
+      <div className="relative z-10 mx-auto max-w-4xl lg:max-w-3xl xl:max-w-5xl px-4 text-center sm:px-8">
         {/* Frase Inicial / Problema em 3 linhas com escala ampliada */}
         <h2 className="mx-auto max-w-4xl tracking-tight lg:leading-snug">
           <span className="block text-xl font-medium text-[var(--text-main)] sm:text-3xl lg:text-[38px] lg:leading-tight">
@@ -34,6 +32,9 @@ export function Hero() {
           </h1>
         </div>
       </div>
+
+      {/* Artefatos Visuais de Contratos Aglomerados nos Cantos Inferiores */}
+      <HeroChaosPapers />
     </section>
   );
 }

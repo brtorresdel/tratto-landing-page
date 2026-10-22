@@ -6,6 +6,7 @@ import { submitWaitlistStep1Action, submitWaitlistStep2Action } from '@/app/acti
 import { WaitlistFormStep1 } from './waitlist-form-step1';
 import { WaitlistFormStep2 } from './waitlist-form-step2';
 import { WaitlistSuccess } from './waitlist-success';
+import { WaitlistContractPapers } from './waitlist-contract-papers';
 
 interface WaitlistSectionProps {
   initialStep?: 1 | 2 | 3;
@@ -63,9 +64,13 @@ export function WaitlistSection({
   return (
     <section
       id="lista-de-espera"
-      className="relative pt-14 sm:pt-18 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 border-t border-[var(--border-subtle)] bg-[var(--bg-canvas)] transition-colors duration-300"
+      className="relative overflow-hidden scroll-mt-20 sm:scroll-mt-24 pt-14 sm:pt-18 pb-32 sm:pb-40 md:pb-48 lg:pb-64 xl:pb-72 px-4 sm:px-6 lg:px-8 border-t border-[var(--border-subtle)] bg-[var(--bg-canvas)] transition-colors duration-300"
     >
-      <div className="mx-auto max-w-2xl">
+      {/* Contratos Estáticos de Background na Base da Seção (Camada z-0) */}
+      <WaitlistContractPapers />
+
+      {/* Conteúdo e Formulário em Primeiro Plano (Camada z-20) */}
+      <div className="relative z-20 mx-auto max-w-2xl">
         {/* Cabeçalho da Seção */}
         {step < 3 && (
           <div className="text-center space-y-4 mb-8 sm:mb-10">

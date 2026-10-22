@@ -108,7 +108,7 @@ export function WaitlistFormStep1({ onSubmit }: WaitlistFormStep1Props) {
             type="submit"
             disabled={isSubmitting}
             aria-busy={isSubmitting}
-            className="inline-flex h-13 sm:h-14 items-center justify-center gap-2.5 rounded-xl bg-[var(--accent-primary)] px-8 py-3.5 text-base font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-xs whitespace-nowrap shrink-0"
+            className="group inline-flex h-13 sm:h-14 items-center justify-center gap-2.5 rounded-full bg-[var(--accent-primary)] px-8 py-3.5 text-base font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
           >
             {isSubmitting ? (
               <>
@@ -118,7 +118,7 @@ export function WaitlistFormStep1({ onSubmit }: WaitlistFormStep1Props) {
             ) : (
               <>
                 <span>Entrar na lista</span>
-                <ArrowRight className="h-5 w-5" />
+                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
               </>
             )}
           </button>

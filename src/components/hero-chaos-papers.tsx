@@ -284,13 +284,13 @@ export function HeroChaosPapers() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute inset-0 select-none overflow-hidden"
+      className="pointer-events-none absolute inset-0 select-none overflow-hidden z-20"
     >
       <div className="relative mx-auto h-full max-w-7xl">
         {/* ========================================================= */}
         {/* PILHA ESQUERDA (DESKTOP - A PARTIR DE 1024px) */}
         {/* ========================================================= */}
-        <div className="group/left pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-6px] xl:bottom-0 left-0 md:left-[2%] lg:-left-6 xl:left-2 2xl:left-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden lg:block lg:scale-[0.72] xl:scale-100 origin-bottom-left transition-transform duration-300">
+        <div className="group/left pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-6px] xl:bottom-0 left-0 md:left-[2%] lg:-left-6 xl:left-2 2xl:left-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden lg:block lg:scale-[0.72] xl:scale-100 origin-bottom-left transition-transform duration-300 z-20 hover:z-30">
           {/* L1. DOCX em formato de Folha Vertical A4 */}
           <DocxPaperCard className="absolute bottom-2 lg:bottom-8 left-1 lg:left-4 xl:left-8 w-[260px] lg:w-[285px] min-h-[340px] lg:min-h-[370px] rotate-[-9deg] group-hover/left:rotate-[-14deg] group-hover/left:-translate-x-6 group-hover/left:-translate-y-6 group-hover/left:shadow-[0_16px_36px_rgba(14,18,16,0.1)] z-10" />
 
@@ -307,7 +307,7 @@ export function HeroChaosPapers() {
         {/* ========================================================= */}
         {/* PILHA DIREITA (DESKTOP - A PARTIR DE 1024px) */}
         {/* ========================================================= */}
-        <div className="group/right pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-6px] xl:bottom-0 right-0 md:right-[2%] lg:-right-6 xl:right-2 2xl:right-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden lg:block lg:scale-[0.72] xl:scale-100 origin-bottom-right transition-transform duration-300">
+        <div className="group/right pointer-events-auto absolute bottom-[-10px] md:bottom-[-6px] lg:bottom-[-6px] xl:bottom-0 right-0 md:right-[2%] lg:-right-6 xl:right-2 2xl:right-6 w-[420px] lg:w-[440px] xl:w-[540px] h-[390px] lg:h-[400px] xl:h-[440px] hidden lg:block lg:scale-[0.72] xl:scale-100 origin-bottom-right transition-transform duration-300 z-20 hover:z-30">
           {/* R1. PDF em formato de Folha Vertical A4 */}
           <PdfPaperCard className="absolute bottom-2 lg:bottom-8 right-1 lg:right-4 xl:right-8 w-[260px] lg:w-[285px] min-h-[340px] lg:min-h-[370px] rotate-[8deg] group-hover/right:rotate-[13deg] group-hover/right:translate-x-6 group-hover/right:-translate-y-6 group-hover/right:shadow-[0_16px_36px_rgba(14,18,16,0.1)] z-10" />
 
@@ -324,7 +324,7 @@ export function HeroChaosPapers() {
         {/* ========================================================= */}
         {/* COMPOSIÇÃO ESPALHADA NA BASE (TABLET E CELULAR - < 1024px) */}
         {/* ========================================================= */}
-        <div className="group/spread pointer-events-auto absolute bottom-[-25px] sm:bottom-[-45px] md:bottom-[-55px] left-1/2 -translate-x-1/2 w-[760px] sm:w-[840px] md:w-[940px] h-[250px] sm:h-[240px] md:h-[260px] block lg:hidden scale-[0.55] sm:scale-[0.66] md:scale-[0.85] origin-bottom transition-all duration-300">
+        <div className="group/spread pointer-events-auto absolute bottom-[-25px] sm:bottom-[-45px] md:bottom-[-55px] left-1/2 -translate-x-1/2 w-[760px] sm:w-[840px] md:w-[940px] h-[250px] sm:h-[240px] md:h-[260px] block lg:hidden scale-[0.55] sm:scale-[0.66] md:scale-[0.85] origin-bottom transition-all duration-300 z-20 hover:z-30">
           {/* 1. Folha DOCX */}
           <DocxPaperCard className="absolute bottom-0 sm:bottom-2 left-0 w-[240px] min-h-[300px] rotate-[-5deg] transition-all duration-500 ease-out group-hover/spread:-translate-y-8 md:group-hover/spread:-translate-y-10 z-10" />
 

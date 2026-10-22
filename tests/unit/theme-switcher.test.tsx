@@ -35,4 +35,19 @@ describe("ThemeSwitcher (Spec 0001 - Suporte Multitemas Sage Paper)", () => {
     expect(document.documentElement.getAttribute("data-theme")).toBe("sky");
     expect(localStorage.getItem("tratto-theme")).toBe("sky");
   });
+
+  it("deve abrir e fechar o menu vertical ao clicar no botão da paleta e com Escape", () => {
+    render(<ThemeSwitcher />);
+    const toggleBtn = screen.getByRole("button", { name: /alternar paleta de temas/i });
+    expect(toggleBtn).toBeInTheDocument();
+    expect(toggleBtn).toHaveAttribute("aria-expanded", "false");
+
+    // Clica para abrir
+    fireEvent.click(toggleBtn);
+    expect(toggleBtn).toHaveAttribute("aria-expanded", "true");
+
+    // Fecha com tecla Escape
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(toggleBtn).toHaveAttribute("aria-expanded", "false");
+  });
 });

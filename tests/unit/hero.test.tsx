@@ -11,7 +11,7 @@ describe("Componentes da Hero e Navbar (Spec 0001 - CA1, CA2, CA3, CA4)", () => 
     expect(screen.getByRole("banner")).toBeInTheDocument();
     expect(screen.getByAltText("Ícone Tratto")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Página Inicial da Tratto/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /entrar na lista/i })).toBeInTheDocument();
+    expect(screen.getAllByRole("link", { name: /entrar na lista/i }).length).toBeGreaterThanOrEqual(1);
   });
 
   it("CA2: Hero deve renderizar headline em 3 linhas com ênfase no itálico e logo com ponto dinâmico", () => {

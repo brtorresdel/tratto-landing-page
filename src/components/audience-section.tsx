@@ -71,7 +71,9 @@ export function AudienceSection() {
   ];
 
   return (
-    <section id="para-quem-e" className="py-20 sm:py-28 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300">
+    <section id="para-quem-e" className="relative scroll-mt-20 sm:scroll-mt-24 py-20 sm:py-28 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300">
+      {/* Âncora alternativa para #segmentos da barra de navegação */}
+      <span id="segmentos" className="absolute -top-24" aria-hidden="true" />
       <div className="mx-auto max-w-5xl px-4 sm:px-8 text-center">
         {/* Título Principal */}
         <h2 className="font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">

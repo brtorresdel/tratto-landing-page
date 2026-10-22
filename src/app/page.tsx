@@ -9,19 +9,21 @@ import { FaqSection } from "@/components/faq-section";
 import { WaitlistSection } from "@/components/waitlist-section";
 import { Footer } from "@/components/footer";
 import { ThemeSwitcher } from "@/components/theme-switcher";
+import { ScrollbarThemeSync } from "@/components/scrollbar-theme-sync";
 
 export default function HomePage() {
   return (
     <div className="flex min-h-screen flex-col bg-[var(--bg-canvas)] transition-colors duration-300">
+      <ScrollbarThemeSync />
       <Navbar />
-      <main className="flex-1">
+      <main id="conteudo-principal" tabIndex={-1} className="flex-1 focus:outline-none">
         <Hero />
         <ProblemBanner />
         <HowItWorksSection />
         <AudienceSection />
         <SecuritySection />
         <FaqSection />
-        <WaitlistSection initialStep={2} initialEmail="bruno@empresa.com.br" />
+        <WaitlistSection />
       </main>
 
       {/* Rodapé temporário estilizado (estilo Carta do Dev, tom suave) */}

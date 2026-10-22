@@ -270,7 +270,7 @@ export function WaitlistFormStep2({ email, onSubmit }: WaitlistFormStep2Props) {
           type="submit"
           disabled={isSubmitting}
           aria-busy={isSubmitting}
-          className="w-full flex items-center justify-center gap-2 rounded-lg bg-[var(--accent-primary)] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-xs"
+          className="w-full flex items-center justify-center gap-2 rounded-lg bg-[var(--accent-primary)] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-xs cursor-pointer"
         >
           {isSubmitting ? (
             <>

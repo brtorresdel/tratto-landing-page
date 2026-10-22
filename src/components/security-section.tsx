@@ -85,7 +85,7 @@ export function SecuritySection() {
   ];
 
   return (
-    <section ref={sectionRef} id="seguranca" className="pt-14 sm:pt-18 pb-10 sm:pb-14 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300 overflow-x-clip relative">
+    <section ref={sectionRef} id="seguranca" className="scroll-mt-20 sm:scroll-mt-24 pt-14 sm:pt-18 pb-10 sm:pb-14 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300 overflow-x-clip relative">
       <div className="mx-auto max-w-6xl px-4 sm:px-8 text-center">
         {/* Título Principal */}
         <h2 className="font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">

@@ -45,55 +45,55 @@ export function WaitlistSuccess({
         </p>
       </div>
 
-      {/* Opção Accordion com Chevron: Sobre a sua empresa... (opcional) */}
-      <div className="w-full max-w-xl mx-auto rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] overflow-hidden transition-all text-left shadow-2xs">
-        <button
-          type="button"
-          onClick={() => setIsExpanded(!isExpanded)}
-          aria-expanded={isExpanded}
-          className="w-full flex items-center justify-between p-4 sm:p-5 text-left transition-colors hover:bg-[var(--border-subtle)]/20 cursor-pointer select-none"
-        >
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] shrink-0">
-              <Building2 className="h-4 w-4" />
+      {/* Opção Accordion com Chevron OU Mensagem de Conclusão Final */}
+      {hasSubmittedOptional ? (
+        <div className="w-full max-w-xl mx-auto rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-4 sm:p-5 flex items-center justify-center gap-2.5 text-sm font-medium text-[var(--accent-primary)] shadow-2xs transition-all">
+          <CheckCircle2 className="h-5 w-5 shrink-0" />
+          <span>Respostas opcionais salvas com sucesso. Muito obrigado!</span>
+        </div>
+      ) : (
+        <div className="w-full max-w-xl mx-auto rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] overflow-hidden transition-all text-left shadow-2xs">
+          <button
+            type="button"
+            onClick={() => setIsExpanded(!isExpanded)}
+            aria-expanded={isExpanded}
+            className="w-full flex items-center justify-between p-4 sm:p-5 text-left transition-colors hover:bg-[var(--border-subtle)]/20 cursor-pointer select-none"
+          >
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] shrink-0">
+                <Building2 className="h-4 w-4" />
+              </div>
+              <span className="text-sm font-semibold text-[var(--text-main)]">
+                Sobre a sua empresa... <span className="text-xs text-[var(--text-muted)] font-normal font-mono">(opcional)</span>
+              </span>
             </div>
-            <span className="text-sm font-semibold text-[var(--text-main)]">
-              Sobre a sua empresa... <span className="text-xs text-[var(--text-muted)] font-normal font-mono">(opcional)</span>
-            </span>
-          </div>
-          <ChevronDown
-            className={clsx(
-              "h-5 w-5 text-[var(--accent-primary)] shrink-0 ml-2 transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)]",
-              isExpanded ? "rotate-180" : "rotate-0"
-            )}
-            strokeWidth={2.4}
-            aria-hidden="true"
-          />
-        </button>
+            <ChevronDown
+              className={clsx(
+                "h-5 w-5 text-[var(--accent-primary)] shrink-0 ml-2 transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                isExpanded ? "rotate-180" : "rotate-0"
+              )}
+              strokeWidth={2.4}
+              aria-hidden="true"
+            />
+          </button>
 
-        <div
-          className={clsx(
-            "grid transition-[grid-template-rows,opacity] duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] border-t border-[var(--border-subtle)] bg-[var(--bg-canvas)]/40",
-            isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-          )}
-        >
-          <div className="overflow-hidden">
-            <div className="p-4 sm:p-6">
-              {hasSubmittedOptional ? (
-                <div className="flex items-center gap-2.5 text-xs font-medium text-[var(--accent-primary)] py-3">
-                  <CheckCircle2 className="h-4 w-4 shrink-0" />
-                  <span>Respostas salvas com sucesso! Obrigado por ajudar a moldar a Tratto.</span>
-                </div>
-              ) : (
+          <div
+            className={clsx(
+              "grid transition-[grid-template-rows,opacity] duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] border-t border-[var(--border-subtle)] bg-[var(--bg-canvas)]/40",
+              isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+            )}
+          >
+            <div className="overflow-hidden">
+              <div className="p-4 sm:p-6">
                 <WaitlistFormStep2
                   email={email}
                   onSubmit={handleOptionalSubmit}
                 />
-              )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

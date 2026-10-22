@@ -45,7 +45,7 @@ export function FaqSection() {
   };
 
   return (
-    <section id="faq" className="pt-14 sm:pt-18 pb-20 sm:pb-28 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300">
+    <section id="faq" className="scroll-mt-20 sm:scroll-mt-24 pt-14 sm:pt-18 pb-20 sm:pb-28 bg-[var(--bg-canvas)] border-t border-[var(--border-subtle)] transition-colors duration-300">
       <div className="mx-auto max-w-4xl px-4 sm:px-8 text-center">
         {/* Título Principal */}
         <h2 className="font-serif text-3xl sm:text-5xl italic font-semibold text-[var(--text-main)] leading-tight tracking-tight">

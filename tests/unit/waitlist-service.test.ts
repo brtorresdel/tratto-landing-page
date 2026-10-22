@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { WaitlistService } from '@/lib/waitlist-service';
 import type { WaitlistRepository, LeadRecord } from '@/lib/waitlist-repository';
+import type { WaitlistNotifier } from '@/lib/waitlist-notifier';
 
 class InMemoryWaitlistRepository implements WaitlistRepository {
   public leads: LeadRecord[] = [];
@@ -44,11 +45,16 @@ class InMemoryWaitlistRepository implements WaitlistRepository {
 
 describe('WaitlistService', () => {
   let repository: InMemoryWaitlistRepository;
+  let notifier: WaitlistNotifier;
   let service: WaitlistService;
 
   beforeEach(() => {
     repository = new InMemoryWaitlistRepository();
-    service = new WaitlistService(repository);
+    notifier = {
+      notifyNewLead: vi.fn().mockResolvedValue({ success: true }),
+      notifyQualifiedLead: vi.fn().mockResolvedValue({ success: true }),
+    };
+    service = new WaitlistService(repository, notifier);
   });
 
   describe('captureStep1', () => {
@@ -70,6 +76,7 @@ describe('WaitlistService', () => {
       expect(saved.pain_points).toBe('Muitos contratos vencem sem aviso.');
       expect(saved.suggestions).toBe('Avisos por e-mail configuráveis.');
       expect(saved.status).toBe('lead_capturado');
+      expect(notifier.notifyNewLead).toHaveBeenCalledWith({ email: 'gestor@coworking.com.br' });
     });
 
     it('descarta silenciosamente spam de robô com honeypot sem persistir', async () => {
@@ -132,6 +139,13 @@ describe('WaitlistService', () => {
       expect(updated.current_tool).toBe('Word / DOCX');
       expect(updated.interview_opt_in).toBe(true);
       expect(updated.status).toBe('lead_qualificado');
+      expect(notifier.notifyQualifiedLead).toHaveBeenCalledWith(
+        expect.objectContaining({
+          email: 'diretor@escola.com.br',
+          segment: 'Escolas',
+          interviewOptIn: true,
+        })
+      );
     });
 
     it('cria o registro de forma resiliente mesmo se a Etapa 1 não tiver sido chamada previamente', async () => {

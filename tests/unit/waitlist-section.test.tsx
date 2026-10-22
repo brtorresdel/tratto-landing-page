@@ -115,7 +115,34 @@ describe('WaitlistSection (Spec 0003 - Formulário Lista de Espera em 2 Etapas)'
     });
 
     await waitFor(() => {
-      expect(screen.getByText(/Respostas salvas com sucesso!/i)).toBeInTheDocument();
+      expect(screen.getByText(/Respostas opcionais salvas com sucesso\. Muito obrigado!/i)).toBeInTheDocument();
+      expect(screen.queryByRole('button', { name: /Sobre a sua empresa\.\.\./i })).toBeNull();
     });
+  });
+
+  it('renderiza os contratos estáticos de background espalhados na base com dados 100% fictícios, rubrica preta, sem carimbos/paginação/tratto', () => {
+    const { container } = render(<WaitlistSection />);
+
+    // Container de background com aria-hidden e pointer-events-none na camada z-0
+    const bgContainer = container.querySelector('[aria-hidden="true"]');
+    expect(bgContainer).not.toBeNull();
+    expect(bgContainer).toHaveClass('pointer-events-none');
+    expect(bgContainer).toHaveClass('z-0');
+
+    // Clientes e dados 100% fictícios nos contratos estáticos (14 contratos)
+    expect(screen.getAllByText(/Alfa Coworking/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Exemplo & Associados/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Beta Tecnologia/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Modelo BPO Financeiro/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Simulação Cargas/i).length).toBeGreaterThan(0);
+
+    // Rubrica em preto
+    const rubricaSvg = container.querySelector('svg[aria-label="Rubrica Tratto"]');
+    expect(rubricaSvg).toHaveClass('text-black');
+
+    // Não deve conter a pílula .DOCX nem "Via registrada"
+    expect(screen.queryByText('.DOCX')).toBeNull();
+    expect(screen.queryByText('Via registrada')).toBeNull();
+    expect(screen.queryByText(/Pág\. 1/i)).toBeNull();
   });
 });

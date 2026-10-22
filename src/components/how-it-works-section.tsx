@@ -4,7 +4,7 @@ import { ContractStoryPlayer } from "./contract-story-player";
 
 export function HowItWorksSection() {
   return (
-    <section id="como-funciona" className="py-20 sm:py-28 bg-[var(--bg-canvas)] transition-colors duration-300">
+    <section id="como-funciona" className="scroll-mt-20 sm:scroll-mt-24 py-20 sm:py-28 bg-[var(--bg-canvas)] transition-colors duration-300">
       <div className="mx-auto max-w-5xl px-4 sm:px-8 text-center">
         {/* Apresentação Oficial da Tratto: Logo com escala calibrada, ponto dinâmico e efeito flutuante leve */}
         <div className="flex justify-center">

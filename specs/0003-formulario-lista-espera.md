@@ -122,14 +122,17 @@ Apresentar feedback acolhedor no padrão artesanal *Sage Paper*, proteção nati
 - `src/lib/waitlist-schema.ts`: Schemas Zod para Etapa 1 (`email`, `consent`, `painPoints`, `suggestions`, `honeypot`) e Etapa 2 (`segment`, `contractsVolume`, `currentTool`, `interviewOptIn`).
 - `src/lib/supabase.ts`: Instanciação segura do cliente Supabase para execução exclusiva no servidor.
 - `src/lib/waitlist-repository.ts`: Interface desacoplada e implementação Supabase do repositório de leads (`upsertLead`, `findLeadByEmail`). Permite injeção de repositório em memória para testes unitários sem chamadas externas.
-- `src/lib/waitlist-service.ts`: Serviço orquestrador de regras de negócio (validação de bot via honeypot, normalização de e-mail, upsert de lead e log resiliente de auditoria).
+- `src/lib/waitlist-service.ts`: Serviço orquestrador de regras de negócio (validação de bot via honeypot, normalização de e-mail, upsert de lead e acionamento de notificação resiliente).
+- `src/lib/waitlist-notifier.ts`: Notificador transacional via API REST nativa do Resend para disparo de alertas por e-mail em background com templates *Sage Paper*.
 - `src/app/actions/waitlist.ts`: Server Action do Next.js consumida pelo formulário (executa em ambiente Node/Serverless seguro).
 - `src/components/waitlist-section.tsx`: Componente principal da seção com estados de transição (Etapa 1 $\rightarrow$ Etapa 2 $\rightarrow$ Sucesso).
+- `src/components/waitlist-contract-papers.tsx`: Composição de contratos estáticos de background em curva de Bézier invertida com marcadores reativos ao tema.
 - `src/components/waitlist-form-step1.tsx` e `src/components/waitlist-form-step2.tsx`: Subcomponentes modulares e acessíveis.
-- `src/components/waitlist-success.tsx`: Card de confirmação editorial no padrão *Sage Paper*.
+- `src/components/waitlist-success.tsx`: Card de confirmação editorial com revelação progressiva e mensagem de conclusão.
 - `tests/unit/waitlist-schema.test.ts`: Testes unitários do schema Zod e sanitização de dados.
-- `tests/unit/waitlist-service.test.ts`: Testes unitários de regras de negócio, proteção contra bots (honeypot) e persistência com repositório em memória.
-- `tests/unit/waitlist-section.test.tsx`: Testes de componentes (renderização, transições, estados de erro e acessibilidade).
+- `tests/unit/waitlist-service.test.ts`: Testes unitários de regras de negócio, proteção contra bots (honeypot), persistência com repositório em memória e chamadas ao notificador.
+- `tests/unit/waitlist-notifier.test.ts`: Testes unitários do envio resiliente de e-mails via Resend.
+- `tests/unit/waitlist-section.test.tsx`: Testes de componentes (renderização, transições, estados de erro, acessibilidade e background de contratos).
 
 ---
 

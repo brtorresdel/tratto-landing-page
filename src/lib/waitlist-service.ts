@@ -3,6 +3,10 @@ import {
   type WaitlistRepository,
   SupabaseWaitlistRepository,
 } from './waitlist-repository';
+import {
+  type WaitlistNotifier,
+  ResendWaitlistNotifier,
+} from './waitlist-notifier';
 
 export interface Step1Result {
   success: boolean;
@@ -17,9 +21,11 @@ export interface Step2Result {
 
 export class WaitlistService {
   private repository: WaitlistRepository;
+  private notifier: WaitlistNotifier;
 
-  constructor(repository?: WaitlistRepository) {
+  constructor(repository?: WaitlistRepository, notifier?: WaitlistNotifier) {
     this.repository = repository || new SupabaseWaitlistRepository();
+    this.notifier = notifier || new ResendWaitlistNotifier();
   }
 
   async captureStep1(input: WaitlistStep1Input): Promise<Step1Result> {
@@ -37,6 +43,11 @@ export class WaitlistService {
         pain_points: input.painPoints || null,
         suggestions: input.suggestions || null,
         status: 'lead_capturado',
+      });
+
+      // Disparo resiliente de notificação por e-mail (não interrompe o fluxo em caso de falha)
+      this.notifier.notifyNewLead({ email: normalizedEmail }).catch((err) => {
+        console.error('[WaitlistService] Falha ao notificar novo lead por e-mail:', err);
       });
 
       return { success: true, simulated: false };
@@ -65,6 +76,21 @@ export class WaitlistService {
         interview_opt_in: input.interviewOptIn ?? false,
         status: 'lead_qualificado',
       });
+
+      // Disparo resiliente com os detalhes da qualificação
+      this.notifier
+        .notifyQualifiedLead({
+          email: normalizedEmail,
+          segment: input.segment,
+          contractsVolume: input.contractsVolume,
+          currentTool: input.currentTool,
+          painPoints: input.painPoints,
+          suggestions: input.suggestions,
+          interviewOptIn: input.interviewOptIn,
+        })
+        .catch((err) => {
+          console.error('[WaitlistService] Falha ao notificar lead qualificado por e-mail:', err);
+        });
 
       return { success: true };
     } catch (err: unknown) {

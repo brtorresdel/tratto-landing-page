@@ -71,7 +71,8 @@ export function ProblemBanner() {
   return (
     <section
       id="o-problema"
-      className="relative z-20 bg-[var(--accent-primary)] text-white transition-colors duration-300 shadow-[0_-16px_36px_rgba(14,18,16,0.14),0_16px_36px_rgba(14,18,16,0.14)] border-y border-white/15 py-20 sm:py-28"
+      data-dark-section="true"
+      className="relative scroll-mt-20 sm:scroll-mt-24 z-20 bg-[var(--accent-primary)] text-white transition-colors duration-300 shadow-[0_-16px_36px_rgba(14,18,16,0.14),0_16px_36px_rgba(14,18,16,0.14)] border-y border-white/15 py-20 sm:py-28"
     >
       <div className="mx-auto max-w-5xl px-4 sm:px-8">
         {/* ========================================================= */}
