@@ -7,7 +7,7 @@ import { Check, CheckCircle2, Loader2 } from 'lucide-react';
 interface WaitlistFormStep2Props {
   email: string;
   onSubmit: (data: WaitlistStep2Input) => Promise<{ success: boolean; error?: string }>;
-  onSkip: () => void;
+  onSkip?: () => void;
 }
 
 const SEGMENTS = [
@@ -28,7 +28,7 @@ const TOOLS = [
   'Outro',
 ];
 
-export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2Props) {
+export function WaitlistFormStep2({ email, onSubmit }: WaitlistFormStep2Props) {
   const [painPoints, setPainPoints] = useState('');
   const [suggestions, setSuggestions] = useState('');
   const [segment, setSegment] = useState<WaitlistStep2Input['segment'] | undefined>();
@@ -66,19 +66,6 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="border-b border-[var(--border-subtle)] pb-4">
-        <div className="flex items-center gap-2 text-xs font-mono font-medium text-[var(--accent-primary)] uppercase tracking-wider mb-1">
-          <CheckCircle2 className="h-4 w-4" />
-          <span>E-mail garantido na lista</span>
-        </div>
-        <h3 className="font-serif italic text-xl font-medium text-[var(--text-main)]">
-          Ajude a moldar a Tratto para o seu dia a dia
-        </h3>
-        <p className="text-xs text-[var(--text-muted)] mt-1">
-          Leva menos de 1 minuto e nos ajuda a calibrar os modelos e fluxos que você mais precisa.
-        </p>
-      </div>
-
       {error && (
         <div
           role="alert"
@@ -88,17 +75,14 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
         </div>
       )}
 
-      {/* Pergunta Opcional 1: Dores com Contratos */}
+      {/* Pergunta 1: Dores com Contratos */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <label
-            htmlFor="waitlist-step2-pain-points"
-            className="block text-sm font-medium text-[var(--text-main)]"
-          >
-            Quais são as suas maiores dores ou dificuldades com contratos no dia a dia da sua empresa?
-          </label>
-          <span className="text-xs text-[var(--text-muted)] font-mono">Opcional</span>
-        </div>
+        <label
+          htmlFor="waitlist-step2-pain-points"
+          className="block text-sm font-medium text-[var(--text-main)]"
+        >
+          Quais são as suas maiores dores ou dificuldades com contratos no dia a dia da sua empresa?
+        </label>
         <textarea
           id="waitlist-step2-pain-points"
           rows={3}
@@ -110,17 +94,14 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
         />
       </div>
 
-      {/* Pergunta Opcional 2: Sugestões de Evolução */}
+      {/* Pergunta 2: Sugestões de Evolução */}
       <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <label
-            htmlFor="waitlist-step2-suggestions"
-            className="block text-sm font-medium text-[var(--text-main)]"
-          >
-            O que não pode faltar na Tratto para ela ser perfeita para o seu negócio?
-          </label>
-          <span className="text-xs text-[var(--text-muted)] font-mono">Opcional</span>
-        </div>
+        <label
+          htmlFor="waitlist-step2-suggestions"
+          className="block text-sm font-medium text-[var(--text-main)]"
+        >
+          O que não pode faltar na Tratto para ela ser perfeita para o seu negócio?
+        </label>
         <textarea
           id="waitlist-step2-suggestions"
           rows={3}
@@ -132,7 +113,7 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
         />
       </div>
 
-      {/* Pergunta 1: Segmento */}
+      {/* Pergunta 3: Segmento */}
       <fieldset className="space-y-2">
         <legend className="text-sm font-medium text-[var(--text-main)]">
           Qual o seu segmento de atuação?
@@ -243,19 +224,19 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
               Toparia bater um papo de 20 minutos com o fundador?
             </span>
             <span className="text-xs text-[var(--text-muted)] leading-relaxed block">
-              Uma conversa informal para entender sua rotina a fundo. Em troca, você ganha acesso antecipado exclusivo e suporte direto.
+              Uma conversa para entender mais a fundo as dores da sua empresa quando o assunto é &apos;contratos&apos;. Se topar, te garanto uma promoção especial de lançamento!
             </span>
           </div>
         </label>
       </div>
 
-      {/* Botões de Ação */}
-      <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+      {/* Botão de Ação */}
+      <div className="pt-2">
         <button
           type="submit"
           disabled={isSubmitting}
           aria-busy={isSubmitting}
-          className="w-full sm:flex-1 flex items-center justify-center gap-2 rounded-lg bg-[var(--accent-primary)] px-6 py-3 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-xs"
+          className="w-full flex items-center justify-center gap-2 rounded-lg bg-[var(--accent-primary)] px-6 py-3.5 text-sm font-semibold text-white transition-all hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-xs"
         >
           {isSubmitting ? (
             <>
@@ -265,15 +246,6 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
           ) : (
             <span>Concluir cadastro</span>
           )}
-        </button>
-
-        <button
-          type="button"
-          onClick={onSkip}
-          disabled={isSubmitting}
-          className="w-full sm:w-auto px-4 py-3 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors text-center"
-        >
-          Prefiro responder depois
         </button>
       </div>
     </form>
