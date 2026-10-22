@@ -66,15 +66,15 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="border-b border-[var(--sage-border-subtle)] pb-4">
-        <div className="flex items-center gap-2 text-xs font-mono font-medium text-[var(--sage-accent-primary)] uppercase tracking-wider mb-1">
+      <div className="border-b border-[var(--border-subtle)] pb-4">
+        <div className="flex items-center gap-2 text-xs font-mono font-medium text-[var(--accent-primary)] uppercase tracking-wider mb-1">
           <CheckCircle2 className="h-4 w-4" />
           <span>E-mail garantido na lista</span>
         </div>
-        <h3 className="font-serif italic text-xl font-medium text-[var(--sage-text-primary)]">
+        <h3 className="font-serif italic text-xl font-medium text-[var(--text-main)]">
           Ajude a moldar a Tratto para o seu dia a dia
         </h3>
-        <p className="text-xs text-[var(--sage-text-secondary)] mt-1">
+        <p className="text-xs text-[var(--text-muted)] mt-1">
           Leva menos de 1 minuto e nos ajuda a calibrar os modelos e fluxos que você mais precisa.
         </p>
       </div>
@@ -93,11 +93,11 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
         <div className="flex items-center justify-between">
           <label
             htmlFor="waitlist-step2-pain-points"
-            className="block text-sm font-medium text-[var(--sage-text-primary)]"
+            className="block text-sm font-medium text-[var(--text-main)]"
           >
             Quais são as suas maiores dores ou dificuldades com contratos no dia a dia da sua empresa?
           </label>
-          <span className="text-xs text-[var(--sage-text-secondary)] font-mono">Opcional</span>
+          <span className="text-xs text-[var(--text-muted)] font-mono">Opcional</span>
         </div>
         <textarea
           id="waitlist-step2-pain-points"
@@ -106,7 +106,7 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
           placeholder="Ex: Demora para gerar minutas, contratos esquecidos sem reajuste de IPCA, falta de rastreio de assinaturas..."
           value={painPoints}
           onChange={(e) => setPainPoints(e.target.value)}
-          className="w-full rounded-lg border border-[var(--sage-border-subtle)] bg-[var(--sage-paper)] px-4 py-3 text-sm text-[var(--sage-text-primary)] placeholder-[var(--sage-text-secondary)]/60 transition-colors focus:border-[var(--sage-accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--sage-accent-primary)]/20"
+          className="w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-canvas)] px-4 py-3 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)]/60 transition-colors focus:border-[var(--accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/20"
         />
       </div>
 
@@ -115,11 +115,11 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
         <div className="flex items-center justify-between">
           <label
             htmlFor="waitlist-step2-suggestions"
-            className="block text-sm font-medium text-[var(--sage-text-primary)]"
+            className="block text-sm font-medium text-[var(--text-main)]"
           >
             O que não pode faltar na Tratto para ela ser perfeita para o seu negócio?
           </label>
-          <span className="text-xs text-[var(--sage-text-secondary)] font-mono">Opcional</span>
+          <span className="text-xs text-[var(--text-muted)] font-mono">Opcional</span>
         </div>
         <textarea
           id="waitlist-step2-suggestions"
@@ -128,13 +128,13 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
           placeholder="Ex: Integração nativa com emissor de boletos, alertas de vencimento com 30 dias por e-mail..."
           value={suggestions}
           onChange={(e) => setSuggestions(e.target.value)}
-          className="w-full rounded-lg border border-[var(--sage-border-subtle)] bg-[var(--sage-paper)] px-4 py-3 text-sm text-[var(--sage-text-primary)] placeholder-[var(--sage-text-secondary)]/60 transition-colors focus:border-[var(--sage-accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--sage-accent-primary)]/20"
+          className="w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-canvas)] px-4 py-3 text-sm text-[var(--text-main)] placeholder-[var(--text-muted)]/60 transition-colors focus:border-[var(--accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/20"
         />
       </div>
 
       {/* Pergunta 1: Segmento */}
       <fieldset className="space-y-2">
-        <legend className="text-sm font-medium text-[var(--sage-text-primary)]">
+        <legend className="text-sm font-medium text-[var(--text-main)]">
           Qual o seu segmento de atuação?
         </legend>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -145,8 +145,8 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
                 key={seg}
                 className={`flex items-center justify-between p-2.5 rounded-lg border text-xs font-medium cursor-pointer transition-all select-none ${
                   isSelected
-                    ? 'border-[var(--sage-accent-primary)] bg-[var(--sage-accent-primary)]/10 text-[var(--sage-accent-primary)] font-semibold'
-                    : 'border-[var(--sage-border-subtle)] bg-[var(--sage-paper)] text-[var(--sage-text-primary)] hover:border-[var(--sage-text-secondary)]/50'
+                    ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-semibold'
+                    : 'border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-main)] hover:border-[var(--text-muted)]/50'
                 }`}
               >
                 <span>{seg}</span>
@@ -158,7 +158,7 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
                   onChange={() => setSegment(seg)}
                   className="sr-only"
                 />
-                {isSelected && <Check className="h-3.5 w-3.5 text-[var(--sage-accent-primary)]" />}
+                {isSelected && <Check className="h-3.5 w-3.5 text-[var(--accent-primary)]" />}
               </label>
             );
           })}
@@ -167,7 +167,7 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
 
       {/* Pergunta 2: Volume de Contratos */}
       <fieldset className="space-y-2">
-        <legend className="text-sm font-medium text-[var(--sage-text-primary)]">
+        <legend className="text-sm font-medium text-[var(--text-main)]">
           Quantos contratos você costuma gerar por mês?
         </legend>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -178,8 +178,8 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
                 key={vol}
                 className={`flex items-center justify-center p-2.5 rounded-lg border text-xs font-medium cursor-pointer transition-all select-none ${
                   isSelected
-                    ? 'border-[var(--sage-accent-primary)] bg-[var(--sage-accent-primary)]/10 text-[var(--sage-accent-primary)] font-semibold'
-                    : 'border-[var(--sage-border-subtle)] bg-[var(--sage-paper)] text-[var(--sage-text-primary)] hover:border-[var(--sage-text-secondary)]/50'
+                    ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-semibold'
+                    : 'border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-main)] hover:border-[var(--text-muted)]/50'
                 }`}
               >
                 <span>{vol}</span>
@@ -199,7 +199,7 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
 
       {/* Pergunta 3: Ferramenta Atual */}
       <fieldset className="space-y-2">
-        <legend className="text-sm font-medium text-[var(--sage-text-primary)]">
+        <legend className="text-sm font-medium text-[var(--text-main)]">
           Qual ferramenta você usa hoje para fazer contratos?
         </legend>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -210,8 +210,8 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
                 key={tool}
                 className={`flex items-center justify-center text-center p-2.5 rounded-lg border text-xs font-medium cursor-pointer transition-all select-none ${
                   isSelected
-                    ? 'border-[var(--sage-accent-primary)] bg-[var(--sage-accent-primary)]/10 text-[var(--sage-accent-primary)] font-semibold'
-                    : 'border-[var(--sage-border-subtle)] bg-[var(--sage-paper)] text-[var(--sage-text-primary)] hover:border-[var(--sage-text-secondary)]/50'
+                    ? 'border-[var(--accent-primary)] bg-[var(--accent-primary)]/10 text-[var(--accent-primary)] font-semibold'
+                    : 'border-[var(--border-subtle)] bg-[var(--bg-card)] text-[var(--text-main)] hover:border-[var(--text-muted)]/50'
                 }`}
               >
                 <span>{tool}</span>
@@ -231,18 +231,18 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
 
       {/* Opt-in de Entrevista com o Fundador */}
       <div className="pt-2">
-        <label className="flex items-start gap-3 cursor-pointer select-none rounded-lg border border-[var(--sage-border-subtle)] bg-[var(--sage-paper)]/60 p-3.5 hover:border-[var(--sage-accent-primary)]/50 transition-colors">
+        <label className="flex items-start gap-3 cursor-pointer select-none rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] p-3.5 hover:border-[var(--accent-primary)]/50 transition-colors">
           <input
             type="checkbox"
             checked={interviewOptIn}
             onChange={(e) => setInterviewOptIn(e.target.checked)}
-            className="mt-1 h-4 w-4 rounded border-[var(--sage-border-subtle)] text-[var(--sage-accent-primary)] focus:ring-2 focus:ring-[var(--sage-accent-primary)]/20 accent-[var(--sage-accent-primary)]"
+            className="mt-1 h-4 w-4 rounded border-[var(--border-subtle)] text-[var(--accent-primary)] focus:ring-2 focus:ring-[var(--accent-primary)]/20 accent-[var(--accent-primary)]"
           />
           <div className="space-y-0.5">
-            <span className="text-xs font-medium text-[var(--sage-text-primary)] block">
+            <span className="text-xs font-medium text-[var(--text-main)] block">
               Toparia bater um papo de 20 minutos com o fundador?
             </span>
-            <span className="text-xs text-[var(--sage-text-secondary)] leading-relaxed block">
+            <span className="text-xs text-[var(--text-muted)] leading-relaxed block">
               Uma conversa informal para entender sua rotina a fundo. Em troca, você ganha acesso antecipado exclusivo e suporte direto.
             </span>
           </div>
@@ -255,7 +255,7 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
           type="submit"
           disabled={isSubmitting}
           aria-busy={isSubmitting}
-          className="w-full sm:flex-1 flex items-center justify-center gap-2 rounded-lg bg-[var(--sage-accent-primary)] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[var(--sage-accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--sage-accent-primary)]/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-xs"
+          className="w-full sm:flex-1 flex items-center justify-center gap-2 rounded-lg bg-[var(--accent-primary)] px-6 py-3 text-sm font-medium text-white transition-all hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-xs"
         >
           {isSubmitting ? (
             <>
@@ -271,7 +271,7 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
           type="button"
           onClick={onSkip}
           disabled={isSubmitting}
-          className="w-full sm:w-auto px-4 py-3 text-xs font-medium text-[var(--sage-text-secondary)] hover:text-[var(--sage-text-primary)] transition-colors text-center"
+          className="w-full sm:w-auto px-4 py-3 text-xs font-medium text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors text-center"
         >
           Prefiro responder depois
         </button>

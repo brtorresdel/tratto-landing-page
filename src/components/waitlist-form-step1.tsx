@@ -81,14 +81,9 @@ export function WaitlistFormStep1({ onSubmit }: WaitlistFormStep1Props) {
         </div>
       )}
 
-      {/* Texto de aviso legal / LGPD acima do campo */}
-      <p className="text-xs text-[var(--sage-text-secondary)] leading-relaxed">
-        Ao entrar na lista de espera, você concorda em receber comunicações sobre o pré-lançamento da Tratto e convite para reunião e testes (se quiser, é claro). Seus dados estão protegidos de acordo com a nossa política e a LGPD
-      </p>
-
       {/* Input de E-mail com Botão lado a lado */}
       <div className="space-y-2">
-        <div className="flex flex-col sm:flex-row items-stretch gap-2.5">
+        <div className="flex flex-col sm:flex-row items-stretch gap-3">
           <div className="flex-1 relative">
             <label htmlFor="waitlist-email" className="sr-only">
               Seu melhor e-mail profissional
@@ -105,7 +100,7 @@ export function WaitlistFormStep1({ onSubmit }: WaitlistFormStep1Props) {
               }}
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? 'waitlist-email-error' : undefined}
-              className="w-full rounded-lg border border-[var(--sage-border-subtle)] bg-[var(--sage-paper)] px-4 py-3 text-sm text-[var(--sage-text-primary)] placeholder-[var(--sage-text-secondary)]/60 transition-colors focus:border-[var(--sage-accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--sage-accent-primary)]/20"
+              className="w-full h-13 sm:h-14 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] px-5 py-3.5 text-base text-[var(--text-main)] placeholder-[var(--text-muted)]/60 transition-colors focus:border-[var(--accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/20 shadow-2xs"
             />
           </div>
 
@@ -113,17 +108,17 @@ export function WaitlistFormStep1({ onSubmit }: WaitlistFormStep1Props) {
             type="submit"
             disabled={isSubmitting}
             aria-busy={isSubmitting}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--sage-accent-primary)] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[var(--sage-accent-hover)] focus:outline-none focus:ring-2 focus:ring-[var(--sage-accent-primary)]/30 active:scale-[0.99] disabled:opacity-70 disabled:cursor-not-allowed shadow-xs whitespace-nowrap shrink-0"
+            className="inline-flex h-13 sm:h-14 items-center justify-center gap-2.5 rounded-xl bg-[var(--accent-primary)] px-8 py-3.5 text-base font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-xs whitespace-nowrap shrink-0"
           >
             {isSubmitting ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 className="h-5 w-5 animate-spin" />
                 <span>Entrando...</span>
               </>
             ) : (
               <>
                 <span>Entrar na lista</span>
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-5 w-5" />
               </>
             )}
           </button>
@@ -135,6 +130,11 @@ export function WaitlistFormStep1({ onSubmit }: WaitlistFormStep1Props) {
           </p>
         )}
       </div>
+
+      {/* Texto de aviso legal / LGPD abaixo do campo */}
+      <p className="text-xs text-[var(--text-muted)]/75 text-center leading-relaxed pt-1">
+        Ao entrar na lista de espera, você concorda em receber comunicações sobre o pré-lançamento da Tratto e convite para reunião e testes (se quiser, é claro). Seus dados estão protegidos de acordo com a nossa política e a LGPD
+      </p>
     </form>
   );
 }

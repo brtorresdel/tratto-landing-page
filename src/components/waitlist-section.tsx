@@ -63,23 +63,29 @@ export function WaitlistSection({
   return (
     <section
       id="lista-de-espera"
-      className="relative py-24 sm:py-32 px-4 sm:px-6 lg:px-8 border-t border-[var(--sage-border-subtle)] bg-[var(--sage-paper)]"
+      className="relative pt-14 sm:pt-18 pb-20 sm:pb-28 px-4 sm:px-6 lg:px-8 border-t border-[var(--border-subtle)] bg-[var(--bg-canvas)] transition-colors duration-300"
     >
       <div className="mx-auto max-w-2xl">
         {/* Cabeçalho da Seção */}
         {step < 3 && (
           <div className="text-center space-y-4 mb-8 sm:mb-10">
-            <h2 className="font-serif italic text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-[var(--sage-text-primary)]">
+            <h2 className="font-serif italic text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-[var(--text-main)]">
               Lista de Espera
             </h2>
-            <p className="text-sm sm:text-base text-[var(--sage-text-secondary)] w-full mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base text-[var(--text-muted)] w-full mx-auto leading-relaxed">
               Enquanto a Tratto ainda está em andamento, você pode se inscrever na lista de espera, não só pra acompanhar o andamento do projeto, mas também para receber o acesso antecipado à plataforma. Você também pode falar um pouco mais sobre a sua empresa (opcional) e, se quiser, podemos marcar um papo para falarmos mais sobre esse projeto (se topar o papo, eu te garanto uma promoção especial no lançamento, prometo)
             </p>
           </div>
         )}
 
         {/* Card Principal do Formulário */}
-        <div className="relative rounded-2xl border border-[var(--sage-border-subtle)] bg-[var(--sage-paper-card)] p-6 sm:p-10 shadow-sm transition-all">
+        <div
+          className={
+            step === 1
+              ? "relative transition-all"
+              : "relative rounded-2xl border border-[var(--border-subtle)] bg-[var(--bg-card)] p-6 sm:p-10 shadow-sm transition-all"
+          }
+        >
           {/* Renderização Condicional das Etapas */}
           {step === 1 && <WaitlistFormStep1 onSubmit={handleStep1Submit} />}
 
