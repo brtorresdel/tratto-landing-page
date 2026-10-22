@@ -72,8 +72,8 @@ export function WaitlistSection({
             <h2 className="font-serif italic text-3xl sm:text-4xl lg:text-5xl font-medium tracking-tight text-[var(--sage-text-primary)]">
               Lista de Espera
             </h2>
-            <p className="text-sm sm:text-base text-[var(--sage-text-secondary)] max-w-xl mx-auto leading-relaxed">
-              Enquanto a Tratto ainda está em andamento, você pode se inscrever na lista de espera, não só pra acompanhar o andamento do projeto, mas também para receber o acesso antecipado à plataforma. Você pode também falar um pouco mais sobre a sua empresa (opcional) e, se quiser, podemos marcar um papo para falarmos mais sobre esse projeto ( se topar o papo, eu te garanto uma promoção especial no lançamento, prometo)
+            <p className="text-sm sm:text-base text-[var(--sage-text-secondary)] w-full mx-auto leading-relaxed">
+              Enquanto a Tratto ainda está em andamento, você pode se inscrever na lista de espera, não só pra acompanhar o andamento do projeto, mas também para receber o acesso antecipado à plataforma. Você também pode falar um pouco mais sobre a sua empresa (opcional) e, se quiser, podemos marcar um papo para falarmos mais sobre esse projeto (se topar o papo, eu te garanto uma promoção especial no lançamento, prometo)
             </p>
           </div>
         )}
