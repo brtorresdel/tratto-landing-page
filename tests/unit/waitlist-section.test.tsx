@@ -10,8 +10,8 @@ describe('WaitlistSection (Spec 0003 - Formulário Lista de Espera em 2 Etapas)'
     expect(section).not.toBeNull();
 
     // Título editorial e subtítulo
-    expect(screen.getByRole('heading', { level: 2, name: /Entre na lista de espera/i })).toBeInTheDocument();
-    expect(screen.getByText(/Seja avisado no primeiro dia do pré-lançamento/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /^Lista de Espera$/i })).toBeInTheDocument();
+    expect(screen.getByText(/Enquanto a Tratto ainda está em andamento/i)).toBeInTheDocument();
 
     // Input obrigatório de e-mail
     const emailInput = screen.getByLabelText(/Seu melhor e-mail profissional/i);
