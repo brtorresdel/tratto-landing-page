@@ -89,15 +89,12 @@ export function WaitlistSection({
           {/* Renderização Condicional das Etapas */}
           {step === 1 && <WaitlistFormStep1 onSubmit={handleStep1Submit} />}
 
-          {step === 2 && (
-            <WaitlistFormStep2
+          {step >= 2 && (
+            <WaitlistSuccess
               email={capturedEmail}
-              onSubmit={handleStep2Submit}
-              onSkip={handleSkipStep2}
+              onOptionalSubmit={handleStep2Submit}
             />
           )}
-
-          {step === 3 && <WaitlistSuccess email={capturedEmail} />}
         </div>
       </div>
     </section>

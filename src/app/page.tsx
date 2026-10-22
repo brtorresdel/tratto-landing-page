@@ -20,7 +20,7 @@ export default function HomePage() {
         <AudienceSection />
         <SecuritySection />
         <FaqSection />
-        <WaitlistSection />
+        <WaitlistSection initialStep={2} initialEmail="bruno@empresa.com.br" />
       </main>
 
       {/* Seletor flutuante de temas pastéis (Sage Paper) */}

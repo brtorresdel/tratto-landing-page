@@ -38,7 +38,7 @@ describe('WaitlistSection (Spec 0003 - Formulário Lista de Espera em 2 Etapas)'
     });
   });
 
-  it('transiciona para a Etapa 2 de qualificação voluntária ao submeter a Etapa 1 com sucesso', async () => {
+  it('ao submeter a Etapa 1 com sucesso, exibe imediatamente a confirmação e a opção chevron Sobre a sua empresa', async () => {
     const mockOnStep1Submit = vi.fn().mockResolvedValue({ success: true });
     render(<WaitlistSection onStep1Submit={mockOnStep1Submit} />);
 
@@ -57,38 +57,27 @@ describe('WaitlistSection (Spec 0003 - Formulário Lista de Espera em 2 Etapas)'
       );
     });
 
-    // Deve transicionar para a Etapa 2
-    await waitFor(() => {
-      expect(screen.getByText(/Ajude a moldar a Tratto para o seu dia a dia/i)).toBeInTheDocument();
-      // Perguntas opcionais de dores e sugestões agora na Etapa 2
-      expect(
-        screen.getByLabelText(/Quais são as suas maiores dores ou dificuldades com contratos/i)
-      ).toBeInTheDocument();
-      expect(
-        screen.getByLabelText(/O que não pode faltar na Tratto para ela ser perfeita/i)
-      ).toBeInTheDocument();
-      expect(screen.getByText(/Qual o seu segmento de atuação\?/i)).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /Concluir cadastro/i })).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /Prefiro responder depois/i })).toBeInTheDocument();
-    });
-  });
-
-  it('permite pular a Etapa 2 e avançar para o estado de confirmação e agradecimento final', async () => {
-    render(<WaitlistSection initialStep={2} initialEmail="gestor@clinica.com.br" />);
-
-    expect(screen.getByText(/Ajude a moldar a Tratto para o seu dia a dia/i)).toBeInTheDocument();
-
-    const skipBtn = screen.getByRole('button', { name: /Prefiro responder depois/i });
-    fireEvent.click(skipBtn);
-
+    // Deve exibir a confirmação imediatamente
     await waitFor(() => {
       expect(screen.getByText(/Você está na lista de espera!/i)).toBeInTheDocument();
       expect(screen.getByText('gestor@clinica.com.br')).toBeInTheDocument();
-      expect(screen.getByText(/assim que o acesso for liberado\./i)).toBeInTheDocument();
+      expect(screen.getByText(/Sobre a sua empresa\.\.\./i)).toBeInTheDocument();
+    });
+
+    // Clicando na opção chevron, expande as perguntas opcionais
+    const accordionBtn = screen.getByRole('button', { name: /Sobre a sua empresa\.\.\./i });
+    fireEvent.click(accordionBtn);
+
+    await waitFor(() => {
+      expect(
+        screen.getByLabelText(/Quais são as suas maiores dores ou dificuldades com contratos/i)
+      ).toBeInTheDocument();
+      expect(screen.getByText(/Qual o seu segmento de atuação\?/i)).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /Concluir cadastro/i })).toBeInTheDocument();
     });
   });
 
-  it('ao preencher e submeter a Etapa 2, envia os dados de qualificação e exibe o estado de confirmação', async () => {
+  it('permite abrir o accordion e enviar as respostas opcionais da empresa', async () => {
     const mockOnStep2Submit = vi.fn().mockResolvedValue({ success: true });
     render(
       <WaitlistSection
@@ -97,6 +86,16 @@ describe('WaitlistSection (Spec 0003 - Formulário Lista de Espera em 2 Etapas)'
         onStep2Submit={mockOnStep2Submit}
       />
     );
+
+    expect(screen.getByText(/Você está na lista de espera!/i)).toBeInTheDocument();
+
+    // Abre o accordion
+    const accordionBtn = screen.getByRole('button', { name: /Sobre a sua empresa\.\.\./i });
+    fireEvent.click(accordionBtn);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Qual o seu segmento de atuação\?/i)).toBeInTheDocument();
+    });
 
     // Clica no segmento "Coworking"
     const coworkingOption = screen.getByRole('radio', { name: /Coworking/i });
@@ -116,7 +115,7 @@ describe('WaitlistSection (Spec 0003 - Formulário Lista de Espera em 2 Etapas)'
     });
 
     await waitFor(() => {
-      expect(screen.getByText(/Você está na lista de espera!/i)).toBeInTheDocument();
+      expect(screen.getByText(/Respostas salvas com sucesso!/i)).toBeInTheDocument();
     });
   });
 });
