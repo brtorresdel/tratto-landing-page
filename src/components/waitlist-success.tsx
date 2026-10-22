@@ -1,9 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import clsx from 'clsx';
 import type { WaitlistStep2Input } from '@/lib/waitlist-schema';
 import { WaitlistFormStep2 } from './waitlist-form-step2';
-import { CheckCircle, ChevronDown, Building2, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { ChevronDown, Building2, CheckCircle2 } from 'lucide-react';
 
 interface WaitlistSuccessProps {
   email: string;
@@ -61,27 +62,37 @@ export function WaitlistSuccess({
             </span>
           </div>
           <ChevronDown
-            className={`h-5 w-5 text-[var(--text-muted)] shrink-0 ml-2 transition-transform duration-300 ${
-              isExpanded ? 'rotate-180' : ''
-            }`}
+            className={clsx(
+              "h-5 w-5 text-[var(--accent-primary)] shrink-0 ml-2 transition-transform duration-350 ease-[cubic-bezier(0.16,1,0.3,1)]",
+              isExpanded ? "rotate-180" : "rotate-0"
+            )}
+            strokeWidth={2.4}
+            aria-hidden="true"
           />
         </button>
 
-        {isExpanded && (
-          <div className="p-4 sm:p-6 border-t border-[var(--border-subtle)] bg-[var(--bg-canvas)]/40">
-            {hasSubmittedOptional ? (
-              <div className="flex items-center gap-2.5 text-xs font-medium text-[var(--accent-primary)] py-3">
-                <CheckCircle2 className="h-4 w-4 shrink-0" />
-                <span>Respostas salvas com sucesso! Obrigado por ajudar a moldar a Tratto.</span>
-              </div>
-            ) : (
-              <WaitlistFormStep2
-                email={email}
-                onSubmit={handleOptionalSubmit}
-              />
-            )}
+        <div
+          className={clsx(
+            "grid transition-[grid-template-rows,opacity] duration-350 ease-[cubic-bezier(0.16,1,0.3,1)] border-t border-[var(--border-subtle)] bg-[var(--bg-canvas)]/40",
+            isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+          )}
+        >
+          <div className="overflow-hidden">
+            <div className="p-4 sm:p-6">
+              {hasSubmittedOptional ? (
+                <div className="flex items-center gap-2.5 text-xs font-medium text-[var(--accent-primary)] py-3">
+                  <CheckCircle2 className="h-4 w-4 shrink-0" />
+                  <span>Respostas salvas com sucesso! Obrigado por ajudar a moldar a Tratto.</span>
+                </div>
+              ) : (
+                <WaitlistFormStep2
+                  email={email}
+                  onSubmit={handleOptionalSubmit}
+                />
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

@@ -32,8 +32,10 @@ export function WaitlistFormStep2({ email, onSubmit }: WaitlistFormStep2Props) {
   const [painPoints, setPainPoints] = useState('');
   const [suggestions, setSuggestions] = useState('');
   const [segment, setSegment] = useState<WaitlistStep2Input['segment'] | undefined>();
+  const [segmentOther, setSegmentOther] = useState('');
   const [contractsVolume, setContractsVolume] = useState<WaitlistStep2Input['contractsVolume'] | undefined>();
   const [currentTool, setCurrentTool] = useState<string>('');
+  const [toolOther, setToolOther] = useState('');
   const [interviewOptIn, setInterviewOptIn] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,14 +45,24 @@ export function WaitlistFormStep2({ email, onSubmit }: WaitlistFormStep2Props) {
     setIsSubmitting(true);
     setError(null);
 
+    const finalSegment =
+      segment === 'Outro' && segmentOther.trim()
+        ? `Outro: ${segmentOther.trim()}`
+        : segment;
+
+    const finalTool =
+      currentTool === 'Outro' && toolOther.trim()
+        ? `Outro: ${toolOther.trim()}`
+        : currentTool.trim() || undefined;
+
     try {
       const res = await onSubmit({
         email,
         painPoints: painPoints.trim() || undefined,
         suggestions: suggestions.trim() || undefined,
-        segment,
+        segment: finalSegment,
         contractsVolume,
-        currentTool: currentTool.trim() || undefined,
+        currentTool: finalTool,
         interviewOptIn,
       });
 
@@ -144,6 +156,17 @@ export function WaitlistFormStep2({ email, onSubmit }: WaitlistFormStep2Props) {
             );
           })}
         </div>
+        {segment === 'Outro' && (
+          <div className="pt-2 animate-in fade-in-50 duration-200">
+            <input
+              type="text"
+              placeholder="Qual o seu segmento de atuação?"
+              value={segmentOther}
+              onChange={(e) => setSegmentOther(e.target.value)}
+              className="w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3.5 py-2.5 text-xs text-[var(--text-main)] placeholder-[var(--text-muted)]/60 focus:border-[var(--accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/20 transition-all shadow-2xs"
+            />
+          </div>
+        )}
       </fieldset>
 
       {/* Pergunta 2: Volume de Contratos */}
@@ -208,6 +231,17 @@ export function WaitlistFormStep2({ email, onSubmit }: WaitlistFormStep2Props) {
             );
           })}
         </div>
+        {currentTool === 'Outro' && (
+          <div className="pt-2 animate-in fade-in-50 duration-200">
+            <input
+              type="text"
+              placeholder="Qual ferramenta você utiliza hoje?"
+              value={toolOther}
+              onChange={(e) => setToolOther(e.target.value)}
+              className="w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-card)] px-3.5 py-2.5 text-xs text-[var(--text-main)] placeholder-[var(--text-muted)]/60 focus:border-[var(--accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/20 transition-all shadow-2xs"
+            />
+          </div>
+        )}
       </fieldset>
 
       {/* Opt-in de Entrevista com o Fundador */}

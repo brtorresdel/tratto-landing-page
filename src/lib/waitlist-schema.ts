@@ -53,7 +53,9 @@ export const waitlistStep2Schema = z.object({
     .or(z.literal(''))
     .transform((val) => (val && val.length > 0 ? val : undefined)),
   segment: z
-    .enum(['Coworking', 'Advocacia', 'Academias', 'Escolas', 'Contabilidade', 'Outro'])
+    .string()
+    .trim()
+    .max(120)
     .optional(),
   contractsVolume: z
     .enum(['< 5', '5-20', '20-50', '> 50'])
@@ -61,7 +63,7 @@ export const waitlistStep2Schema = z.object({
   currentTool: z
     .string()
     .trim()
-    .max(100)
+    .max(120)
     .optional(),
   interviewOptIn: z.boolean().optional().default(false),
 });

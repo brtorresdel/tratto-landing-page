@@ -7,6 +7,7 @@ import { AudienceSection } from "@/components/audience-section";
 import { SecuritySection } from "@/components/security-section";
 import { FaqSection } from "@/components/faq-section";
 import { WaitlistSection } from "@/components/waitlist-section";
+import { Footer } from "@/components/footer";
 import { ThemeSwitcher } from "@/components/theme-switcher";
 
 export default function HomePage() {
@@ -22,6 +23,9 @@ export default function HomePage() {
         <FaqSection />
         <WaitlistSection initialStep={2} initialEmail="bruno@empresa.com.br" />
       </main>
+
+      {/* Rodapé temporário estilizado (estilo Carta do Dev, tom suave) */}
+      <Footer />
 
       {/* Seletor flutuante de temas pastéis (Sage Paper) */}
       <ThemeSwitcher />
