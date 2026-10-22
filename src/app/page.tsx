@@ -26,7 +26,7 @@ export default function HomePage() {
         <WaitlistSection />
       </main>
 
-      {/* Rodapé temporário estilizado (estilo Carta do Dev, tom suave) */}
+      {/* Rodapé editorial definitivo (Sage Paper) */}
       <Footer />
 
       {/* Seletor flutuante de temas pastéis (Sage Paper) */}
