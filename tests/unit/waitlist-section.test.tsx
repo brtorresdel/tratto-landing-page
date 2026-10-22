@@ -4,7 +4,7 @@ import React from 'react';
 import { WaitlistSection } from '@/components/waitlist-section';
 
 describe('WaitlistSection (Spec 0003 - Formulário Lista de Espera em 2 Etapas)', () => {
-  it('renderiza a seção #lista-de-espera com título editorial, campos da Etapa 1 e consentimento LGPD', () => {
+  it('renderiza a seção #lista-de-espera com título editorial, input de e-mail, aviso LGPD e botão', () => {
     const { container } = render(<WaitlistSection />);
     const section = container.querySelector('section#lista-de-espera');
     expect(section).not.toBeNull();
@@ -13,39 +13,28 @@ describe('WaitlistSection (Spec 0003 - Formulário Lista de Espera em 2 Etapas)'
     expect(screen.getByRole('heading', { level: 2, name: /^Lista de Espera$/i })).toBeInTheDocument();
     expect(screen.getByText(/Enquanto a Tratto ainda está em andamento/i)).toBeInTheDocument();
 
+    // Aviso LGPD acima do campo
+    expect(
+      screen.getByText(/Ao entrar na lista de espera, você concorda em receber comunicações/i)
+    ).toBeInTheDocument();
+
     // Input obrigatório de e-mail
     const emailInput = screen.getByLabelText(/Seu melhor e-mail profissional/i);
     expect(emailInput).toBeInTheDocument();
     expect(emailInput).toHaveAttribute('type', 'email');
 
-    // Dois campos abertos opcionais
-    expect(
-      screen.getByLabelText(/Quais são as suas maiores dores ou dificuldades com contratos/i)
-    ).toBeInTheDocument();
-    expect(
-      screen.getByLabelText(/O que não pode faltar na Tratto para ela ser perfeita/i)
-    ).toBeInTheDocument();
-
-    // Checkbox LGPD
-    const consentCheckbox = screen.getByRole('checkbox', {
-      name: /Concordo em receber comunicações sobre o pré-lançamento da Tratto/i,
-    });
-    expect(consentCheckbox).toBeInTheDocument();
-    expect(consentCheckbox).not.toBeChecked();
-
     // Botão de envio
-    expect(screen.getByRole('button', { name: /Garantir meu acesso antecipado/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Entrar na lista/i })).toBeInTheDocument();
   });
 
-  it('exibe erros inline se tentar enviar sem e-mail válido ou sem marcar o consentimento', async () => {
+  it('exibe erro inline se tentar enviar sem e-mail válido', async () => {
     render(<WaitlistSection />);
 
-    const submitBtn = screen.getByRole('button', { name: /Garantir meu acesso antecipado/i });
+    const submitBtn = screen.getByRole('button', { name: /Entrar na lista/i });
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
       expect(screen.getByText(/Informe um endereço de e-mail válido\./i)).toBeInTheDocument();
-      expect(screen.getByText(/É necessário concordar com os termos para continuar\./i)).toBeInTheDocument();
     });
   });
 
@@ -54,13 +43,9 @@ describe('WaitlistSection (Spec 0003 - Formulário Lista de Espera em 2 Etapas)'
     render(<WaitlistSection onStep1Submit={mockOnStep1Submit} />);
 
     const emailInput = screen.getByLabelText(/Seu melhor e-mail profissional/i);
-    const consentCheckbox = screen.getByRole('checkbox', {
-      name: /Concordo em receber comunicações sobre o pré-lançamento da Tratto/i,
-    });
-    const submitBtn = screen.getByRole('button', { name: /Garantir meu acesso antecipado/i });
+    const submitBtn = screen.getByRole('button', { name: /Entrar na lista/i });
 
     fireEvent.change(emailInput, { target: { value: 'gestor@clinica.com.br' } });
-    fireEvent.click(consentCheckbox);
     fireEvent.click(submitBtn);
 
     await waitFor(() => {
@@ -75,6 +60,13 @@ describe('WaitlistSection (Spec 0003 - Formulário Lista de Espera em 2 Etapas)'
     // Deve transicionar para a Etapa 2
     await waitFor(() => {
       expect(screen.getByText(/Ajude a moldar a Tratto para o seu dia a dia/i)).toBeInTheDocument();
+      // Perguntas opcionais de dores e sugestões agora na Etapa 2
+      expect(
+        screen.getByLabelText(/Quais são as suas maiores dores ou dificuldades com contratos/i)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByLabelText(/O que não pode faltar na Tratto para ela ser perfeita/i)
+      ).toBeInTheDocument();
       expect(screen.getByText(/Qual o seu segmento de atuação\?/i)).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /Concluir cadastro/i })).toBeInTheDocument();
       expect(screen.getByRole('button', { name: /Prefiro responder depois/i })).toBeInTheDocument();

@@ -8,6 +8,7 @@ export const waitlistStep1Schema = z.object({
     .email('Informe um endereço de e-mail válido.'),
   consent: z
     .boolean()
+    .default(true)
     .refine((val) => val === true, {
       message: 'É necessário concordar com os termos para continuar.',
     }),
@@ -37,6 +38,20 @@ export const waitlistStep2Schema = z.object({
     .trim()
     .toLowerCase()
     .email('Informe um endereço de e-mail válido.'),
+  painPoints: z
+    .string()
+    .trim()
+    .max(1500, 'Texto muito longo (máximo de 1500 caracteres).')
+    .optional()
+    .or(z.literal(''))
+    .transform((val) => (val && val.length > 0 ? val : undefined)),
+  suggestions: z
+    .string()
+    .trim()
+    .max(1500, 'Texto muito longo (máximo de 1500 caracteres).')
+    .optional()
+    .or(z.literal(''))
+    .transform((val) => (val && val.length > 0 ? val : undefined)),
   segment: z
     .enum(['Coworking', 'Advocacia', 'Academias', 'Escolas', 'Contabilidade', 'Outro'])
     .optional(),

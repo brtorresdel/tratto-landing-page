@@ -29,6 +29,8 @@ const TOOLS = [
 ];
 
 export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2Props) {
+  const [painPoints, setPainPoints] = useState('');
+  const [suggestions, setSuggestions] = useState('');
   const [segment, setSegment] = useState<WaitlistStep2Input['segment'] | undefined>();
   const [contractsVolume, setContractsVolume] = useState<WaitlistStep2Input['contractsVolume'] | undefined>();
   const [currentTool, setCurrentTool] = useState<string>('');
@@ -44,6 +46,8 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
     try {
       const res = await onSubmit({
         email,
+        painPoints: painPoints.trim() || undefined,
+        suggestions: suggestions.trim() || undefined,
         segment,
         contractsVolume,
         currentTool: currentTool.trim() || undefined,
@@ -83,6 +87,50 @@ export function WaitlistFormStep2({ email, onSubmit, onSkip }: WaitlistFormStep2
           {error}
         </div>
       )}
+
+      {/* Pergunta Opcional 1: Dores com Contratos */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <label
+            htmlFor="waitlist-step2-pain-points"
+            className="block text-sm font-medium text-[var(--sage-text-primary)]"
+          >
+            Quais são as suas maiores dores ou dificuldades com contratos no dia a dia da sua empresa?
+          </label>
+          <span className="text-xs text-[var(--sage-text-secondary)] font-mono">Opcional</span>
+        </div>
+        <textarea
+          id="waitlist-step2-pain-points"
+          rows={3}
+          maxLength={1500}
+          placeholder="Ex: Demora para gerar minutas, contratos esquecidos sem reajuste de IPCA, falta de rastreio de assinaturas..."
+          value={painPoints}
+          onChange={(e) => setPainPoints(e.target.value)}
+          className="w-full rounded-lg border border-[var(--sage-border-subtle)] bg-[var(--sage-paper)] px-4 py-3 text-sm text-[var(--sage-text-primary)] placeholder-[var(--sage-text-secondary)]/60 transition-colors focus:border-[var(--sage-accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--sage-accent-primary)]/20"
+        />
+      </div>
+
+      {/* Pergunta Opcional 2: Sugestões de Evolução */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <label
+            htmlFor="waitlist-step2-suggestions"
+            className="block text-sm font-medium text-[var(--sage-text-primary)]"
+          >
+            O que não pode faltar na Tratto para ela ser perfeita para o seu negócio?
+          </label>
+          <span className="text-xs text-[var(--sage-text-secondary)] font-mono">Opcional</span>
+        </div>
+        <textarea
+          id="waitlist-step2-suggestions"
+          rows={3}
+          maxLength={1500}
+          placeholder="Ex: Integração nativa com emissor de boletos, alertas de vencimento com 30 dias por e-mail..."
+          value={suggestions}
+          onChange={(e) => setSuggestions(e.target.value)}
+          className="w-full rounded-lg border border-[var(--sage-border-subtle)] bg-[var(--sage-paper)] px-4 py-3 text-sm text-[var(--sage-text-primary)] placeholder-[var(--sage-text-secondary)]/60 transition-colors focus:border-[var(--sage-accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--sage-accent-primary)]/20"
+        />
+      </div>
 
       {/* Pergunta 1: Segmento */}
       <fieldset className="space-y-2">

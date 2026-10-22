@@ -57,6 +57,8 @@ export class WaitlistService {
 
       await this.repository.upsertLead({
         email: normalizedEmail,
+        pain_points: input.painPoints || null,
+        suggestions: input.suggestions || null,
         segment: input.segment || null,
         contracts_volume: input.contractsVolume || null,
         current_tool: input.currentTool || null,

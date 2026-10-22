@@ -80,27 +80,6 @@ export function WaitlistSection({
 
         {/* Card Principal do Formulário */}
         <div className="relative rounded-2xl border border-[var(--sage-border-subtle)] bg-[var(--sage-paper-card)] p-6 sm:p-10 shadow-sm transition-all">
-          {/* Indicador de Etapas */}
-          {step < 3 && (
-            <div className="mb-6 flex items-center justify-between text-xs text-[var(--sage-text-secondary)] border-b border-[var(--sage-border-subtle)] pb-3">
-              <span className="font-mono">
-                {step === 1 ? 'Etapa 1 de 2: Identificação' : 'Etapa 2 de 2: Qualificação'}
-              </span>
-              <div className="flex gap-1.5">
-                <span
-                  className={`h-1.5 w-6 rounded-full transition-colors ${
-                    step >= 1 ? 'bg-[var(--sage-accent-primary)]' : 'bg-[var(--sage-border-subtle)]'
-                  }`}
-                />
-                <span
-                  className={`h-1.5 w-6 rounded-full transition-colors ${
-                    step >= 2 ? 'bg-[var(--sage-accent-primary)]' : 'bg-[var(--sage-border-subtle)]'
-                  }`}
-                />
-              </div>
-            </div>
-          )}
-
           {/* Renderização Condicional das Etapas */}
           {step === 1 && <WaitlistFormStep1 onSubmit={handleStep1Submit} />}
 
