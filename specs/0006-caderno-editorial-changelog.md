@@ -55,6 +55,7 @@ Implementar a seção de **Changelog / Notas de Atualização** da Tratto, compo
    - Endpoint administrativo seguro `POST /api/changelog/notify` protegido por token de autorização (`CHANGELOG_NOTIFY_TOKEN`), permitindo disparo controlado sob demanda.
 
 **Não inclui (fica para depois):**
+- Persistência global de curtidas na tabela Supabase `changelog_likes` (atualmente com fallback em `localStorage` com UI otimista; agendado para implementação posterior).
 - Comentários de usuários.
 - Edição de conteúdo via painel administrativo (as publicações são versionadas no repositório).
 
