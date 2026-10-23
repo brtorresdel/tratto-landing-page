@@ -7,7 +7,7 @@
 ## Objetivo
 
 Apresentar a narrativa completa de valor da Tratto antes da captura de leads, demonstrando de forma humana, tátil e editorial a origem do projeto e como ele resolve as principais dores de contratos em pequenas e médias empresas:
-1. **A Carta do Desenvolvedor (Origem & Manifesto):** Uma carta aberta e sincera do desenvolvedor compartilhando a vivência real em escritório de advocacia (contratos preenchidos e salvos à mão) e em coworking (contratos gerenciados por um pseudosistema em planilhas/VBA), humanizando a dor e demonstrando por que a Tratto está sendo construída do zero, fechando com o gancho para os dados do mercado.
+1. **O Manifesto Tratto (Origem & Propósito Institucional):** Uma narrativa madura e humana compartilhando a vivência real nos bastidores de escritórios e coworkings (contratos preenchidos à mão e geridos por planilhas improvisadas), demonstrando como a Tratto resolve a dor do mercado com governança PJ, fechando com o gancho para os dados do mercado. A carta pessoal do fundador permanece arquivada no Changelog.
 2. **O Problema Real & Métricas de Prejuízo:** Tornar tangível o custo invisível de gerenciar contratos no improviso (reajustes esquecidos, horas perdidas no Word e multas de rescisão não cobradas).
 3. **O Ciclo em 4 Passos ("Como Funciona"):** Explicar o fluxo do produto (Upload de `.docx` com `{{ }}` $\rightarrow$ Minuta viva & aprovação de descontos $\rightarrow$ Assinatura eletrônica BYOT/Manual $\rightarrow$ Gestão de vigência, reajustes automáticos e parcelas).
 4. **Para quem é a Tratto:** Posicionar o produto como um SaaS genérico e flexível para prestadores de serviço e empresas que formalizam relações contínuas (coworkings, academias, consultorias, agências, contabilidades e clínicas).
@@ -21,10 +21,10 @@ Apresentar a narrativa completa de valor da Tratto antes da captura de leads, de
 **Inclui:**
 - **Faixa Editorial da Carta do Dev & O Problema Real (`#o-problema`):**
   - Faixa com background dinâmico sincronizado à cor primária do tema ativo (`bg-[var(--accent-primary)]`), transição suave de cor (`transition-colors duration-300`) e tipografia de alta legibilidade editorial sobre contraste WCAG AAA.
-  - **Bloco da Carta do Dev:**
-    - Título editorial (*"Carta do Dev"*).
-    - Identificação limpa do autor com foto em WebP e subtítulo (*"Bruno Torres — Desenvolvedor Fullstack & Criador da Tratto"*).
-    - Narrativa pessoal humanizada baseada na vivência real do dev com contratos em advocacia e coworking, inteiramente em Newsreader itálico e entre aspas.
+  - **Bloco do Manifesto Tratto:**
+    - Título editorial (*"O Manifesto Tratto"*).
+    - Identificação institucional de propósito e fundação.
+    - Narrativa baseada na vivência real das dores operacionais de contratos em empresas, inteiramente em Newsreader itálico e entre aspas.
     - Gancho textual conectando a dor empírica aos dados de mercado.
   - **Grade das 3 métricas de prejuízo invisível:**
     - `-12,4%`: Receita líquida perdida ao esquecer de aplicar o reajuste anual pelo IPCA ou IGP-M.
@@ -66,10 +66,10 @@ Apresentar a narrativa completa de valor da Tratto antes da captura de leads, de
 
 ## Critérios de Aceitação
 
-- **CA1.** A faixa editorial (`#o-problema`) deve possuir background dinâmico reativo ao tema ativo (`bg-[var(--accent-primary)]`) com `transition-colors duration-300` e renderizar a **Carta do Desenvolvedor** contendo:
-  - O título editorial ("Carta do Dev");
-  - A identificação limpa do autor ("Bruno Torres — Desenvolvedor Fullstack & Criador da Tratto");
-  - A narrativa da vivência em escritório de advocacia e coworking;
+- **CA1.** A faixa editorial (`#o-problema`) deve possuir background dinâmico reativo ao tema ativo (`bg-[var(--accent-primary)]`) com `transition-colors duration-300` e renderizar o **Manifesto Tratto** contendo:
+  - O título editorial ("O Manifesto Tratto");
+  - A identificação institucional de propósito e fundação;
+  - A narrativa da vivência real das dores contratuais em escritórios e empresas;
   - O gancho narrativo de transição para o impacto financeiro e as métricas de mercado.
 - **CA2.** A grade de métricas de prejuízo invisível deve renderizar os 3 indicadores com números em `Geist Mono` (`-12,4%`, `4h / sem`, `21 dias`) e o card de impacto financeiro comparativo.
 - **CA3.** A seção "Como Funciona" (`#como-funciona`) deve renderizar os 4 passos sequenciais do ciclo contratual (Upload DOCX, Minuta & Aprovação, Assinatura Eletrônica e Vigência/Reajuste), cada qual com sua numeração estilizada em `Geist Mono` e resumo objetivo.

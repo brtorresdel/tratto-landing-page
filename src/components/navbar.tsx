@@ -6,11 +6,12 @@ import { Menu, X, ArrowRight } from 'lucide-react';
 import clsx from 'clsx';
 
 const NAV_LINKS = [
-  { href: '#o-problema', label: 'Carta do Dev' },
-  { href: '#como-funciona', label: 'Como funciona' },
-  { href: '#segmentos', label: 'Segmentos' },
-  { href: '#seguranca', label: 'Segurança' },
-  { href: '#faq', label: 'Dúvidas' },
+  { href: '/#o-problema', label: 'Manifesto' },
+  { href: '/#como-funciona', label: 'Como funciona' },
+  { href: '/#segmentos', label: 'Segmentos' },
+  { href: '/#seguranca', label: 'Segurança' },
+  { href: '/#faq', label: 'Dúvidas' },
+  { href: '/changelog', label: 'Changelog' },
 ];
 
 export function Navbar() {
@@ -112,7 +113,7 @@ export function Navbar() {
             className="hidden md:flex items-center gap-5 lg:gap-6"
           >
             {NAV_LINKS.map((link) => {
-              const isActive = activeSection === link.href.replace('#', '');
+              const isActive = activeSection === link.href.replace('/#', '').replace('#', '');
               return (
                 <a
                   key={link.href}
@@ -172,7 +173,7 @@ export function Navbar() {
         >
           <nav aria-label="Menu móvel" className="flex flex-col space-y-1">
             {NAV_LINKS.map((link) => {
-              const isActive = activeSection === link.href.replace('#', '');
+              const isActive = activeSection === link.href.replace('/#', '').replace('#', '');
               return (
                 <a
                   key={link.href}

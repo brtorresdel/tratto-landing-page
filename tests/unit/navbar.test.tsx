@@ -27,7 +27,7 @@ describe('Navbar (Spec 0004 - Header Global e Micro-interações)', () => {
 
     // Links de navegação principais no desktop
     const desktopNav = screen.getByLabelText('Navegação rápida');
-    expect(within(desktopNav).getByRole('link', { name: /^Carta do Dev$/i })).toBeInTheDocument();
+    expect(within(desktopNav).getByRole('link', { name: /^Manifesto$/i })).toBeInTheDocument();
     expect(within(desktopNav).getByRole('link', { name: /^Como funciona$/i })).toBeInTheDocument();
     expect(within(desktopNav).getByRole('link', { name: /^Segmentos$/i })).toBeInTheDocument();
     expect(within(desktopNav).getByRole('link', { name: /^Segurança$/i })).toBeInTheDocument();

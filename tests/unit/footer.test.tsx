@@ -17,7 +17,7 @@ describe('Footer (Spec 0004 - Rodapé Editorial Definitivo)', () => {
     expect(screen.getByText(/^Sobre a Tratto$/i)).toBeInTheDocument();
     const nav = container.querySelector('footer nav');
     expect(nav).not.toBeNull();
-    expect(screen.getByRole('link', { name: /^Carta do Dev$/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /^Manifesto$/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^Como funciona$/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^Segmentos$/i })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /^Segurança$/i })).toBeInTheDocument();
@@ -38,9 +38,11 @@ describe('Footer (Spec 0004 - Rodapé Editorial Definitivo)', () => {
     const githubLink = screen.getByRole('link', { name: /GitHub/i });
     expect(githubLink).toHaveAttribute('href', 'https://github.com/brtorresdel');
 
-    // Linha inferior: copyright dinâmico e status
+    // Linha inferior: copyright dinâmico e status com link do changelog
     const currentYear = new Date().getFullYear();
     expect(screen.getByText(new RegExp(`Tratto © ${currentYear}\\. Todos os direitos reservados\\.`, 'i'))).toBeInTheDocument();
     expect(screen.getByText(/Projeto em andamento/i)).toBeInTheDocument();
+    const changelogLink = screen.getByRole('link', { name: /Ver changelog/i });
+    expect(changelogLink).toHaveAttribute('href', '/changelog');
   });
 });

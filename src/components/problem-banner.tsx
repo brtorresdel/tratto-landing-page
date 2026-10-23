@@ -76,61 +76,29 @@ export function ProblemBanner() {
     >
       <div className="mx-auto max-w-5xl px-4 sm:px-8">
         {/* ========================================================= */}
-        {/* PARTE 1: CARTA DO DEV */}
+        {/* PARTE 1: O MANIFESTO TRATTO */}
         {/* ========================================================= */}
         <div className="w-full text-left">
-          {/* Header da Carta: Título centralizado no mobile (< 712px) e lado a lado a partir de 712px */}
-          <div className="flex flex-col items-center justify-center text-center min-[712px]:flex-row min-[712px]:items-center min-[712px]:justify-between min-[712px]:text-left gap-4 pb-2">
-            <h2 className="font-serif text-4xl min-[712px]:text-5xl italic font-semibold text-white leading-tight tracking-tight text-center min-[712px]:text-left whitespace-nowrap">
-              Carta do Dev
+          {/* Header do Manifesto */}
+          <div className="pb-2">
+            <h2 className="font-serif text-4xl min-[712px]:text-5xl italic font-semibold text-white leading-tight tracking-tight text-center min-[712px]:text-left">
+              O Manifesto Tratto
             </h2>
-
-            <div className="flex items-center gap-3.5 w-fit shrink-0">
-              <img
-                src="/bruno-torres.webp"
-                alt="Foto de Bruno Torres"
-                className="h-11 w-11 rounded-full object-cover border-2 border-white/40 shadow-sm shrink-0"
-              />
-              <div className="text-left">
-                <div className="font-semibold text-white text-sm sm:text-base tracking-tight leading-snug">
-                  Bruno Torres
-                </div>
-                <div className="text-[11px] sm:text-xs text-white/75 font-mono">
-                  Desenvolvedor Fullstack & Criador da Tratto
-                </div>
-              </div>
-            </div>
           </div>
 
-          {/* Card com a carta em formato editorial envolta em aspas e tipografia Newsreader completa */}
+          {/* Card com o manifesto em formato editorial e tipografia Newsreader completa */}
           <div className="mt-6 rounded-2xl border border-white/15 bg-white/10 p-6 sm:p-9 backdrop-blur-xs text-white/95 shadow-[0_12px_32px_rgba(0,0,0,0.08)]">
             <div className="space-y-5 font-serif italic text-base sm:text-lg leading-relaxed text-white/95">
               <p>
-                &ldquo;Em duas das minhas maiores experiências profissionais antigas antes de me tornar oficialmente desenvolvedor, vivi momentos que beiravam o desespero quando o assunto era contrato. Não minto que, em algum momento, já cheguei até a chorar quando ouvia essa palavra.
+                &ldquo;A Tratto nasceu de uma vivência real nos bastidores de escritórios e empresas de serviços. Vimos de perto o desgaste e a insegurança de gerenciar acordos contratuais no improviso: documentos preenchidos à mão, arquivos salvos por cima de modelos originais, dados trocados entre clientes e vias assinadas perdidas em caixas de e-mail. Além de soluções paleativas que mais atrapalham do que ajudam no dia a dia das empresas, como uma planilha com macros, por exemplo.
               </p>
 
               <p>
-                Em uma dessas experiências, os contratos eram gerados 100% na mão. Tínhamos um modelo guardado e, sempre que precisávamos gerar um novo documento para um cliente, era a mesma coisa: abrir o arquivo, trocar os dados &ldquo;no olho&rdquo;, salvar com outro nome para não sobrescrever o original, imprimir e vida que segue. O resultado, como já dá para imaginar: arquivo salvo por cima do modelo, documento perdido, dados trocados de clientes anteriores... um caos.
+                Ao pesquisar a fundo esse cenário no Brasil, encontramos um espaço evidente: a carência de uma solução nacional, ágil e acessível, desenhada especificamente para a realidade de micro e pequenas empresas que precisam de governança jurídica sem a burocracia pesada de grandes departamentos corporativos.
               </p>
 
               <p>
-                Na outra empresa, até tínhamos uma alternativa &ldquo;semiautomática&rdquo;: uma planilha cheia de macros que gerava o documento. Mas, sendo bem honesto, uma planilha definitivamente não foi feita para isso, né? Além de ser offline, tínhamos problemas constantes de versões conflitantes e dores de cabeça para gerenciar tudo.
-              </p>
-
-              <p>
-                Incomodado com isso, fui pesquisar a fundo para entender como esse calo aperta em outras empresas e segmentos. E, com esse levantamento, encontrei um verdadeiro espaço em branco no Brasil.
-              </p>
-
-              <p>
-                Não que a ideia de automatizar contratos seja 100% inédita no planeta; mas uma solução nacional, simples, acessível e desenhada de verdade para a realidade de micro e pequenas empresas, na opinião deste que vos fala, simplesmente não existe. Bem, não existia.
-              </p>
-
-              <p>
-                Para preencher essa lacuna, decidi criar a <strong className="text-white font-semibold not-italic">Tratto</strong>: uma plataforma onde você sobe seus próprios modelos de contrato em .docx com marcadores simples, gera documentos de forma rápida e sem erro de preenchimento e acompanha todo o ciclo de vigência e reajustes sem depender de planilhas.
-              </p>
-
-              <p>
-                Essa ideia ainda está saindo do papel, mas já posso adiantar que, só de planejar a arquitetura e a identidade desse projeto, sinto que dei um abraço naquele Bruno do passado que passou por poucas e boas mexendo com esse tipo de documento...&rdquo;
+                A <strong className="text-white font-semibold not-italic">Tratto</strong> surge exatamente para preencher essa lacuna: uma plataforma onde sua empresa aproveita seus próprios modelos de documentos, gera contratos sem erros em menos de dois minutos e blinda sua receita com controle automático de vigência e reajustes por índices oficiais.&rdquo;
               </p>
             </div>
           </div>
@@ -141,7 +109,7 @@ export function ProblemBanner() {
               O custo invisível de gerenciar contratos no improviso...
             </h3>
             <p className="mt-4 text-base sm:text-lg text-white/85 leading-relaxed">
-              O que pensei ser uma dor concentrada ou de empresa específica, na verdade se trata de uma dor que muitos lugares passam, independente de qual o segmento ou o tamanho da empresa. Se a sua empresa elabora e gerencia contratos, ela está suscetível a erros, se não for bem gerenciada. Acredito que números aqui expressem melhor o que estou querendo te dizer:
+              O que parecia ser uma dor pontual, na verdade é uma vulnerabilidade compartilhada por empresas de todos os portes e segmentos. Se a sua empresa elabora e gerencia contratos, ela está suscetível a perdas silenciosas se não houver governança. Os números a seguir traduzem com clareza o tamanho desse impacto:
             </p>
           </div>
         </div>

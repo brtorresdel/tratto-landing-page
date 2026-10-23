@@ -20,4 +20,4 @@ Toda funcionalidade, tela ou componente da Landing Page começa aqui (ADR 0006).
 | [0003](0003-formulario-lista-espera.md) | Formulário de Lista de Espera em 2 Etapas e Disparo de E-mail | landing page | implementada |
 | [0004](0004-header-footer-editorial-microinteracoes.md) | Header Global, Footer Editorial e Micro-interações do Site | landing page | implementada |
 | [0005](0005-seo-opengraph-acessibilidade.md) | SEO Técnico, OpenGraph Dinâmico, Metadados e Acessibilidade (WCAG 2.1 AA) | landing page | implementada |
-| 0006 | Caderno Editorial de Artigos & Changelog (Motor MDX Local) | landing page | pendente |
+| [0006](0006-caderno-editorial-changelog.md) | Caderno Editorial & Changelog da Tratto | landing page | implementada |

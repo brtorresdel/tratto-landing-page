@@ -33,22 +33,22 @@ export function Footer() {
               Sobre a Tratto
             </h4>
             <nav aria-label="Navegação do rodapé" className="flex flex-col space-y-2 text-xs text-[var(--text-muted)]">
-              <a href="#o-problema" className="hover:text-[var(--accent-primary)] transition-colors">
-                Carta do Dev
+              <a href="/#o-problema" className="hover:text-[var(--accent-primary)] transition-colors">
+                Manifesto
               </a>
-              <a href="#como-funciona" className="hover:text-[var(--accent-primary)] transition-colors">
+              <a href="/#como-funciona" className="hover:text-[var(--accent-primary)] transition-colors">
                 Como funciona
               </a>
-              <a href="#segmentos" className="hover:text-[var(--accent-primary)] transition-colors">
+              <a href="/#segmentos" className="hover:text-[var(--accent-primary)] transition-colors">
                 Segmentos
               </a>
-              <a href="#seguranca" className="hover:text-[var(--accent-primary)] transition-colors">
+              <a href="/#seguranca" className="hover:text-[var(--accent-primary)] transition-colors">
                 Segurança
               </a>
-              <a href="#faq" className="hover:text-[var(--accent-primary)] transition-colors">
+              <a href="/#faq" className="hover:text-[var(--accent-primary)] transition-colors">
                 Dúvidas
               </a>
-              <a href="#lista-de-espera" className="hover:text-[var(--accent-primary)] transition-colors">
+              <a href="/#lista-de-espera" className="hover:text-[var(--accent-primary)] transition-colors">
                 Lista de espera
               </a>
             </nav>
@@ -118,6 +118,13 @@ export function Footer() {
           <div className="flex items-center gap-2 text-xs text-[var(--text-muted)]">
             <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Projeto em andamento</span>
+            <span className="text-[var(--border-strong)]" aria-hidden="true">|</span>
+            <Link
+              href="/changelog"
+              className="hover:text-[var(--accent-primary)] transition-colors underline-offset-4 hover:underline"
+            >
+              Ver changelog
+            </Link>
           </div>
         </div>
       </div>
