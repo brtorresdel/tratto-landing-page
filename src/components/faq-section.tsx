@@ -69,14 +69,14 @@ export function FaqSection() {
                   aria-expanded={isOpen}
                   aria-controls={contentId}
                   onClick={() => toggleFaq(index)}
-                  className="flex w-full items-center justify-between gap-6 py-5 sm:py-6 text-left cursor-pointer group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] rounded-lg"
+                  className="flex w-full items-center justify-between gap-6 py-5 sm:py-6 text-left cursor-pointer group focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[var(--accent-primary)] rounded-lg touch-manipulation select-none"
                 >
                   <span
                     className={clsx(
                       "font-sans text-base sm:text-lg font-medium tracking-tight transition-colors duration-200",
                       isOpen
                         ? "text-[var(--accent-primary)]"
-                        : "text-[var(--text-main)] group-hover:text-[var(--accent-primary)]"
+                        : "text-[var(--text-main)] md:group-hover:text-[var(--accent-primary)]"
                     )}
                   >
                     {faq.question}

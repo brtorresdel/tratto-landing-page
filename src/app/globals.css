@@ -110,6 +110,16 @@
     transition: background-color 0.25s ease, color 0.25s ease;
   }
 
+  /* Otimização de toque para iOS Safari (elimina atraso de 300ms e toque duplo fantasma) */
+  button,
+  input,
+  textarea,
+  select,
+  a {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
   /* Barra de rolagem personalizada e reativa ao tema */
   * {
     scrollbar-color: var(--scrollbar-thumb, var(--accent-primary)) transparent;

@@ -100,7 +100,7 @@ export function WaitlistFormStep1({ onSubmit }: WaitlistFormStep1Props) {
               }}
               aria-invalid={!!errors.email}
               aria-describedby={errors.email ? 'waitlist-email-error' : undefined}
-              className="w-full h-13 sm:h-14 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] px-5 py-3.5 text-base text-[var(--text-main)] placeholder-[var(--text-muted)]/60 transition-colors focus:border-[var(--accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/20 shadow-2xs"
+              className="w-full h-13 sm:h-14 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-card)] px-5 py-3.5 text-base text-[var(--text-main)] placeholder-[var(--text-muted)]/60 transition-colors focus:border-[var(--accent-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/20 shadow-2xs touch-manipulation"
             />
           </div>
 
@@ -108,7 +108,7 @@ export function WaitlistFormStep1({ onSubmit }: WaitlistFormStep1Props) {
             type="submit"
             disabled={isSubmitting}
             aria-busy={isSubmitting}
-            className="group inline-flex h-13 sm:h-14 items-center justify-center gap-2.5 rounded-full bg-[var(--accent-primary)] px-8 py-3.5 text-base font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-xs whitespace-nowrap shrink-0 cursor-pointer"
+            className="group inline-flex h-13 sm:h-14 items-center justify-center gap-2.5 rounded-full bg-[var(--accent-primary)] px-8 py-3.5 text-base font-semibold text-white transition-all hover:opacity-90 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)]/30 disabled:opacity-70 disabled:cursor-not-allowed shadow-xs whitespace-nowrap shrink-0 cursor-pointer touch-manipulation"
           >
             {isSubmitting ? (
               <>

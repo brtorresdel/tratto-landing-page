@@ -69,8 +69,8 @@ export function WaitlistSection({
       {/* Contratos Estáticos de Background na Base da Seção (Camada z-0) */}
       <WaitlistContractPapers />
 
-      {/* Conteúdo e Formulário em Primeiro Plano (Camada z-20) */}
-      <div className="relative z-20 mx-auto max-w-2xl">
+      {/* Conteúdo e Formulário em Primeiro Plano (Camada z-20 com isolate para prevenir sobreposição de hit-test no WebKit) */}
+      <div className="relative z-20 isolate mx-auto max-w-2xl">
         {/* Cabeçalho da Seção */}
         {step < 3 && (
           <div className="text-center space-y-4 mb-8 sm:mb-10">

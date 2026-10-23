@@ -29,6 +29,25 @@ export function SecuritySection() {
     }
   }, []);
 
+  // Fecha o balão ativo ao tocar fora no mobile para não travar toques em seções adjacentes
+  useEffect(() => {
+    if (activeSlice === null) return;
+
+    function handleOutsideInteraction(event: Event) {
+      if (sectionRef.current && !sectionRef.current.contains(event.target as Node)) {
+        setActiveSlice(null);
+      }
+    }
+
+    document.addEventListener("click", handleOutsideInteraction);
+    document.addEventListener("touchstart", handleOutsideInteraction, { passive: true });
+
+    return () => {
+      document.removeEventListener("click", handleOutsideInteraction);
+      document.removeEventListener("touchstart", handleOutsideInteraction);
+    };
+  }, [activeSlice]);
+
   const pillars = [
     {
       id: 0,

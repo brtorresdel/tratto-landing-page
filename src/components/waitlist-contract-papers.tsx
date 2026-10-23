@@ -27,7 +27,7 @@ export function StaticContractSheet({
 }: StaticContractProps) {
   return (
     <div
-      className={`flex flex-col justify-between rounded-lg border border-[var(--border-subtle)] bg-white p-3 sm:p-3.5 shadow-[0_6px_20px_rgba(14,18,16,0.05)] select-none transition-all duration-500 ease-out cursor-pointer hover:-translate-y-8 hover:shadow-[0_18px_36px_rgba(14,18,16,0.12)] ${className}`}
+      className={`flex flex-col justify-between rounded-lg border border-[var(--border-subtle)] bg-white p-3 sm:p-3.5 shadow-[0_6px_20px_rgba(14,18,16,0.05)] select-none transition-all duration-500 ease-out pointer-events-none lg:pointer-events-auto lg:cursor-pointer lg:hover:-translate-y-8 lg:hover:shadow-[0_18px_36px_rgba(14,18,16,0.12)] ${className}`}
     >
       <div>
         {/* Topo do Contrato: Apenas a Rubrica Tratto Oficial em PRETO no canto ESQUERDO */}
@@ -123,7 +123,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 2.800,00"
             reajuste="IPCA (Bacen)"
-            className="pointer-events-auto absolute bottom-1 left-[0px] w-[205px] min-h-[255px] rotate-[-7deg] z-10"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-1 left-[0px] w-[205px] min-h-[255px] rotate-[-7deg] z-10"
           />
 
           {/* Contrato 2: Descida suave (bottom-[-9px]) */}
@@ -135,7 +135,7 @@ export function WaitlistContractPapers() {
             vigencia="24 meses"
             valor="R$ 4.500,00"
             reajuste="IGP-M (FGV)"
-            className="pointer-events-auto absolute bottom-[-9px] left-[105px] w-[205px] min-h-[255px] rotate-[4deg] z-11"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-9px] left-[105px] w-[205px] min-h-[255px] rotate-[4deg] z-11"
           />
 
           {/* Contrato 3: Descida contínua (bottom-[-19px]) */}
@@ -147,7 +147,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 3.900,00"
             reajuste="IPCA Oficial"
-            className="pointer-events-auto absolute bottom-[-19px] left-[210px] w-[205px] min-h-[255px] rotate-[-3deg] z-12"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-19px] left-[210px] w-[205px] min-h-[255px] rotate-[-3deg] z-12"
           />
 
           {/* Contrato 4: Descida contínua (bottom-[-27px]) */}
@@ -159,7 +159,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 1.950,00"
             reajuste="INPC (IBGE)"
-            className="pointer-events-auto absolute bottom-[-27px] left-[315px] w-[205px] min-h-[255px] rotate-[6deg] z-13"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-27px] left-[315px] w-[205px] min-h-[255px] rotate-[6deg] z-13"
           />
 
           {/* Contrato 5: Aproximação do centro (bottom-[-34px]) */}
@@ -171,7 +171,7 @@ export function WaitlistContractPapers() {
             vigencia="6 meses"
             valor="R$ 3.200,00"
             reajuste="IPCA (Bacen)"
-            className="pointer-events-auto absolute bottom-[-34px] left-[420px] w-[205px] min-h-[255px] rotate-[-5deg] z-14"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-34px] left-[420px] w-[205px] min-h-[255px] rotate-[-5deg] z-14"
           />
 
           {/* Contrato 6: Pré-centro (bottom-[-39px]) */}
@@ -183,7 +183,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 2.400,00"
             reajuste="IPCA (Bacen)"
-            className="pointer-events-auto absolute bottom-[-39px] left-[525px] w-[205px] min-h-[255px] rotate-[3deg] z-15"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-39px] left-[525px] w-[205px] min-h-[255px] rotate-[3deg] z-15"
           />
 
           {/* Contrato 7: Centro Exato Esquerdo (Ponto mais baixo da curva: bottom-[-42px]) */}
@@ -195,7 +195,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 3.100,00"
             reajuste="IGP-M (FGV)"
-            className="pointer-events-auto absolute bottom-[-42px] left-[630px] w-[205px] min-h-[255px] rotate-[-4deg] z-16"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-42px] left-[630px] w-[205px] min-h-[255px] rotate-[-4deg] z-16"
           />
 
           {/* Contrato 8: Centro Exato Direito (Ponto mais baixo da curva: bottom-[-42px]) */}
@@ -207,7 +207,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 5.800,00"
             reajuste="IPCA (Bacen)"
-            className="pointer-events-auto absolute bottom-[-42px] left-[735px] w-[205px] min-h-[255px] rotate-[5deg] z-17"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-42px] left-[735px] w-[205px] min-h-[255px] rotate-[5deg] z-17"
           />
 
           {/* Contrato 9: Subida suave (bottom-[-39px]) */}
@@ -219,7 +219,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 2.650,00"
             reajuste="INPC (IBGE)"
-            className="pointer-events-auto absolute bottom-[-39px] left-[840px] w-[205px] min-h-[255px] rotate-[-6deg] z-18"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-39px] left-[840px] w-[205px] min-h-[255px] rotate-[-6deg] z-18"
           />
 
           {/* Contrato 10: Subida contínua (bottom-[-34px]) */}
@@ -231,7 +231,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 4.100,00"
             reajuste="IPCA (Bacen)"
-            className="pointer-events-auto absolute bottom-[-34px] left-[945px] w-[205px] min-h-[255px] rotate-[4deg] z-19"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-34px] left-[945px] w-[205px] min-h-[255px] rotate-[4deg] z-19"
           />
 
           {/* Contrato 11: Subida contínua (bottom-[-27px]) */}
@@ -243,7 +243,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 2.300,00"
             reajuste="IPCA (Bacen)"
-            className="pointer-events-auto absolute bottom-[-27px] left-[1050px] w-[205px] min-h-[255px] rotate-[-3deg] z-20"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-27px] left-[1050px] w-[205px] min-h-[255px] rotate-[-3deg] z-20"
           />
 
           {/* Contrato 12: Subida contínua (bottom-[-19px]) */}
@@ -255,7 +255,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 3.600,00"
             reajuste="IPCA Oficial"
-            className="pointer-events-auto absolute bottom-[-19px] left-[1155px] w-[205px] min-h-[255px] rotate-[6deg] z-21"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-19px] left-[1155px] w-[205px] min-h-[255px] rotate-[6deg] z-21"
           />
 
           {/* Contrato 13: Subida suave (bottom-[-9px]) */}
@@ -267,7 +267,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 4.800,00"
             reajuste="IGP-M (FGV)"
-            className="pointer-events-auto absolute bottom-[-9px] left-[1260px] w-[205px] min-h-[255px] rotate-[-5deg] z-22"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-[-9px] left-[1260px] w-[205px] min-h-[255px] rotate-[-5deg] z-22"
           />
 
           {/* Contrato 14: Ponta Direita (Mais alto: bottom-1) */}
@@ -279,7 +279,7 @@ export function WaitlistContractPapers() {
             vigencia="12 meses"
             valor="R$ 3.400,00"
             reajuste="INPC (IBGE)"
-            className="pointer-events-auto absolute bottom-1 left-[1365px] w-[205px] min-h-[255px] rotate-[4deg] z-23"
+            className="pointer-events-none lg:pointer-events-auto absolute bottom-1 left-[1365px] w-[205px] min-h-[255px] rotate-[4deg] z-23"
           />
         </div>
       </div>
