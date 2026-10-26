@@ -28,6 +28,8 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Sistema Operacional e IDEs
+preview-og.png
+public/opengraph-preview.png
 .DS_Store
 Thumbs.db
 .vscode/*
