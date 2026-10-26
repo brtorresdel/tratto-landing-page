@@ -45,10 +45,12 @@ export class WaitlistService {
         status: 'lead_capturado',
       });
 
-      // Disparo resiliente de notificação por e-mail (não interrompe o fluxo em caso de falha)
-      this.notifier.notifyNewLead({ email: normalizedEmail }).catch((err) => {
+      // Disparo resiliente de notificação por e-mail com await para ambiente Serverless (Vercel)
+      try {
+        await this.notifier.notifyNewLead({ email: normalizedEmail });
+      } catch (err: unknown) {
         console.error('[WaitlistService] Falha ao notificar novo lead por e-mail:', err);
-      });
+      }
 
       return { success: true, simulated: false };
     } catch (err: unknown) {
@@ -77,9 +79,9 @@ export class WaitlistService {
         status: 'lead_qualificado',
       });
 
-      // Disparo resiliente com os detalhes da qualificação
-      this.notifier
-        .notifyQualifiedLead({
+      // Disparo resiliente com os detalhes da qualificação com await para ambiente Serverless (Vercel)
+      try {
+        await this.notifier.notifyQualifiedLead({
           email: normalizedEmail,
           segment: input.segment,
           contractsVolume: input.contractsVolume,
@@ -87,10 +89,10 @@ export class WaitlistService {
           painPoints: input.painPoints,
           suggestions: input.suggestions,
           interviewOptIn: input.interviewOptIn,
-        })
-        .catch((err) => {
-          console.error('[WaitlistService] Falha ao notificar lead qualificado por e-mail:', err);
         });
+      } catch (err: unknown) {
+        console.error('[WaitlistService] Falha ao notificar lead qualificado por e-mail:', err);
+      }
 
       return { success: true };
     } catch (err: unknown) {
