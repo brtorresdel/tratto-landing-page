@@ -10,6 +10,7 @@ import { ScrollbarThemeSync } from '@/components/scrollbar-theme-sync';
 import { getAllChangelogEntries, getChangelogEntryByDate } from '@/data/changelog';
 import { ChangelogLikeButton } from '@/components/changelog-like-button';
 import { ChangelogMedia } from '@/components/changelog-media';
+import { SupabaseChangelogLikesRepository } from '@/lib/changelog-likes-repository';
 
 interface ChangelogDetailPageProps {
   params: Promise<{ date: string }>;
@@ -85,6 +86,10 @@ export default async function ChangelogDetailPage({ params }: ChangelogDetailPag
   if (!entry) {
     notFound();
   }
+
+  const likesRepo = new SupabaseChangelogLikesRepository();
+  const liveLikes = await likesRepo.getLikesCount(entry.date);
+  const initialLikes = Math.max(liveLikes, entry.initialLikes || 0);
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--bg-canvas)] text-[var(--text-main)] transition-colors duration-300">
@@ -205,7 +210,7 @@ export default async function ChangelogDetailPage({ params }: ChangelogDetailPag
                 </span>
                 <ChangelogLikeButton
                   date={entry.date}
-                  initialCount={entry.initialLikes}
+                  initialCount={initialLikes}
                 />
               </div>
 

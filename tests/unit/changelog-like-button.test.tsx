@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import React from 'react';
 import { ChangelogLikeButton } from '@/components/changelog-like-button';
 
@@ -17,27 +17,33 @@ describe('ChangelogLikeButton (Spec 0006 - CA5: Curtidas Anônimas sem Login)', 
     expect(screen.getByText('5')).toBeInTheDocument();
   });
 
-  it('ao clicar, deve alternar para curtido, incrementar o contador e salvar no localStorage', () => {
+  it('ao clicar, deve alternar para curtido, incrementar o contador e salvar no localStorage', async () => {
     render(<ChangelogLikeButton date="2026-10-22" initialCount={5} />);
 
     const button = screen.getByRole('button');
-    fireEvent.click(button);
+    await act(async () => {
+      fireEvent.click(button);
+    });
 
     expect(screen.getByText('6')).toBeInTheDocument();
     expect(button).toHaveAttribute('aria-pressed', 'true');
     expect(localStorage.getItem('tratto_liked_2026-10-22')).toBe('true');
   });
 
-  it('ao clicar novamente, deve descurtir, decrementar o contador e remover do localStorage', () => {
+  it('ao clicar novamente, deve descurtir, decrementar o contador e remover do localStorage', async () => {
     render(<ChangelogLikeButton date="2026-10-22" initialCount={5} />);
 
     const button = screen.getByRole('button');
     // 1º clique: curtir
-    fireEvent.click(button);
+    await act(async () => {
+      fireEvent.click(button);
+    });
     expect(screen.getByText('6')).toBeInTheDocument();
 
     // 2º clique: descurtir
-    fireEvent.click(button);
+    await act(async () => {
+      fireEvent.click(button);
+    });
     expect(screen.getByText('5')).toBeInTheDocument();
     expect(button).toHaveAttribute('aria-pressed', 'false');
     expect(localStorage.getItem('tratto_liked_2026-10-22')).toBe('false');

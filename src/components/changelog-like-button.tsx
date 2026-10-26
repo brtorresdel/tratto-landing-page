@@ -1,22 +1,29 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useTransition } from 'react';
 import { Heart } from 'lucide-react';
+import { toggleChangelogLikeAction } from '@/app/actions/changelog';
 
 interface ChangelogLikeButtonProps {
   date: string;
   initialCount?: number;
   className?: string;
+  onToggleLike?: (
+    date: string,
+    visitorId: string
+  ) => Promise<{ success: boolean; liked: boolean; count: number }>;
 }
 
 export function ChangelogLikeButton({
   date,
   initialCount = 0,
   className = '',
+  onToggleLike,
 }: ChangelogLikeButtonProps) {
   const [liked, setLiked] = useState<boolean>(false);
   const [count, setCount] = useState<number>(initialCount);
   const [isBouncing, setIsBouncing] = useState<boolean>(false);
+  const [, startTransition] = useTransition();
 
   useEffect(() => {
     try {
@@ -36,23 +43,46 @@ export function ChangelogLikeButton({
     const nextLiked = !liked;
     const nextCount = nextLiked ? count + 1 : Math.max(0, count - 1);
 
+    // Atualização otimista imediata na interface
     setLiked(nextLiked);
     setCount(nextCount);
 
+    let visitorId = '';
     try {
       localStorage.setItem(`tratto_liked_${date}`, nextLiked ? 'true' : 'false');
 
       // Garante existência de um visitor_id pseudo-anônimo
-      if (!localStorage.getItem('tratto_visitor_id')) {
-        const randomId =
+      let storedId = localStorage.getItem('tratto_visitor_id');
+      if (!storedId) {
+        storedId =
           typeof crypto !== 'undefined' && crypto.randomUUID
             ? crypto.randomUUID()
             : `visitor-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
-        localStorage.setItem('tratto_visitor_id', randomId);
+        localStorage.setItem('tratto_visitor_id', storedId);
       }
+      visitorId = storedId;
     } catch {
-      // Ignora erro de storage
+      visitorId = `temp-${Date.now()}`;
     }
+
+    // Persistência em background no Supabase via Server Action
+    startTransition(async () => {
+      try {
+        const toggleFn = onToggleLike || toggleChangelogLikeAction;
+        const res = await toggleFn(date, visitorId);
+        if (res.success) {
+          setCount(res.count);
+          setLiked(res.liked);
+          try {
+            localStorage.setItem(`tratto_liked_${date}`, res.liked ? 'true' : 'false');
+          } catch {
+            // Ignora
+          }
+        }
+      } catch {
+        // Fallback gracioso: mantém o estado otimista no cliente
+      }
+    });
   };
 
   return (
